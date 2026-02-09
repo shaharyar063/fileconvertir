@@ -139,6 +139,70 @@ function buildTga(imageData: ImageData, w: number, h: number): Blob {
   return new Blob([headerBuf, pixelData], { type: 'image/x-tga' });
 }
 
+function buildTiff(imageData: ImageData, w: number, h: number): Blob {
+  const pixels = imageData.data; // RGBA
+  const stripSize = w * h * 3; // RGB only
+  const stripData = new Uint8Array(stripSize);
+  for (let i = 0; i < w * h; i++) {
+    stripData[i * 3 + 0] = pixels[i * 4 + 0]; // R
+    stripData[i * 3 + 1] = pixels[i * 4 + 1]; // G
+    stripData[i * 3 + 2] = pixels[i * 4 + 2]; // B
+  }
+
+  // IFD with 10 entries
+  const numEntries = 10;
+  const ifdOffset = 8; // right after header
+  const ifdSize = 2 + numEntries * 12 + 4; // count + entries + next IFD pointer
+  const bitsPerSampleOffset = ifdOffset + ifdSize;
+  const stripOffset = bitsPerSampleOffset + 6; // 3 shorts for bits per sample
+
+  const totalSize = stripOffset + stripSize;
+  const buf = new ArrayBuffer(totalSize);
+  const view = new DataView(buf);
+  const u8 = new Uint8Array(buf);
+
+  // Header: little-endian TIFF
+  view.setUint8(0, 0x49); // 'I'
+  view.setUint8(1, 0x49); // 'I'
+  view.setUint16(2, 42, true); // magic
+  view.setUint32(4, ifdOffset, true); // IFD offset
+
+  let off = ifdOffset;
+  view.setUint16(off, numEntries, true); off += 2;
+
+  function writeEntry(tag: number, type: number, count: number, value: number) {
+    view.setUint16(off, tag, true); off += 2;
+    view.setUint16(off, type, true); off += 2;
+    view.setUint32(off, count, true); off += 4;
+    view.setUint32(off, value, true); off += 4;
+  }
+
+  // Tag entries (must be sorted by tag number)
+  writeEntry(256, 3, 1, w);                    // ImageWidth (SHORT)
+  writeEntry(257, 3, 1, h);                    // ImageLength (SHORT)
+  writeEntry(258, 3, 3, bitsPerSampleOffset);  // BitsPerSample → offset
+  writeEntry(259, 3, 1, 1);                    // Compression = None
+  writeEntry(262, 3, 1, 2);                    // PhotometricInterpretation = RGB
+  writeEntry(273, 4, 1, stripOffset);          // StripOffsets (LONG)
+  writeEntry(277, 3, 1, 3);                    // SamplesPerPixel
+  writeEntry(278, 4, 1, h);                    // RowsPerStrip
+  writeEntry(279, 4, 1, stripSize);            // StripByteCounts
+  writeEntry(282, 3, 1, 72);                   // XResolution (simplified)
+
+  // Next IFD = 0 (no more IFDs)
+  view.setUint32(off, 0, true);
+
+  // BitsPerSample values: 8, 8, 8
+  view.setUint16(bitsPerSampleOffset, 8, true);
+  view.setUint16(bitsPerSampleOffset + 2, 8, true);
+  view.setUint16(bitsPerSampleOffset + 4, 8, true);
+
+  // Copy strip data
+  u8.set(stripData, stripOffset);
+
+  return new Blob([buf], { type: 'image/tiff' });
+}
+
 export const imageConverter: ConverterPlugin = {
   id: 'image-converter',
   name: 'Image Converter',
@@ -249,15 +313,14 @@ export const imageConverter: ConverterPlugin = {
       return { blob: tgaBlob, filename: `${baseName}.tga`, mimeType: 'image/x-tga' };
     }
 
-    // TIFF: canvas export (browser support varies, fallback to PNG blob with .tiff ext)
+    // TIFF: build a real uncompressed TIFF file
     if (targetFormat === 'tiff') {
-      const pngBlob = await new Promise<Blob>((resolve, reject) => {
-        canvas.toBlob(b => (b ? resolve(b) : reject(new Error('TIFF conversion failed'))), 'image/png');
-      });
+      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      const tiffBlob = buildTiff(imageData, canvas.width, canvas.height);
       onProgress?.(100);
       const baseName = file.name.replace(/\.[^/.]+$/, '');
       URL.revokeObjectURL(img.src);
-      return { blob: pngBlob, filename: `${baseName}.tiff`, mimeType: 'image/tiff' };
+      return { blob: tiffBlob, filename: `${baseName}.tiff`, mimeType: 'image/tiff' };
     }
 
     const mimeType = getMimeType(targetFormat);
