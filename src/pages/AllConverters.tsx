@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { converterRoutes } from '@/lib/converters';
+import { converterRoutes, formatPages } from '@/lib/converters';
 
 export default function AllConverters() {
   const navigate = useNavigate();
@@ -13,6 +13,23 @@ export default function AllConverters() {
         Choose a conversion tool below.
       </p>
 
+      {/* Format pages */}
+      <div className="mt-8">
+        <h2 className="mb-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">By Output Format</h2>
+        <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+          {formatPages.map(p => (
+            <button
+              key={p.slug}
+              onClick={() => navigate(`/${p.slug}`)}
+              className="rounded border border-border px-3 py-2 text-left text-sm text-foreground hover:border-primary hover:text-primary"
+            >
+              {p.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Pair routes */}
       {categories.map(cat => (
         <div key={cat} className="mt-8">
           <h2 className="mb-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">{cat}</h2>
@@ -21,7 +38,7 @@ export default function AllConverters() {
               <button
                 key={r.slug}
                 onClick={() => navigate(`/${r.slug}`)}
-                className="rounded border border-border px-3 py-2 text-left text-sm text-foreground hover:bg-secondary"
+                className="rounded border border-border px-3 py-2 text-left text-sm text-foreground hover:border-primary hover:text-primary"
               >
                 {r.label}
               </button>

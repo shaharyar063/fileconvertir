@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Layout } from "./components/Layout";
 import Index from "./pages/Index";
 import ConverterPage from "./pages/ConverterPage";
+import FormatPage from "./pages/FormatPage";
 import AllConverters from "./pages/AllConverters";
 import NotFound from "./pages/NotFound";
 
@@ -21,6 +22,7 @@ const App = () => (
           <Route element={<Layout />}>
             <Route path="/" element={<Index />} />
             <Route path="/converters" element={<AllConverters />} />
+            <Route path="/to-:format" element={<FormatPage />} />
             <Route path="/:slug" element={<ConverterPage />} />
           </Route>
           <Route path="*" element={<NotFound />} />
