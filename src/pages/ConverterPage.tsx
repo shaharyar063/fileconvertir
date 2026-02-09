@@ -65,7 +65,7 @@ export default function ConverterPage() {
           <button
             onClick={convert}
             disabled={isConverting}
-            className="h-10 w-full rounded bg-primary text-sm font-semibold text-primary-foreground hover:opacity-90 disabled:opacity-50"
+            className="h-10 w-full rounded bg-primary text-sm font-semibold text-primary-foreground hover:brightness-90 disabled:opacity-50"
           >
             {isConverting ? 'Converting…' : `Convert to ${route.targetFormat.toUpperCase()}`}
           </button>

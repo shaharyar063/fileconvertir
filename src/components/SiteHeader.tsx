@@ -7,7 +7,7 @@ export function SiteHeader() {
         <Link to="/" className="text-lg font-bold text-foreground hover:text-primary">
           QuickConvert
         </Link>
-        <Link to="/converters" className="text-sm text-muted-foreground hover:text-foreground">
+        <Link to="/converters" className="text-sm text-muted-foreground hover:text-primary">
           All Converters
         </Link>
       </div>
