@@ -1,5 +1,8 @@
 import { ConverterPlugin, ConversionOption } from './converter-types';
 import { imageConverter } from '@/converters/image-converter';
+import { documentConverter } from '@/converters/document-converter';
+import { audioConverter } from '@/converters/audio-converter';
+import { videoConverter } from '@/converters/video-converter';
 
 class ConverterRegistry {
   private plugins: ConverterPlugin[] = [];
@@ -34,5 +37,8 @@ class ConverterRegistry {
 
 export const registry = new ConverterRegistry();
 
-// Register built-in converters
+// Register all converters
 registry.register(imageConverter);
+registry.register(documentConverter);
+registry.register(audioConverter);
+registry.register(videoConverter);

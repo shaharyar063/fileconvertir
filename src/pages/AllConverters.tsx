@@ -7,7 +7,7 @@ export default function AllConverters() {
   const categories = [...new Set(converterRoutes.map(r => r.category))];
 
   return (
-    <div className="mx-auto max-w-xl px-4 py-12">
+    <div className="mx-auto max-w-2xl px-4 py-12">
       <h1 className="text-2xl font-bold text-foreground">All Converters</h1>
       <p className="mt-2 text-sm text-muted-foreground">
         Choose a conversion tool below.
@@ -16,7 +16,7 @@ export default function AllConverters() {
       {/* Format pages */}
       <div className="mt-8">
         <h2 className="mb-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">By Output Format</h2>
-        <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+        <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
           {formatPages.map(p => (
             <button
               key={p.slug}
@@ -29,7 +29,7 @@ export default function AllConverters() {
         </div>
       </div>
 
-      {/* Pair routes */}
+      {/* Pair routes by category */}
       {categories.map(cat => (
         <div key={cat} className="mt-8">
           <h2 className="mb-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">{cat}</h2>
