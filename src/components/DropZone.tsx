@@ -1,6 +1,5 @@
 import { useCallback, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Upload, FileType, X } from 'lucide-react';
+import { Upload, X } from 'lucide-react';
 import { FileInfo, formatFileSize } from '@/lib/converter-types';
 
 interface DropZoneProps {
@@ -8,16 +7,10 @@ interface DropZoneProps {
   fileInfo: FileInfo | null;
   onClear: () => void;
   disabled?: boolean;
+  acceptHint?: string;
 }
 
-const categoryIcons: Record<string, string> = {
-  image: '🖼️',
-  document: '📄',
-  audio: '🎵',
-  video: '🎬',
-};
-
-export function DropZone({ onFile, fileInfo, onClear, disabled }: DropZoneProps) {
+export function DropZone({ onFile, fileInfo, onClear, disabled, acceptHint }: DropZoneProps) {
   const [isDragging, setIsDragging] = useState(false);
 
   const handleDragOver = useCallback((e: React.DragEvent) => {
@@ -46,78 +39,41 @@ export function DropZone({ onFile, fileInfo, onClear, disabled }: DropZoneProps)
     input.click();
   }, [onFile, disabled, fileInfo]);
 
+  if (fileInfo) {
+    return (
+      <div className="flex items-center gap-3 rounded border border-border bg-card px-4 py-3">
+        <div className="flex-1 min-w-0">
+          <p className="truncate text-sm font-semibold text-foreground">{fileInfo.name}</p>
+          <p className="text-xs text-muted-foreground">{formatFileSize(fileInfo.size)}</p>
+        </div>
+        <button
+          onClick={onClear}
+          className="rounded p-1 text-muted-foreground hover:bg-secondary hover:text-foreground"
+        >
+          <X className="h-4 w-4" />
+        </button>
+      </div>
+    );
+  }
+
   return (
-    <motion.div
+    <div
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}
       onClick={handleClick}
       className={`
-        relative rounded-xl border-2 border-dashed transition-all duration-300
-        ${fileInfo ? 'cursor-default' : 'cursor-pointer'}
-        ${isDragging
-          ? 'border-primary bg-primary/5 glow-primary-sm'
-          : fileInfo
-            ? 'border-border bg-card/40'
-            : 'border-border/60 hover:border-primary/50 hover:bg-card/30'
-        }
+        flex cursor-pointer flex-col items-center gap-2 rounded border-2 border-dashed px-6 py-10
+        ${isDragging ? 'border-primary bg-primary/5' : 'border-border hover:border-muted-foreground'}
       `}
-      whileHover={!fileInfo && !disabled ? { scale: 1.005 } : {}}
     >
-      <AnimatePresence mode="wait">
-        {fileInfo ? (
-          <motion.div
-            key="file"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            className="flex items-center gap-4 p-6"
-          >
-            <div className="flex h-14 w-14 items-center justify-center rounded-lg bg-primary/10 text-2xl">
-              {categoryIcons[fileInfo.category] || '📎'}
-            </div>
-            <div className="flex-1 min-w-0">
-              <p className="font-medium truncate text-foreground">{fileInfo.name}</p>
-              <p className="text-sm text-muted-foreground">
-                {formatFileSize(fileInfo.size)} · <span className="font-mono text-primary">.{fileInfo.extension.toUpperCase()}</span>
-              </p>
-            </div>
-            <button
-              onClick={(e) => { e.stopPropagation(); onClear(); }}
-              className="rounded-lg p-2 text-muted-foreground hover:bg-secondary hover:text-foreground transition-colors"
-            >
-              <X className="h-4 w-4" />
-            </button>
-          </motion.div>
-        ) : (
-          <motion.div
-            key="empty"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="flex flex-col items-center gap-3 p-10 md:p-14"
-          >
-            <motion.div
-              className="rounded-full bg-primary/10 p-4"
-              animate={isDragging ? { scale: 1.1 } : { scale: 1 }}
-            >
-              {isDragging ? (
-                <FileType className="h-7 w-7 text-primary" />
-              ) : (
-                <Upload className="h-7 w-7 text-primary" />
-              )}
-            </motion.div>
-            <div className="text-center">
-              <p className="font-medium text-foreground">
-                {isDragging ? 'Drop your file here' : 'Drop a file or click to browse'}
-              </p>
-              <p className="mt-1 text-sm text-muted-foreground">
-                JPG, PNG, WebP · Up to 50MB
-              </p>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </motion.div>
+      <Upload className="h-6 w-6 text-muted-foreground" />
+      <p className="text-sm text-foreground">
+        Drop a file here or <span className="text-primary underline">browse</span>
+      </p>
+      <p className="text-xs text-muted-foreground">
+        {acceptHint ? `${acceptHint} files` : 'All supported formats'} · Up to 50MB
+      </p>
+    </div>
   );
 }
