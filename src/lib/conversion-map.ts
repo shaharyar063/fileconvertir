@@ -18,7 +18,7 @@ export const conversionMap: ConversionEntry[] = [
   // ── Images ───────────────────────────────────────────────
   { source: 'jpg',  targets: ['png', 'webp', 'gif'],       converterId: 'image-converter', category: 'image' },
   { source: 'jpeg', targets: ['png', 'webp', 'gif'],       converterId: 'image-converter', category: 'image' },
-  { source: 'png',  targets: ['jpg', 'jpeg', 'webp', 'gif', 'bmp', 'ico', 'eps', 'odd'], converterId: 'image-converter', category: 'image' },
+  { source: 'png',  targets: ['jpg', 'jpeg', 'webp', 'gif', 'bmp', 'ico', 'eps', 'odd', 'svg', 'psd', 'tga', 'tiff'], converterId: 'image-converter', category: 'image' },
   { source: 'webp', targets: ['jpg', 'png', 'gif'],        converterId: 'image-converter', category: 'image' },
   { source: 'gif',  targets: ['jpg', 'png', 'webp'],       converterId: 'image-converter', category: 'image' },
   { source: 'bmp',  targets: ['jpg', 'png', 'webp', 'gif'],converterId: 'image-converter', category: 'image' },
