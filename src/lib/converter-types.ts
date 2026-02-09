@@ -42,8 +42,8 @@ export function getFileExtension(filename: string): string {
 }
 
 export function getFileCategory(extension: string): FileCategory {
-  const imageExts = ['jpg', 'jpeg', 'png', 'webp', 'gif', 'bmp', 'svg', 'tiff'];
-  const docExts = ['pdf', 'docx', 'doc', 'txt', 'rtf', 'odt'];
+  const imageExts = ['jpg', 'jpeg', 'png', 'webp', 'gif', 'bmp', 'svg', 'tiff', 'heic', 'heif'];
+  const docExts = ['pdf', 'docx', 'doc', 'txt', 'rtf', 'odt', 'html'];
   const audioExts = ['mp3', 'wav', 'ogg', 'aac', 'flac', 'm4a'];
   const videoExts = ['mp4', 'avi', 'mov', 'mkv', 'webm'];
 
