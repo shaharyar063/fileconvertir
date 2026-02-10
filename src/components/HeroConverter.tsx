@@ -106,8 +106,19 @@ export function HeroConverter({ initialSource, initialTarget }: HeroConverterPro
 
   return (
     <div className="rounded-2xl border border-border bg-card p-5 md:p-6 glow-orange">
+      {/* File Upload */}
+      <div>
+        <DropZone
+          onFile={handleFileUpload}
+          fileInfo={fileInfo}
+          onClear={handleReset}
+          disabled={isConverting}
+          acceptHint={sourceFormat ? `.${sourceFormat.toUpperCase()}` : undefined}
+        />
+      </div>
+
       {/* Format Pickers Row */}
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:gap-3">
+      <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-end sm:gap-3">
         <FormatPickerDropdown
           label="Convert"
           value={sourceFormat}
@@ -124,17 +135,6 @@ export function HeroConverter({ initialSource, initialTarget }: HeroConverterPro
           categories={outputCategories}
           onChange={handleTargetChange}
           placeholder="Select output"
-        />
-      </div>
-
-      {/* File Upload */}
-      <div className="mt-4">
-        <DropZone
-          onFile={handleFileUpload}
-          fileInfo={fileInfo}
-          onClear={handleReset}
-          disabled={isConverting}
-          acceptHint={sourceFormat ? `.${sourceFormat.toUpperCase()}` : undefined}
         />
       </div>
 
