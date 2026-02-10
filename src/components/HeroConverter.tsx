@@ -131,13 +131,18 @@ export function HeroConverter({ initialSource, initialTarget }: HeroConverterPro
             </button>
           </div>
         ) : (
-          <div className="relative" ref={dropdownRef}>
+          <div className="relative flex" ref={dropdownRef}>
             <button
-              onClick={() => setShowDropdown(!showDropdown)}
-              className="flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-primary text-sm font-bold text-primary-foreground transition-all hover:brightness-110 active:scale-[0.98]"
+              onClick={handleSelectFromComputer}
+              className="flex h-12 flex-1 items-center justify-center gap-2 rounded-l-xl bg-primary text-sm font-bold text-primary-foreground transition-all hover:brightness-110 active:scale-[0.98]"
             >
               <Plus className="h-4 w-4" />
               Select File
+            </button>
+            <button
+              onClick={() => setShowDropdown(!showDropdown)}
+              className="flex h-12 items-center justify-center rounded-r-xl border-l border-primary-foreground/20 bg-primary px-3 text-primary-foreground transition-all hover:brightness-110 active:scale-[0.98]"
+            >
               <ChevronDown className={`h-4 w-4 transition-transform ${showDropdown ? 'rotate-180' : ''}`} />
             </button>
 
