@@ -37,10 +37,6 @@ export default function Index() {
 
   return (
     <article className="mx-auto max-w-3xl px-4 py-12">
-      {/* Breadcrumb */}
-      <nav className="mb-6 text-xs text-muted-foreground">
-        <span className="text-foreground">Home</span>
-      </nav>
 
       {/* Title */}
       <header className="text-center">
