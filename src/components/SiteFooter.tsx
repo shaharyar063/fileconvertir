@@ -21,10 +21,10 @@ export function SiteFooter() {
           <div>
             <h4 className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Categories</h4>
             <ul className="mt-3 space-y-2 text-xs">
-              <li><Link to="/converters" className="text-muted-foreground transition-colors hover:text-primary">Image Converters</Link></li>
-              <li><Link to="/converters" className="text-muted-foreground transition-colors hover:text-primary">Document Converters</Link></li>
-              <li><Link to="/converters" className="text-muted-foreground transition-colors hover:text-primary">Audio Converters</Link></li>
-              <li><Link to="/converters" className="text-muted-foreground transition-colors hover:text-primary">Font Converters</Link></li>
+              <li><Link to="/png-to-jpg" className="text-muted-foreground transition-colors hover:text-primary">Image Converters</Link></li>
+              <li><Link to="/docx-to-pdf" className="text-muted-foreground transition-colors hover:text-primary">Document Converters</Link></li>
+              <li><Link to="/wav-to-mp3" className="text-muted-foreground transition-colors hover:text-primary">Audio Converters</Link></li>
+              <li><Link to="/ttf-to-woff" className="text-muted-foreground transition-colors hover:text-primary">Font Converters</Link></li>
             </ul>
           </div>
 
