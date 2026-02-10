@@ -3,6 +3,8 @@ import { imageConverter } from '@/converters/image-converter';
 import { documentConverter } from '@/converters/document-converter';
 import { audioConverter } from '@/converters/audio-converter';
 import { videoConverter } from '@/converters/video-converter';
+import { fontConverter } from '@/converters/font-converter';
+import { archiveConverter } from '@/converters/archive-converter';
 
 class ConverterRegistry {
   private plugins: ConverterPlugin[] = [];
@@ -37,8 +39,9 @@ class ConverterRegistry {
 
 export const registry = new ConverterRegistry();
 
-// Register all converters
 registry.register(imageConverter);
 registry.register(documentConverter);
 registry.register(audioConverter);
 registry.register(videoConverter);
+registry.register(fontConverter);
+registry.register(archiveConverter);

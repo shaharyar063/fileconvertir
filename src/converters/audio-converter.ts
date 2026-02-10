@@ -1,13 +1,7 @@
 import { ConverterPlugin, ConversionResult, ConversionOption } from '@/lib/converter-types';
 import { getTargetsForSource } from '@/lib/conversion-map';
 
-const AUDIO_SOURCES = ['mp3', 'wav', 'aac', 'ogg', 'flac'];
-
-/**
- * Client-side audio conversion using the Web Audio API + MediaRecorder.
- * Supports decoding most formats browsers handle and re-encoding to WAV.
- * MP3 encoding falls back to WAV when MediaRecorder doesn't support audio/mpeg.
- */
+const AUDIO_SOURCES = ['mp3', 'wav', 'aac', 'ogg', 'flac', 'm4a'];
 
 async function decodeAudio(file: File): Promise<AudioBuffer> {
   const ctx = new AudioContext();
@@ -18,16 +12,12 @@ async function decodeAudio(file: File): Promise<AudioBuffer> {
 function audioBufferToWavBlob(buffer: AudioBuffer): Blob {
   const numChannels = buffer.numberOfChannels;
   const sampleRate = buffer.sampleRate;
-  const format = 1; // PCM
   const bitsPerSample = 16;
   const bytesPerSample = bitsPerSample / 8;
   const blockAlign = numChannels * bytesPerSample;
-
-  // Interleave channels
   const length = buffer.length;
   const dataSize = length * blockAlign;
-  const headerSize = 44;
-  const arrayBuffer = new ArrayBuffer(headerSize + dataSize);
+  const arrayBuffer = new ArrayBuffer(44 + dataSize);
   const view = new DataView(arrayBuffer);
 
   const writeString = (offset: number, str: string) => {
@@ -39,7 +29,7 @@ function audioBufferToWavBlob(buffer: AudioBuffer): Blob {
   writeString(8, 'WAVE');
   writeString(12, 'fmt ');
   view.setUint32(16, 16, true);
-  view.setUint16(20, format, true);
+  view.setUint16(20, 1, true);
   view.setUint16(22, numChannels, true);
   view.setUint32(24, sampleRate, true);
   view.setUint32(28, sampleRate * blockAlign, true);
@@ -49,9 +39,7 @@ function audioBufferToWavBlob(buffer: AudioBuffer): Blob {
   view.setUint32(40, dataSize, true);
 
   const channels: Float32Array[] = [];
-  for (let ch = 0; ch < numChannels; ch++) {
-    channels.push(buffer.getChannelData(ch));
-  }
+  for (let ch = 0; ch < numChannels; ch++) channels.push(buffer.getChannelData(ch));
 
   let offset = 44;
   for (let i = 0; i < length; i++) {
@@ -80,10 +68,8 @@ export const audioConverter: ConverterPlugin = {
 
   async convert(file, targetFormat, onProgress): Promise<ConversionResult> {
     onProgress?.(10);
-
     const audioBuffer = await decodeAudio(file);
     onProgress?.(50);
-
     const baseName = file.name.replace(/\.[^/.]+$/, '');
 
     if (targetFormat === 'wav') {
@@ -93,8 +79,7 @@ export const audioConverter: ConverterPlugin = {
     }
 
     if (targetFormat === 'mp3') {
-      // Browsers don't natively encode MP3; output as WAV with .mp3 note
-      // For true MP3 encoding, ffmpeg.wasm or a server-side solution is needed
+      // Browser can't natively encode MP3; output as WAV (lossless)
       const blob = audioBufferToWavBlob(audioBuffer);
       onProgress?.(100);
       return { blob, filename: `${baseName}.wav`, mimeType: 'audio/wav' };

@@ -1,4 +1,4 @@
-export type FileCategory = 'image' | 'document' | 'audio' | 'video';
+export type FileCategory = 'image' | 'document' | 'audio' | 'video' | 'font' | 'archive';
 
 export interface ConversionOption {
   targetFormat: string;
@@ -42,15 +42,19 @@ export function getFileExtension(filename: string): string {
 }
 
 export function getFileCategory(extension: string): FileCategory {
-  const imageExts = ['jpg', 'jpeg', 'png', 'webp', 'gif', 'bmp', 'svg', 'tiff', 'heic', 'heif'];
-  const docExts = ['pdf', 'docx', 'doc', 'txt', 'rtf', 'odt', 'html'];
+  const imageExts = ['jpg', 'jpeg', 'png', 'webp', 'gif', 'bmp', 'svg', 'tiff', 'heic', 'heif', 'avif', 'ico'];
+  const docExts = ['pdf', 'docx', 'doc', 'txt', 'rtf', 'odt', 'html', 'md', 'csv'];
   const audioExts = ['mp3', 'wav', 'ogg', 'aac', 'flac', 'm4a'];
   const videoExts = ['mp4', 'avi', 'mov', 'mkv', 'webm'];
+  const fontExts = ['ttf', 'otf', 'woff', 'woff2'];
+  const archiveExts = ['zip', 'tar', 'gz'];
 
   if (imageExts.includes(extension)) return 'image';
   if (docExts.includes(extension)) return 'document';
   if (audioExts.includes(extension)) return 'audio';
   if (videoExts.includes(extension)) return 'video';
+  if (fontExts.includes(extension)) return 'font';
+  if (archiveExts.includes(extension)) return 'archive';
   return 'document';
 }
 
