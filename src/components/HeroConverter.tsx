@@ -118,7 +118,7 @@ export function HeroConverter({ initialSource, initialTarget }: HeroConverterPro
             value={sourceFormat}
             categories={inputCategories}
             onChange={handleSourceChange}
-            placeholder="Select input"
+            placeholder=""
           />
           <div className="flex h-14 items-center justify-center">
             <ArrowRight className="h-5 w-5 text-muted-foreground" />
@@ -128,7 +128,7 @@ export function HeroConverter({ initialSource, initialTarget }: HeroConverterPro
             value={targetFormat}
             categories={outputCategories}
             onChange={handleTargetChange}
-            placeholder="Select output"
+            placeholder=""
           />
         </div>
       </div>
