@@ -1,7 +1,6 @@
-import { useNavigate, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { HeroConverter } from '@/components/HeroConverter';
 import { converterRoutes } from '@/lib/converters';
-import { getTotalConversions } from '@/lib/seo-content';
 import { Shield, Zap, Globe, ArrowRight, CheckCircle, Image, FileText, Music, Film, Type, Archive } from 'lucide-react';
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@/components/ui/accordion';
 
@@ -32,22 +31,16 @@ const faqs = [
 ];
 
 export default function Index() {
-  const navigate = useNavigate();
-  const totalConversions = getTotalConversions();
 
   return (
-    <article className="mx-auto max-w-3xl px-4 py-12">
+    <article className="mx-auto max-w-3xl px-4 py-6">
 
       {/* Title */}
-      <header className="text-center">
-        <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-primary">
-          <Zap className="h-3 w-3" />
-          {totalConversions}+ conversion types supported
-        </div>
+      <header>
         <h1 className="text-3xl font-extrabold text-foreground md:text-4xl">
           Free Online File Converter
         </h1>
-        <p className="mx-auto mt-3 max-w-xl text-base text-muted-foreground leading-relaxed">
+        <p className="mt-3 max-w-xl text-base text-muted-foreground leading-relaxed">
           Convert images, documents, audio, video, fonts & archives instantly in your browser. 100% private — your files never leave your device.
         </p>
       </header>
