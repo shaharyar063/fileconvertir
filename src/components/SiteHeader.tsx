@@ -1,5 +1,9 @@
 import { Link } from 'react-router-dom';
-import { Zap } from 'lucide-react';
+import { Zap, Image, FileText, Music, Film, Type, Archive } from 'lucide-react';
+
+const navLinks = [
+  { to: '/converters', label: 'All Converters' },
+];
 
 export function SiteHeader() {
   return (
@@ -9,9 +13,17 @@ export function SiteHeader() {
           <Zap className="h-5 w-5 text-primary" />
           QuickConvert
         </Link>
-        <Link to="/converters" className="rounded-lg px-3 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground">
-          All Converters
-        </Link>
+        <nav className="flex items-center gap-1">
+          {navLinks.map(link => (
+            <Link
+              key={link.to}
+              to={link.to}
+              className="rounded-lg px-3 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
+            >
+              {link.label}
+            </Link>
+          ))}
+        </nav>
       </div>
     </header>
   );
