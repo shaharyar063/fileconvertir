@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react';
-import { Upload, X } from 'lucide-react';
+import { Upload, X, FileIcon } from 'lucide-react';
 import { FileInfo, formatFileSize } from '@/lib/converter-types';
 
 interface DropZoneProps {
@@ -41,14 +41,19 @@ export function DropZone({ onFile, fileInfo, onClear, disabled, acceptHint }: Dr
 
   if (fileInfo) {
     return (
-      <div className="flex items-center gap-3 rounded border border-border bg-card px-4 py-3">
+      <div className="flex items-center gap-3 rounded-xl border border-border bg-secondary/50 px-4 py-3">
+        <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
+          <FileIcon className="h-5 w-5 text-primary" />
+        </div>
         <div className="flex-1 min-w-0">
           <p className="truncate text-sm font-semibold text-foreground">{fileInfo.name}</p>
-          <p className="text-xs text-muted-foreground">{formatFileSize(fileInfo.size)}</p>
+          <p className="text-xs text-muted-foreground">
+            {formatFileSize(fileInfo.size)} · .{fileInfo.extension.toUpperCase()} detected
+          </p>
         </div>
         <button
           onClick={onClear}
-          className="rounded p-1 text-muted-foreground hover:bg-secondary hover:text-foreground"
+          className="rounded-lg p-1.5 text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
         >
           <X className="h-4 w-4" />
         </button>
@@ -63,17 +68,24 @@ export function DropZone({ onFile, fileInfo, onClear, disabled, acceptHint }: Dr
       onDrop={handleDrop}
       onClick={handleClick}
       className={`
-        flex cursor-pointer flex-col items-center gap-2 rounded border-2 border-dashed px-6 py-10
-        ${isDragging ? 'border-primary bg-primary/5' : 'border-border hover:border-muted-foreground'}
+        flex cursor-pointer flex-col items-center gap-3 rounded-xl border-2 border-dashed px-6 py-12 transition-all
+        ${isDragging
+          ? 'border-primary bg-primary/5 scale-[1.01]'
+          : 'border-border hover:border-muted-foreground hover:bg-secondary/30'
+        }
       `}
     >
-      <Upload className="h-6 w-6 text-muted-foreground" />
-      <p className="text-sm text-foreground">
-        Drop a file here or <span className="text-primary underline">browse</span>
-      </p>
-      <p className="text-xs text-muted-foreground">
-        {acceptHint ? `${acceptHint} files` : 'All supported formats'} · Up to 50MB
-      </p>
+      <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10">
+        <Upload className="h-5 w-5 text-primary" />
+      </div>
+      <div className="text-center">
+        <p className="text-sm font-semibold text-foreground">
+          Drop a file here or <span className="text-primary">browse</span>
+        </p>
+        <p className="mt-1 text-xs text-muted-foreground">
+          {acceptHint ? `${acceptHint} files` : 'All supported formats'} · Up to 50MB
+        </p>
+      </div>
     </div>
   );
 }
