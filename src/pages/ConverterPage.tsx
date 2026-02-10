@@ -1,38 +1,18 @@
 import { useParams, Navigate, Link } from 'react-router-dom';
 import { getConverterBySlug } from '@/lib/converters';
 import { getConverterSEO, getRelatedConverters } from '@/lib/seo-content';
-import { DropZone } from '@/components/DropZone';
-import { ConversionProgress } from '@/components/ConversionProgress';
-import { useConverter } from '@/hooks/use-converter';
-import { Download, RotateCcw, ArrowRight, CheckCircle } from 'lucide-react';
+import { HeroConverter } from '@/components/HeroConverter';
+import { CheckCircle, ArrowRight } from 'lucide-react';
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@/components/ui/accordion';
 
 export default function ConverterPage() {
   const { slug } = useParams<{ slug: string }>();
   const route = slug ? getConverterBySlug(slug) : undefined;
 
-  const {
-    fileInfo, status, progress, result, error, handleFile, convert, reset,
-  } = useConverter(route?.targetFormat);
-
   if (!route) return <Navigate to="/" replace />;
 
   const seo = getConverterSEO(route.sourceFormat, route.targetFormat);
   const related = getRelatedConverters(route.sourceFormat, route.targetFormat);
-  const isConverting = status === 'converting';
-  const isDone = status === 'done';
-
-  const handleDownload = () => {
-    if (!result) return;
-    const url = URL.createObjectURL(result.blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = result.filename;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-  };
 
   return (
     <article className="mx-auto max-w-3xl px-4 py-12">
@@ -55,49 +35,12 @@ export default function ConverterPage() {
         </p>
       </header>
 
-      {/* Converter Tool */}
-      <section className="mt-8 rounded-2xl border border-border bg-card p-6 glow-orange">
-        <div className="space-y-4">
-          <DropZone
-            onFile={handleFile}
-            fileInfo={fileInfo}
-            onClear={reset}
-            disabled={isConverting}
-            acceptHint={`.${route.sourceFormat.toUpperCase()}`}
-          />
-
-          <ConversionProgress status={status} progress={progress} />
-          {error && <p className="text-sm text-destructive">{error}</p>}
-
-          {fileInfo && !isDone && (
-            <button
-              onClick={convert}
-              disabled={isConverting}
-              className="h-12 w-full rounded-xl bg-primary text-sm font-bold uppercase tracking-wide text-primary-foreground transition-all hover:brightness-110 disabled:opacity-50"
-            >
-              {isConverting ? 'Converting…' : `Convert to ${route.targetFormat.toUpperCase()}`}
-            </button>
-          )}
-
-          {isDone && (
-            <div className="flex gap-3">
-              <button
-                onClick={handleDownload}
-                className="flex h-12 flex-1 items-center justify-center gap-2 rounded-xl bg-primary text-sm font-bold text-primary-foreground transition-all hover:brightness-110"
-              >
-                <Download className="h-4 w-4" />
-                Download {result?.filename}
-              </button>
-              <button
-                onClick={reset}
-                className="flex h-12 items-center gap-2 rounded-xl border border-border px-5 text-sm font-semibold text-foreground transition-colors hover:bg-secondary"
-              >
-                <RotateCcw className="h-4 w-4" />
-                New
-              </button>
-            </div>
-          )}
-        </div>
+      {/* Converter Tool — reuses HeroConverter with preselected formats */}
+      <section className="mt-8">
+        <HeroConverter
+          initialSource={route.sourceFormat}
+          initialTarget={route.targetFormat}
+        />
       </section>
 
       {/* Format Info */}

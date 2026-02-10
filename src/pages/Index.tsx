@@ -1,11 +1,8 @@
 import { useNavigate } from 'react-router-dom';
-import { DropZone } from '@/components/DropZone';
-import { FormatChips } from '@/components/FormatChips';
-import { ConversionProgress } from '@/components/ConversionProgress';
-import { useConverter } from '@/hooks/use-converter';
+import { HeroConverter } from '@/components/HeroConverter';
 import { converterRoutes } from '@/lib/converters';
 import { getTotalConversions } from '@/lib/seo-content';
-import { Download, RotateCcw, Image, FileText, Music, Film, Type, Archive, ArrowRight, Shield, Zap, Globe } from 'lucide-react';
+import { Shield, Zap, Globe, ArrowRight, Image, FileText, Music, Film, Type, Archive } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const categories = [
@@ -25,27 +22,7 @@ const features = [
 
 export default function Index() {
   const navigate = useNavigate();
-  const {
-    fileInfo, targetFormat, setTargetFormat, targetFormats,
-    status, progress, result, error, handleFile, convert, reset,
-  } = useConverter();
-
-  const isConverting = status === 'converting';
-  const isDone = status === 'done';
-  const canConvert = !!fileInfo && !!targetFormat && !isConverting && !isDone;
   const totalConversions = getTotalConversions();
-
-  const handleDownload = () => {
-    if (!result) return;
-    const url = URL.createObjectURL(result.blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = result.filename;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-  };
 
   return (
     <div>
@@ -63,11 +40,10 @@ export default function Index() {
               {totalConversions}+ conversion types supported
             </div>
             <h1 className="text-4xl font-extrabold tracking-tight text-foreground md:text-5xl lg:text-6xl">
-              Convert <span className="text-primary">Any File</span>
-              <br />Right in Your Browser
+              File <span className="text-primary">Converter</span>
             </h1>
             <p className="mx-auto mt-4 max-w-xl text-lg text-muted-foreground">
-              The universal file converter. Images, documents, audio, video, fonts & archives — converted instantly, privately, for free.
+              Convert anything — images, documents, audio, video, fonts & archives. Instantly, privately, for free.
             </p>
           </motion.div>
 
@@ -76,62 +52,9 @@ export default function Index() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.15 }}
-            className="mt-10 rounded-2xl border border-border bg-card p-6 glow-orange"
+            className="mt-10"
           >
-            <div className="space-y-4">
-              <DropZone
-                onFile={handleFile}
-                fileInfo={fileInfo}
-                onClear={reset}
-                disabled={isConverting}
-              />
-
-              {fileInfo && targetFormats.length > 0 && !isDone && (
-                <FormatChips
-                  formats={targetFormats}
-                  value={targetFormat}
-                  onChange={setTargetFormat}
-                  disabled={isConverting}
-                />
-              )}
-
-              {fileInfo && targetFormats.length === 0 && !error && (
-                <p className="text-sm text-destructive">
-                  No conversions available for .{fileInfo.extension} files yet.
-                </p>
-              )}
-
-              <ConversionProgress status={status} progress={progress} />
-              {error && <p className="text-sm text-destructive">{error}</p>}
-
-              {canConvert && (
-                <button
-                  onClick={convert}
-                  className="h-12 w-full rounded-xl bg-primary text-sm font-bold uppercase tracking-wide text-primary-foreground transition-all hover:brightness-110 active:scale-[0.98]"
-                >
-                  Convert to {targetFormat.toUpperCase()}
-                </button>
-              )}
-
-              {isDone && (
-                <div className="flex gap-3">
-                  <button
-                    onClick={handleDownload}
-                    className="flex h-12 flex-1 items-center justify-center gap-2 rounded-xl bg-primary text-sm font-bold text-primary-foreground transition-all hover:brightness-110 active:scale-[0.98]"
-                  >
-                    <Download className="h-4 w-4" />
-                    Download {result?.filename}
-                  </button>
-                  <button
-                    onClick={reset}
-                    className="flex h-12 items-center gap-2 rounded-xl border border-border px-5 text-sm font-semibold text-foreground transition-colors hover:bg-secondary"
-                  >
-                    <RotateCcw className="h-4 w-4" />
-                    New
-                  </button>
-                </div>
-              )}
-            </div>
+            <HeroConverter />
           </motion.div>
         </div>
       </section>
@@ -166,7 +89,7 @@ export default function Index() {
             All Conversion Categories
           </h2>
           <p className="mx-auto mt-2 max-w-lg text-sm text-muted-foreground">
-            Choose a category below or upload any file above to get started.
+            Choose a category below or select formats above to get started.
           </p>
         </div>
 
