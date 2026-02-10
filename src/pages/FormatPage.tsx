@@ -43,8 +43,6 @@ export default function FormatPage() {
       <nav className="mb-6 text-xs text-muted-foreground">
         <Link to="/" className="hover:text-primary">Home</Link>
         <span className="mx-2">/</span>
-        <Link to="/converters" className="hover:text-primary">Converters</Link>
-        <span className="mx-2">/</span>
         <span className="text-foreground">{seo.heading}</span>
       </nav>
 

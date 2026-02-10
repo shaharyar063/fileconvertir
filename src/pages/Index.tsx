@@ -1,9 +1,9 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { HeroConverter } from '@/components/HeroConverter';
 import { converterRoutes } from '@/lib/converters';
 import { getTotalConversions } from '@/lib/seo-content';
-import { Shield, Zap, Globe, ArrowRight, Image, FileText, Music, Film, Type, Archive } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { Shield, Zap, Globe, ArrowRight, CheckCircle, Image, FileText, Music, Film, Type, Archive } from 'lucide-react';
+import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@/components/ui/accordion';
 
 const categories = [
   { key: 'Image', icon: Image, label: 'Images', desc: 'PNG, JPG, WebP, AVIF, GIF, BMP, TIFF, SVG, HEIC, ICO' },
@@ -14,10 +14,21 @@ const categories = [
   { key: 'Archive', icon: Archive, label: 'Archives', desc: 'ZIP, TAR, GZ' },
 ];
 
-const features = [
-  { icon: Shield, title: '100% Private', desc: 'Files never leave your device. All processing happens in your browser.' },
-  { icon: Zap, title: 'Lightning Fast', desc: 'No upload wait. Conversions start instantly using local processing.' },
-  { icon: Globe, title: 'No Signup', desc: 'Free to use, no account required. Just drop a file and convert.' },
+const useCases = [
+  'Convert images for web publishing with optimized file sizes',
+  'Extract text from PDFs and documents for easy editing',
+  'Convert audio and video files for playback on any device',
+  'Prepare web fonts for faster website loading',
+  'Repackage archives for cross-platform compatibility',
+  'All conversions run locally — your files never leave your device',
+];
+
+const faqs = [
+  { q: 'Is QuickConvert really free?', a: 'Yes, completely free with no limits. No signup, no account, no hidden fees. Just drop a file and convert.' },
+  { q: 'Are my files uploaded to a server?', a: 'No. All conversions run locally in your browser using WebAssembly and JavaScript. Your files never leave your device, ensuring complete privacy.' },
+  { q: 'What file formats are supported?', a: 'We support 200+ conversion types across images, documents, audio, video, fonts, and archives. Select a format from the converter above to see all available options.' },
+  { q: 'What\'s the maximum file size?', a: 'The maximum file size is 100MB. Since processing happens in your browser, larger files may take longer depending on your device.' },
+  { q: 'Can I convert multiple files at once?', a: 'Currently, you can convert one file at a time. After downloading, click "New" to start another conversion.' },
 ];
 
 export default function Index() {
@@ -25,85 +36,82 @@ export default function Index() {
   const totalConversions = getTotalConversions();
 
   return (
-    <div>
-      {/* Hero Section */}
-      <section className="relative overflow-hidden border-b border-border bg-gradient-to-b from-card to-background">
-        <div className="mx-auto max-w-4xl px-4 py-16 md:py-24">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="text-center"
-          >
-            <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-primary">
-              <Zap className="h-3 w-3" />
-              {totalConversions}+ conversion types supported
-            </div>
-            <h1 className="text-4xl font-extrabold tracking-tight text-foreground md:text-5xl lg:text-6xl">
-              File <span className="text-primary">Converter</span>
-            </h1>
-            <p className="mx-auto mt-4 max-w-xl text-lg text-muted-foreground">
-              Convert anything — images, documents, audio, video, fonts & archives. Instantly, privately, for free.
-            </p>
-          </motion.div>
+    <article className="mx-auto max-w-3xl px-4 py-12">
+      {/* Breadcrumb */}
+      <nav className="mb-6 text-xs text-muted-foreground">
+        <span className="text-foreground">Home</span>
+      </nav>
 
-          {/* Converter Card */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.15 }}
-            className="mt-10"
-          >
-            <HeroConverter />
-          </motion.div>
+      {/* Title */}
+      <header className="text-center">
+        <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-primary">
+          <Zap className="h-3 w-3" />
+          {totalConversions}+ conversion types supported
         </div>
+        <h1 className="text-3xl font-extrabold text-foreground md:text-4xl">
+          Free Online File Converter
+        </h1>
+        <p className="mx-auto mt-3 max-w-xl text-base text-muted-foreground leading-relaxed">
+          Convert images, documents, audio, video, fonts & archives instantly in your browser. 100% private — your files never leave your device.
+        </p>
+      </header>
+
+      {/* Converter Tool */}
+      <section className="mt-8">
+        <HeroConverter />
       </section>
 
       {/* Features Row */}
-      <section className="border-b border-border bg-card/30">
-        <div className="mx-auto grid max-w-4xl grid-cols-1 gap-6 px-4 py-12 md:grid-cols-3">
-          {features.map((f, i) => (
-            <motion.div
-              key={f.title}
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: 0.3 + i * 0.1 }}
-              className="flex items-start gap-4"
-            >
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
-                <f.icon className="h-5 w-5" />
+      <section className="mt-12 grid gap-6 md:grid-cols-3">
+        {[
+          { icon: Shield, title: '100% Private', desc: 'Files never leave your device. All processing happens in your browser.' },
+          { icon: Zap, title: 'Lightning Fast', desc: 'No upload wait. Conversions start instantly using local processing.' },
+          { icon: Globe, title: 'No Signup', desc: 'Free to use, no account required. Just drop a file and convert.' },
+        ].map(f => (
+          <div key={f.title} className="rounded-xl border border-border bg-card p-5">
+            <div className="flex items-center gap-3">
+              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                <f.icon className="h-4 w-4" />
               </div>
-              <div>
-                <h3 className="text-sm font-bold text-foreground">{f.title}</h3>
-                <p className="mt-1 text-xs text-muted-foreground leading-relaxed">{f.desc}</p>
-              </div>
-            </motion.div>
+              <h2 className="text-sm font-bold text-foreground">{f.title}</h2>
+            </div>
+            <p className="mt-2 text-xs text-muted-foreground leading-relaxed">{f.desc}</p>
+          </div>
+        ))}
+      </section>
+
+      {/* Why Use QuickConvert */}
+      <section className="mt-12">
+        <h2 className="text-xl font-extrabold text-foreground">
+          Why Use QuickConvert?
+        </h2>
+        <ul className="mt-4 space-y-3">
+          {useCases.map((uc, i) => (
+            <li key={i} className="flex items-start gap-3 text-sm text-muted-foreground">
+              <CheckCircle className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+              <span>{uc}</span>
+            </li>
           ))}
-        </div>
+        </ul>
       </section>
 
       {/* Category Sections */}
-      <section className="mx-auto max-w-4xl px-4 py-16">
-        <div className="text-center">
-          <h2 className="text-2xl font-extrabold text-foreground md:text-3xl">
-            All Conversion Categories
-          </h2>
-          <p className="mx-auto mt-2 max-w-lg text-sm text-muted-foreground">
-            Choose a category below or select formats above to get started.
-          </p>
-        </div>
+      <section className="mt-12">
+        <h2 className="text-xl font-extrabold text-foreground">
+          All Conversion Categories
+        </h2>
+        <p className="mt-2 text-sm text-muted-foreground">
+          Choose a category below or select formats above to get started.
+        </p>
 
-        <div className="mt-10 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-          {categories.map((cat, i) => {
+        <div className="mt-6 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          {categories.map(cat => {
             const routes = converterRoutes.filter(r => r.category === cat.key);
             const topRoutes = routes.slice(0, 4);
             return (
-              <motion.div
+              <div
                 key={cat.key}
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: 0.1 * i }}
-                className="rounded-2xl border border-border bg-card p-5 transition-colors hover:border-primary/40"
+                className="rounded-xl border border-border bg-card p-5 transition-colors hover:border-primary/40"
               >
                 <div className="flex items-center gap-3">
                   <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary/10 text-primary">
@@ -117,58 +125,40 @@ export default function Index() {
                 <p className="mt-3 text-xs text-muted-foreground leading-relaxed">{cat.desc}</p>
                 <div className="mt-4 space-y-1.5">
                   {topRoutes.map(r => (
-                    <button
+                    <Link
                       key={r.slug}
-                      onClick={() => navigate(`/${r.slug}`)}
+                      to={`/${r.slug}`}
                       className="flex w-full items-center justify-between rounded-lg px-3 py-2 text-left text-xs font-medium text-foreground transition-colors hover:bg-secondary hover:text-primary"
                     >
                       <span>{r.label}</span>
                       <ArrowRight className="h-3 w-3 text-muted-foreground" />
-                    </button>
+                    </Link>
                   ))}
                 </div>
-                {routes.length > 4 && (
-                  <button
-                    onClick={() => navigate('/converters')}
-                    className="mt-3 text-xs font-semibold text-primary hover:underline"
-                  >
-                    View all {routes.length} {cat.label.toLowerCase()} converters →
-                  </button>
-                )}
-              </motion.div>
+              </div>
             );
           })}
         </div>
       </section>
 
-      {/* Popular Converters */}
-      <section className="border-t border-border bg-card/30">
-        <div className="mx-auto max-w-4xl px-4 py-16">
-          <h2 className="text-center text-2xl font-extrabold text-foreground">
-            Popular Converters
-          </h2>
-          <div className="mt-8 grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4">
-            {converterRoutes.slice(0, 12).map(r => (
-              <button
-                key={r.slug}
-                onClick={() => navigate(`/${r.slug}`)}
-                className="rounded-xl border border-border bg-card px-3 py-3 text-left text-sm font-medium text-foreground transition-colors hover:border-primary hover:text-primary"
-              >
-                {r.label}
-              </button>
-            ))}
-          </div>
-          <div className="mt-6 text-center">
-            <button
-              onClick={() => navigate('/converters')}
-              className="inline-flex items-center gap-2 rounded-xl border border-border bg-card px-6 py-2.5 text-sm font-semibold text-foreground transition-colors hover:border-primary hover:text-primary"
-            >
-              View All {totalConversions} Converters
-              <ArrowRight className="h-4 w-4" />
-            </button>
-          </div>
-        </div>
+      {/* FAQs */}
+      <section className="mt-12">
+        <h2 className="text-xl font-extrabold text-foreground">
+          Frequently Asked Questions
+        </h2>
+        <Accordion type="single" collapsible className="mt-4">
+          {faqs.map((faq, i) => (
+            <AccordionItem key={i} value={`faq-${i}`}>
+              <AccordionTrigger className="text-sm text-foreground hover:no-underline">
+                {faq.q}
+              </AccordionTrigger>
+              <AccordionContent className="text-sm text-muted-foreground leading-relaxed">
+                {faq.a}
+              </AccordionContent>
+            </AccordionItem>
+          ))}
+        </Accordion>
       </section>
-    </div>
+    </article>
   );
 }
