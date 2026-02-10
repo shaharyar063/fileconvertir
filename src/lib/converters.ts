@@ -24,6 +24,12 @@ export const converterRoutes: ConverterRoute[] = [
   { slug: 'jpg-to-gif',  sourceFormat: 'jpg',  targetFormat: 'gif',  label: 'JPG → GIF',  category: 'Image' },
   { slug: 'jpg-to-bmp',  sourceFormat: 'jpg',  targetFormat: 'bmp',  label: 'JPG → BMP',  category: 'Image' },
   { slug: 'jpg-to-avif', sourceFormat: 'jpg',  targetFormat: 'avif', label: 'JPG → AVIF', category: 'Image' },
+  // JPEG (alias)
+  { slug: 'jpeg-to-png',  sourceFormat: 'jpeg', targetFormat: 'png',  label: 'JPEG → PNG',  category: 'Image' },
+  { slug: 'jpeg-to-webp', sourceFormat: 'jpeg', targetFormat: 'webp', label: 'JPEG → WebP', category: 'Image' },
+  { slug: 'jpeg-to-gif',  sourceFormat: 'jpeg', targetFormat: 'gif',  label: 'JPEG → GIF',  category: 'Image' },
+  { slug: 'jpeg-to-bmp',  sourceFormat: 'jpeg', targetFormat: 'bmp',  label: 'JPEG → BMP',  category: 'Image' },
+  { slug: 'jpeg-to-avif', sourceFormat: 'jpeg', targetFormat: 'avif', label: 'JPEG → AVIF', category: 'Image' },
   // PNG
   { slug: 'png-to-jpg',  sourceFormat: 'png',  targetFormat: 'jpg',  label: 'PNG → JPG',  category: 'Image' },
   { slug: 'png-to-webp', sourceFormat: 'png',  targetFormat: 'webp', label: 'PNG → WebP', category: 'Image' },
