@@ -110,6 +110,29 @@ export function HeroConverter({ initialSource, initialTarget }: HeroConverterPro
 
   return (
     <div className="space-y-4">
+      {/* Format Pickers Section */}
+      <div className="rounded-2xl border border-border bg-card p-5 md:p-6">
+        <div className="flex items-end gap-3">
+          <FormatPickerDropdown
+            label="Convert"
+            value={sourceFormat}
+            categories={inputCategories}
+            onChange={handleSourceChange}
+            placeholder="Select input"
+          />
+          <div className="flex h-14 items-center justify-center">
+            <ArrowRight className="h-5 w-5 text-muted-foreground" />
+          </div>
+          <FormatPickerDropdown
+            label="To"
+            value={targetFormat}
+            categories={outputCategories}
+            onChange={handleTargetChange}
+            placeholder="Select output"
+          />
+        </div>
+      </div>
+
       {/* File Selection Section */}
       <div className="rounded-2xl border border-border bg-card p-5 md:p-6">
         {fileInfo ? (
@@ -170,29 +193,6 @@ export function HeroConverter({ initialSource, initialTarget }: HeroConverterPro
             )}
           </div>
         )}
-      </div>
-
-      {/* Format Pickers Section */}
-      <div className="rounded-2xl border border-border bg-card p-5 md:p-6">
-        <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:gap-3">
-          <FormatPickerDropdown
-            label="Convert"
-            value={sourceFormat}
-            categories={inputCategories}
-            onChange={handleSourceChange}
-            placeholder="Select input"
-          />
-          <div className="hidden sm:flex h-14 items-center justify-center">
-            <ArrowRight className="h-5 w-5 text-muted-foreground" />
-          </div>
-          <FormatPickerDropdown
-            label="To"
-            value={targetFormat}
-            categories={outputCategories}
-            onChange={handleTargetChange}
-            placeholder="Select output"
-          />
-        </div>
 
         <ConversionProgress status={status} progress={progress} />
         {error && <p className="mt-2 text-sm text-destructive">{error}</p>}
