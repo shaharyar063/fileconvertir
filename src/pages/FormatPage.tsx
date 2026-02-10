@@ -38,7 +38,7 @@ export default function FormatPage() {
   };
 
   return (
-    <article className="mx-auto max-w-3xl px-4 py-12">
+    <article className="mx-auto max-w-3xl px-4 py-6">
       {/* Breadcrumb */}
       <nav className="mb-6 text-xs text-muted-foreground">
         <Link to="/" className="hover:text-primary">Home</Link>
