@@ -129,6 +129,7 @@ export function HeroConverter({ initialSource, initialTarget }: HeroConverterPro
             categories={outputCategories}
             onChange={handleTargetChange}
             placeholder=""
+            direction="rtl"
           />
         </div>
       </div>
