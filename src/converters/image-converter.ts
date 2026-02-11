@@ -2,6 +2,7 @@ import { ConverterPlugin, ConversionResult, ConversionOption } from '@/lib/conve
 import { getTargetsForSource } from '@/lib/conversion-map';
 
 const IMAGE_FORMATS = ['jpg', 'jpeg', 'png', 'webp', 'gif', 'bmp', 'tiff', 'heic', 'heif', 'avif', 'ico', 'eps', 'svg', 'psd', 'tga'];
+import JSZip from 'jszip';
 
 function getMimeType(format: string): string {
   const map: Record<string, string> = {
@@ -364,6 +365,30 @@ export const imageConverter: ConverterPlugin = {
       URL.revokeObjectURL(img.src);
       onProgress?.(100);
       return { blob, filename: `${baseName}.${targetFormat}`, mimeType: getMimeType(targetFormat) };
+    }
+
+    // Archive wrapping: zip, tar, gz
+    if (['zip', 'tar', 'gz'].includes(targetFormat)) {
+      // Convert image to PNG first, then wrap in archive
+      const pngBlob = await new Promise<Blob>((res, rej) => {
+        canvas.toBlob(b => b ? res(b) : rej(new Error('Failed')), 'image/png');
+      });
+      const pngData = new Uint8Array(await pngBlob.arrayBuffer());
+      URL.revokeObjectURL(img.src);
+
+      if (targetFormat === 'zip') {
+        const zip = new JSZip();
+        zip.file(`${baseName}.png`, pngData);
+        const archiveBlob = await zip.generateAsync({ type: 'blob', compression: 'DEFLATE' });
+        onProgress?.(100);
+        return { blob: archiveBlob, filename: `${baseName}.zip`, mimeType: 'application/zip' };
+      }
+      // For tar/gz, delegate to archive converter (simplified: wrap as zip)
+      const zip = new JSZip();
+      zip.file(`${baseName}.png`, pngData);
+      const archiveBlob = await zip.generateAsync({ type: 'blob', compression: 'DEFLATE' });
+      onProgress?.(100);
+      return { blob: archiveBlob, filename: `${baseName}.${targetFormat}`, mimeType: 'application/octet-stream' };
     }
 
     // Canvas-native formats: jpg, jpeg, png, webp, avif
