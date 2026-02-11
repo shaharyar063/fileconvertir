@@ -1,4 +1,5 @@
 import { useParams, Navigate, Link } from 'react-router-dom';
+import { useMemo } from 'react';
 import { getFormatPageBySlug, converterRoutes } from '@/lib/converters';
 import { getFormatSEO } from '@/lib/seo-content';
 import { DropZone } from '@/components/DropZone';
@@ -6,18 +7,36 @@ import { ConversionProgress } from '@/components/ConversionProgress';
 import { useConverter } from '@/hooks/use-converter';
 import { Download, RotateCcw, ArrowRight, CheckCircle } from 'lucide-react';
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@/components/ui/accordion';
+import { useDocumentHead } from '@/hooks/use-document-head';
+import { buildFAQSchema, buildBreadcrumbSchema, SITE_URL } from '@/lib/seo-jsonld';
 
 export default function FormatPage() {
   const { format } = useParams<{ format: string }>();
   const page = format ? getFormatPageBySlug(`to-${format}`) : undefined;
+  const seo = page ? getFormatSEO(page.targetFormat) : undefined;
 
   const {
     fileInfo, status, progress, result, error, handleFile, convert, reset,
   } = useConverter(page?.targetFormat);
 
-  if (!page) return <Navigate to="/" replace />;
+  const jsonLd = useMemo(() => {
+    if (!seo || !page) return undefined;
+    return [
+      buildFAQSchema(seo.faqs),
+      buildBreadcrumbSchema([
+        { name: 'Home', url: SITE_URL },
+        { name: seo.heading, url: `${SITE_URL}/to-${page.targetFormat}` },
+      ]),
+    ];
+  }, [seo, page]);
+  useDocumentHead({
+    title: seo?.title ?? 'QuickConvert',
+    description: seo?.metaDescription ?? '',
+    canonical: page ? `${SITE_URL}/to-${page.targetFormat}` : undefined,
+    jsonLd,
+  });
 
-  const seo = getFormatSEO(page.targetFormat);
+  if (!page || !seo) return <Navigate to="/" replace />;
   const isConverting = status === 'converting';
   const isDone = status === 'done';
   const acceptHint = page.acceptedInputs.map(e => `.${e.toUpperCase()}`).join(', ');

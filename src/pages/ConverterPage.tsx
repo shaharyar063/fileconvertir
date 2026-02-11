@@ -1,18 +1,36 @@
 import { useParams, Navigate, Link } from 'react-router-dom';
+import { useMemo } from 'react';
 import { getConverterBySlug } from '@/lib/converters';
 import { getConverterSEO, getRelatedConverters } from '@/lib/seo-content';
 import { HeroConverter } from '@/components/HeroConverter';
 import { CheckCircle, ArrowRight } from 'lucide-react';
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@/components/ui/accordion';
+import { useDocumentHead } from '@/hooks/use-document-head';
+import { buildFAQSchema, buildBreadcrumbSchema, SITE_URL } from '@/lib/seo-jsonld';
 
 export default function ConverterPage() {
   const { slug } = useParams<{ slug: string }>();
   const route = slug ? getConverterBySlug(slug) : undefined;
+  const seo = route ? getConverterSEO(route.sourceFormat, route.targetFormat) : undefined;
+  const related = route ? getRelatedConverters(route.sourceFormat, route.targetFormat) : [];
+  const jsonLd = useMemo(() => {
+    if (!seo || !route) return undefined;
+    return [
+      buildFAQSchema(seo.faqs),
+      buildBreadcrumbSchema([
+        { name: 'Home', url: SITE_URL },
+        { name: seo.heading, url: `${SITE_URL}/${route.slug}` },
+      ]),
+    ];
+  }, [seo, route]);
+  useDocumentHead({
+    title: seo?.title ?? 'QuickConvert',
+    description: seo?.metaDescription ?? '',
+    canonical: route ? `${SITE_URL}/${route.slug}` : undefined,
+    jsonLd,
+  });
 
-  if (!route) return <Navigate to="/" replace />;
-
-  const seo = getConverterSEO(route.sourceFormat, route.targetFormat);
-  const related = getRelatedConverters(route.sourceFormat, route.targetFormat);
+  if (!route || !seo) return <Navigate to="/" replace />;
 
   return (
     <article className="mx-auto max-w-3xl px-4 py-6">

@@ -1,19 +1,37 @@
 import { useParams, Navigate, Link } from 'react-router-dom';
+import { useMemo } from 'react';
 import { getSourceFormatPage, converterRoutes } from '@/lib/converters';
 import { getSourceFormatSEO } from '@/lib/seo-content';
 import { HeroConverter } from '@/components/HeroConverter';
 import { CheckCircle, ArrowRight } from 'lucide-react';
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@/components/ui/accordion';
+import { useDocumentHead } from '@/hooks/use-document-head';
+import { buildFAQSchema, buildBreadcrumbSchema, SITE_URL } from '@/lib/seo-jsonld';
 
 export default function SourceFormatPage() {
   const { slug, format } = useParams<{ slug?: string; format?: string }>();
   const fmt = slug || format;
   const page = fmt ? getSourceFormatPage(fmt) : undefined;
+  const seo = page ? getSourceFormatSEO(page.sourceFormat) : undefined;
+  const relatedRoutes = converterRoutes.filter(r => page ? r.sourceFormat === page.sourceFormat : false);
+  const jsonLd = useMemo(() => {
+    if (!seo || !page) return undefined;
+    return [
+      buildFAQSchema(seo.faqs),
+      buildBreadcrumbSchema([
+        { name: 'Home', url: SITE_URL },
+        { name: seo.heading, url: `${SITE_URL}/${page.sourceFormat}` },
+      ]),
+    ];
+  }, [seo, page]);
+  useDocumentHead({
+    title: seo?.title ?? 'QuickConvert',
+    description: seo?.metaDescription ?? '',
+    canonical: page ? `${SITE_URL}/${page.sourceFormat}` : undefined,
+    jsonLd,
+  });
 
-  if (!page) return <Navigate to="/" replace />;
-
-  const seo = getSourceFormatSEO(page.sourceFormat);
-  const relatedRoutes = converterRoutes.filter(r => r.sourceFormat === page.sourceFormat);
+  if (!page || !seo) return <Navigate to="/" replace />;
 
   return (
     <article className="mx-auto max-w-3xl px-4 py-6">
