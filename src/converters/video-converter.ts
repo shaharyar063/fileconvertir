@@ -2,74 +2,8 @@ import { ConverterPlugin, ConversionResult, ConversionOption } from '@/lib/conve
 import { getTargetsForSource } from '@/lib/conversion-map';
 
 const VIDEO_SOURCES = ['mp4', 'mov', 'avi', 'mkv', 'webm', 'flv', 'wmv', '3gp'];
-
-/**
- * Extracts audio from video files using the browser's built-in
- * HTMLVideoElement + Web Audio API, then encodes to WAV.
- */
-
-async function extractAudioFromVideo(file: File, onProgress?: (p: number) => void): Promise<Blob> {
-  return new Promise((resolve, reject) => {
-    const video = document.createElement('video');
-    video.muted = true;
-    video.preload = 'auto';
-
-    const url = URL.createObjectURL(file);
-    video.src = url;
-
-    video.onloadedmetadata = async () => {
-      try {
-        const audioCtx = new AudioContext();
-        const source = audioCtx.createMediaElementSource(video);
-        const dest = audioCtx.createMediaStreamDestination();
-        source.connect(dest);
-
-        const recorder = new MediaRecorder(dest.stream, { mimeType: 'audio/webm' });
-        const chunks: Blob[] = [];
-
-        recorder.ondataavailable = (e) => { if (e.data.size) chunks.push(e.data); };
-
-        recorder.onstop = () => {
-          URL.revokeObjectURL(url);
-          resolve(new Blob(chunks, { type: 'audio/webm' }));
-        };
-
-        recorder.onerror = (e) => reject(e);
-
-        recorder.start();
-        video.muted = false;
-        await video.play();
-
-        onProgress?.(30);
-
-        // Wait for video to end
-        video.onended = () => {
-          recorder.stop();
-          audioCtx.close();
-          onProgress?.(90);
-        };
-
-        // Safety timeout for very long videos
-        const maxDuration = Math.min(video.duration * 1000 + 2000, 300_000);
-        setTimeout(() => {
-          if (recorder.state === 'recording') {
-            video.pause();
-            recorder.stop();
-            audioCtx.close();
-          }
-        }, maxDuration);
-      } catch (err) {
-        URL.revokeObjectURL(url);
-        reject(err);
-      }
-    };
-
-    video.onerror = () => {
-      URL.revokeObjectURL(url);
-      reject(new Error('Failed to load video file'));
-    };
-  });
-}
+const AUDIO_TARGETS = ['mp3', 'wav', 'aac', 'ogg', 'flac', 'm4a', 'aiff', 'wma'];
+const VIDEO_TARGETS = ['mp4', 'mov', 'avi', 'mkv', 'webm', 'flv', 'wmv', '3gp'];
 
 export const videoConverter: ConverterPlugin = {
   id: 'video-converter',
@@ -80,24 +14,16 @@ export const videoConverter: ConverterPlugin = {
     return getTargetsForSource(sourceFormat).map(t => ({
       targetFormat: t,
       label: t.toUpperCase(),
-      description: `Extract audio as ${t.toUpperCase()}`,
+      description: VIDEO_TARGETS.includes(t)
+        ? `Convert to ${t.toUpperCase()}`
+        : AUDIO_TARGETS.includes(t)
+        ? `Extract audio as ${t.toUpperCase()}`
+        : `Package as ${t.toUpperCase()}`,
     }));
   },
 
   async convert(file, targetFormat, onProgress): Promise<ConversionResult> {
     const baseName = file.name.replace(/\.[^/.]+$/, '');
-
-    // Browser can extract audio from video
-    if (['mp3', 'wav', 'aac'].includes(targetFormat)) {
-      onProgress?.(5);
-      const blob = await extractAudioFromVideo(file, onProgress);
-      onProgress?.(100);
-      return {
-        blob,
-        filename: `${baseName}.${targetFormat}`,
-        mimeType: targetFormat === 'mp3' ? 'audio/mpeg' : targetFormat === 'wav' ? 'audio/wav' : 'audio/aac',
-      };
-    }
 
     // Archive wrapping
     if (['zip', 'tar', 'gz'].includes(targetFormat)) {
@@ -110,7 +36,46 @@ export const videoConverter: ConverterPlugin = {
       return { blob, filename: `${baseName}.${targetFormat}`, mimeType: 'application/octet-stream' };
     }
 
-    // Video-to-video conversions are handled by cloud processing via useConverter hook
-    throw new Error(`Video-to-${targetFormat.toUpperCase()} conversion is not supported in the browser. Please try again.`);
+    // Video → Video or Video → Audio via FFmpeg.wasm
+    const { convertWithFFmpeg } = await import('@/lib/ffmpeg');
+
+    let args: string[];
+    const inputName = `input.${file.name.split('.').pop() || 'mp4'}`;
+    const outputName = `output.${targetFormat}`;
+
+    if (AUDIO_TARGETS.includes(targetFormat)) {
+      // Extract audio only
+      args = ['-i', inputName, '-vn', '-acodec', getAudioCodec(targetFormat), outputName];
+    } else {
+      // Video transcode
+      args = ['-i', inputName, outputName];
+    }
+
+    const blob = await convertWithFFmpeg(file, targetFormat, onProgress, args);
+    onProgress?.(100);
+
+    const mimeMap: Record<string, string> = {
+      mp4: 'video/mp4', mov: 'video/quicktime', avi: 'video/x-msvideo',
+      mkv: 'video/x-matroska', webm: 'video/webm', flv: 'video/x-flv',
+      wmv: 'video/x-ms-wmv', '3gp': 'video/3gpp',
+      mp3: 'audio/mpeg', wav: 'audio/wav', aac: 'audio/aac',
+      ogg: 'audio/ogg', flac: 'audio/flac', m4a: 'audio/mp4',
+      aiff: 'audio/aiff', wma: 'audio/x-ms-wma',
+    };
+
+    return {
+      blob,
+      filename: `${baseName}.${targetFormat}`,
+      mimeType: mimeMap[targetFormat] || 'application/octet-stream',
+    };
   },
 };
+
+function getAudioCodec(format: string): string {
+  const codecs: Record<string, string> = {
+    mp3: 'libmp3lame', wav: 'pcm_s16le', aac: 'aac',
+    ogg: 'libvorbis', flac: 'flac', m4a: 'aac',
+    aiff: 'pcm_s16be', wma: 'wmav2',
+  };
+  return codecs[format] || 'copy';
+}
