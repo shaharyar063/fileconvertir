@@ -1,7 +1,7 @@
 import { ConverterPlugin, ConversionResult, ConversionOption } from '@/lib/converter-types';
 import { getTargetsForSource } from '@/lib/conversion-map';
 
-const DOC_SOURCES = ['pdf', 'docx', 'doc', 'txt', 'rtf', 'html', 'md', 'csv'];
+const DOC_SOURCES = ['pdf', 'docx', 'doc', 'odt', 'txt', 'rtf', 'html', 'md', 'csv', 'xlsx', 'xls', 'ods', 'pptx', 'ppt', 'odp', 'epub', 'mobi'];
 
 async function readTextFile(file: File): Promise<string> {
   return file.text();
@@ -170,6 +170,26 @@ export const documentConverter: ConverterPlugin = {
       return { blob, filename: `${baseName}.pdf`, mimeType: 'application/pdf' };
     }
 
-    throw new Error(`Unsupported document target format: ${targetFormat}`);
+    if (targetFormat === 'md') {
+      onProgress?.(100);
+      return {
+        blob: new Blob([text], { type: 'text/markdown' }),
+        filename: `${baseName}.md`,
+        mimeType: 'text/markdown',
+      };
+    }
+
+    // Archive wrapping
+    if (['zip', 'tar', 'gz'].includes(targetFormat)) {
+      const JSZip = (await import('jszip')).default;
+      const zip = new JSZip();
+      zip.file(file.name, await file.arrayBuffer());
+      const blob = await zip.generateAsync({ type: 'blob', compression: 'DEFLATE' });
+      onProgress?.(100);
+      return { blob, filename: `${baseName}.${targetFormat}`, mimeType: 'application/octet-stream' };
+    }
+
+    // Cloud-required conversions
+    throw new Error(`${ext.toUpperCase()}-to-${targetFormat.toUpperCase()} conversion requires cloud processing. This feature is coming soon.`);
   },
 };

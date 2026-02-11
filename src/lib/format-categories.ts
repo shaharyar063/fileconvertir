@@ -22,31 +22,31 @@ export const formatCategories: FormatCategory[] = [
     key: 'document',
     label: 'Documents',
     icon: FileText,
-    formats: ['pdf', 'docx', 'doc', 'txt', 'csv', 'rtf', 'html', 'md'],
+    formats: ['pdf', 'docx', 'doc', 'odt', 'txt', 'rtf', 'html', 'md', 'xlsx', 'xls', 'csv', 'ods', 'pptx', 'ppt', 'odp', 'epub', 'mobi'],
   },
   {
     key: 'video',
     label: 'Video',
     icon: Film,
-    formats: ['mp4', 'mov', 'webm'],
+    formats: ['mp4', 'mov', 'avi', 'mkv', 'webm', 'flv', 'wmv', '3gp'],
   },
   {
     key: 'audio',
     label: 'Audio',
     icon: Music,
-    formats: ['mp3', 'wav', 'aac', 'ogg', 'flac', 'm4a'],
+    formats: ['mp3', 'wav', 'aac', 'ogg', 'flac', 'm4a', 'aiff', 'wma'],
   },
   {
     key: 'font',
     label: 'Fonts',
     icon: Type,
-    formats: ['ttf', 'otf', 'woff', 'woff2'],
+    formats: ['ttf', 'otf', 'woff', 'woff2', 'eot'],
   },
   {
     key: 'archive',
     label: 'Archives',
     icon: Archive,
-    formats: ['zip', 'tar', 'gz'],
+    formats: ['zip', 'rar', '7z', 'tar', 'gz', 'iso'],
   },
 ];
 

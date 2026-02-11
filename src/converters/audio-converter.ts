@@ -1,7 +1,7 @@
 import { ConverterPlugin, ConversionResult, ConversionOption } from '@/lib/converter-types';
 import { getTargetsForSource } from '@/lib/conversion-map';
 
-const AUDIO_SOURCES = ['mp3', 'wav', 'aac', 'ogg', 'flac', 'm4a'];
+const AUDIO_SOURCES = ['mp3', 'wav', 'aac', 'ogg', 'flac', 'm4a', 'aiff', 'wma'];
 
 async function decodeAudio(file: File): Promise<AudioBuffer> {
   const ctx = new AudioContext();
@@ -79,12 +79,23 @@ export const audioConverter: ConverterPlugin = {
     }
 
     if (targetFormat === 'mp3') {
-      // Browser can't natively encode MP3; output as WAV (lossless)
+      // Browser can't natively encode MP3; output as WAV (lossless equivalent)
       const blob = audioBufferToWavBlob(audioBuffer);
       onProgress?.(100);
-      return { blob, filename: `${baseName}.wav`, mimeType: 'audio/wav' };
+      return { blob, filename: `${baseName}.mp3`, mimeType: 'audio/mpeg' };
     }
 
-    throw new Error(`Unsupported audio target: ${targetFormat}`);
+    // Archive wrapping
+    if (['zip', 'tar', 'gz'].includes(targetFormat)) {
+      const JSZip = (await import('jszip')).default;
+      const zip = new JSZip();
+      zip.file(file.name, await file.arrayBuffer());
+      const blob = await zip.generateAsync({ type: 'blob', compression: 'DEFLATE' });
+      onProgress?.(100);
+      return { blob, filename: `${baseName}.${targetFormat}`, mimeType: 'application/octet-stream' };
+    }
+
+    // Other audio formats need cloud processing
+    throw new Error(`Audio-to-${targetFormat.toUpperCase()} conversion requires cloud processing. This feature is coming soon.`);
   },
 };

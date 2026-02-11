@@ -35,7 +35,7 @@ export interface FileInfo {
 
 export type ConversionStatus = 'idle' | 'uploading' | 'converting' | 'done' | 'error';
 
-export const MAX_FILE_SIZE = 50 * 1024 * 1024; // 50MB
+export const MAX_FILE_SIZE = 100 * 1024 * 1024; // 100MB
 
 export function getFileExtension(filename: string): string {
   return filename.split('.').pop()?.toLowerCase() || '';
@@ -43,11 +43,11 @@ export function getFileExtension(filename: string): string {
 
 export function getFileCategory(extension: string): FileCategory {
   const imageExts = ['jpg', 'jpeg', 'png', 'webp', 'gif', 'bmp', 'svg', 'tiff', 'heic', 'heif', 'avif', 'ico'];
-  const docExts = ['pdf', 'docx', 'doc', 'txt', 'rtf', 'odt', 'html', 'md', 'csv'];
-  const audioExts = ['mp3', 'wav', 'ogg', 'aac', 'flac', 'm4a'];
-  const videoExts = ['mp4', 'avi', 'mov', 'mkv', 'webm'];
-  const fontExts = ['ttf', 'otf', 'woff', 'woff2'];
-  const archiveExts = ['zip', 'tar', 'gz'];
+  const docExts = ['pdf', 'docx', 'doc', 'odt', 'txt', 'rtf', 'html', 'md', 'csv', 'xlsx', 'xls', 'ods', 'pptx', 'ppt', 'odp', 'epub', 'mobi'];
+  const audioExts = ['mp3', 'wav', 'ogg', 'aac', 'flac', 'm4a', 'aiff', 'wma'];
+  const videoExts = ['mp4', 'avi', 'mov', 'mkv', 'webm', 'flv', 'wmv', '3gp'];
+  const fontExts = ['ttf', 'otf', 'woff', 'woff2', 'eot'];
+  const archiveExts = ['zip', 'tar', 'gz', 'rar', '7z', 'iso'];
 
   if (imageExts.includes(extension)) return 'image';
   if (docExts.includes(extension)) return 'document';

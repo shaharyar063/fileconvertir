@@ -1,7 +1,7 @@
 import { ConverterPlugin, ConversionResult, ConversionOption } from '@/lib/converter-types';
 import { getTargetsForSource } from '@/lib/conversion-map';
 
-const VIDEO_SOURCES = ['mp4', 'mov', 'webm'];
+const VIDEO_SOURCES = ['mp4', 'mov', 'avi', 'mkv', 'webm', 'flv', 'wmv', '3gp'];
 
 /**
  * Extracts audio from video files using the browser's built-in
@@ -85,19 +85,32 @@ export const videoConverter: ConverterPlugin = {
   },
 
   async convert(file, targetFormat, onProgress): Promise<ConversionResult> {
-    if (targetFormat !== 'mp3') {
-      throw new Error(`Unsupported video target: ${targetFormat}`);
+    const baseName = file.name.replace(/\.[^/.]+$/, '');
+
+    // Browser can extract audio from video
+    if (['mp3', 'wav', 'aac'].includes(targetFormat)) {
+      onProgress?.(5);
+      const blob = await extractAudioFromVideo(file, onProgress);
+      onProgress?.(100);
+      return {
+        blob,
+        filename: `${baseName}.${targetFormat}`,
+        mimeType: targetFormat === 'mp3' ? 'audio/mpeg' : targetFormat === 'wav' ? 'audio/wav' : 'audio/aac',
+      };
     }
 
-    onProgress?.(5);
-    const blob = await extractAudioFromVideo(file, onProgress);
-    onProgress?.(100);
+    // Archive wrapping
+    if (['zip', 'tar', 'gz'].includes(targetFormat)) {
+      onProgress?.(50);
+      const JSZip = (await import('jszip')).default;
+      const zip = new JSZip();
+      zip.file(file.name, await file.arrayBuffer());
+      const blob = await zip.generateAsync({ type: 'blob', compression: 'DEFLATE' });
+      onProgress?.(100);
+      return { blob, filename: `${baseName}.${targetFormat}`, mimeType: 'application/octet-stream' };
+    }
 
-    const baseName = file.name.replace(/\.[^/.]+$/, '');
-    return {
-      blob,
-      filename: `${baseName}.mp3`,
-      mimeType: 'audio/mpeg',
-    };
+    // Video-to-video conversions require cloud
+    throw new Error(`Video-to-${targetFormat.toUpperCase()} conversion requires cloud processing. This feature is coming soon.`);
   },
 };

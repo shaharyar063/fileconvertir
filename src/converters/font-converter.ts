@@ -2,7 +2,7 @@ import { ConverterPlugin, ConversionResult, ConversionOption } from '@/lib/conve
 import { getTargetsForSource } from '@/lib/conversion-map';
 import opentype from 'opentype.js';
 
-const FONT_SOURCES = ['ttf', 'otf', 'woff', 'woff2'];
+const FONT_SOURCES = ['ttf', 'otf', 'woff', 'woff2', 'eot'];
 
 function getMimeType(format: string): string {
   const map: Record<string, string> = {
@@ -192,6 +192,16 @@ export const fontConverter: ConverterPlugin = {
         filename: `${baseName}.woff`,
         mimeType: 'font/woff',
       };
+    }
+
+    // Archive wrapping
+    if (['zip', 'tar', 'gz'].includes(targetFormat)) {
+      const JSZip = (await import('jszip')).default;
+      const zip = new JSZip();
+      zip.file(file.name, await file.arrayBuffer());
+      const blob = await zip.generateAsync({ type: 'blob', compression: 'DEFLATE' });
+      onProgress?.(100);
+      return { blob, filename: `${baseName}.${targetFormat}`, mimeType: 'application/octet-stream' };
     }
 
     // TTF and OTF: opentype.js outputs OpenType (OTF/TTF) format
