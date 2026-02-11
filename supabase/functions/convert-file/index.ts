@@ -431,27 +431,19 @@ Deno.serve(async (req) => {
     } else if (archiveFormats.includes(sourceFormat) && archiveFormats.includes(targetFormat)) {
       resultData = await convertArchive(fileData, sourceFormat, targetFormat);
     } else {
-      // Unsupported cloud conversion
-        const unsupportedReasons: Record<string, string> = {
-          font: 'Font conversion (WOFF2/EOT) requires specialized native binaries.',
-          spreadsheet: 'Spreadsheet conversions require LibreOffice.',
-          presentation: 'Presentation conversions require LibreOffice.',
-          ebook: 'E-book conversions require Calibre or Pandoc.',
-        };
-        
-        const fontFormats = ['ttf', 'otf', 'woff', 'woff2', 'eot'];
-        const spreadsheetFormats = ['xlsx', 'xls', 'ods'];
-        const presentationFormats = ['pptx', 'ppt', 'odp'];
-        const ebookFormats = ['epub', 'mobi'];
-        
-        let reason = `${sourceFormat.toUpperCase()} to ${targetFormat.toUpperCase()} conversion is not yet supported on the server.`;
-        
-        if (fontFormats.includes(sourceFormat) || fontFormats.includes(targetFormat)) reason = unsupportedReasons.font;
-      else if (spreadsheetFormats.includes(sourceFormat)) reason = unsupportedReasons.spreadsheet;
-      else if (presentationFormats.includes(sourceFormat)) reason = unsupportedReasons.presentation;
-      else if (ebookFormats.includes(sourceFormat)) reason = unsupportedReasons.ebook;
+      // Video/audio conversions not supported server-side
+      const videoFormats = ['mp4', 'mov', 'avi', 'mkv', 'webm', 'flv', 'wmv', '3gp'];
+      const audioFormats = ['mp3', 'wav', 'aac', 'ogg', 'flac', 'm4a', 'aiff', 'wma'];
       
-      return errorResponse(reason, 422);
+      if (videoFormats.includes(sourceFormat) || audioFormats.includes(sourceFormat)) {
+        return errorResponse(
+          'Video and audio conversion requires opening the app directly in a browser tab (not in an iframe). ' +
+          'Please open the published app URL to use this feature.',
+          422
+        );
+      }
+      
+      return errorResponse(`${sourceFormat.toUpperCase()} to ${targetFormat.toUpperCase()} conversion is not yet supported.`, 422);
     }
     
     // Build filename

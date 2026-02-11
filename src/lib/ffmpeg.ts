@@ -1,10 +1,16 @@
 import { FFmpeg } from '@ffmpeg/ffmpeg';
-import { fetchFile, toBlobURL } from '@ffmpeg/util';
+import { fetchFile } from '@ffmpeg/util';
 
 let ffmpeg: FFmpeg | null = null;
+let loadFailed = false;
+
+export function didFFmpegFail(): boolean {
+  return loadFailed;
+}
 
 export async function getFFmpeg(onProgress?: (p: number) => void): Promise<FFmpeg> {
   if (ffmpeg && ffmpeg.loaded) return ffmpeg;
+  if (loadFailed) throw new Error('FFMPEG_UNAVAILABLE');
 
   if (!crossOriginIsolated) {
     console.warn('crossOriginIsolated is false – SharedArrayBuffer unavailable. FFmpeg.wasm may not work.');
@@ -22,23 +28,20 @@ export async function getFFmpeg(onProgress?: (p: number) => void): Promise<FFmpe
 
   const baseURL = 'https://unpkg.com/@ffmpeg/core@0.12.10/dist/esm';
 
-  // Add a timeout so we don't hang forever if SharedArrayBuffer is unavailable
   const loadPromise = ffmpeg.load({
-    coreURL: await toBlobURL(`${baseURL}/ffmpeg-core.js`, 'text/javascript'),
-    wasmURL: await toBlobURL(`${baseURL}/ffmpeg-core.wasm`, 'application/wasm'),
+    coreURL: `${baseURL}/ffmpeg-core.js`,
+    wasmURL: `${baseURL}/ffmpeg-core.wasm`,
   });
 
   const timeoutPromise = new Promise<never>((_, reject) =>
-    setTimeout(() => reject(new Error(
-      'FFmpeg failed to load (timeout). This browser context may not support SharedArrayBuffer. ' +
-      'Try opening the app directly (not in an iframe) or use a Chromium-based browser.'
-    )), 15000)
+    setTimeout(() => reject(new Error('FFMPEG_UNAVAILABLE')), 30000)
   );
 
   try {
     await Promise.race([loadPromise, timeoutPromise]);
   } catch (err) {
     ffmpeg = null;
+    loadFailed = true;
     throw err;
   }
 
