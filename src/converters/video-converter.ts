@@ -36,38 +36,43 @@ export const videoConverter: ConverterPlugin = {
       return { blob, filename: `${baseName}.${targetFormat}`, mimeType: 'application/octet-stream' };
     }
 
-    // Video → Video or Video → Audio via FFmpeg.wasm
-    const { convertWithFFmpeg } = await import('@/lib/ffmpeg');
+    // Try FFmpeg.wasm first, fall back to cloud
+    try {
+      const { convertWithFFmpeg } = await import('@/lib/ffmpeg');
 
-    let args: string[];
-    const inputName = `input.${file.name.split('.').pop() || 'mp4'}`;
-    const outputName = `output.${targetFormat}`;
+      let args: string[];
+      const inputName = `input.${file.name.split('.').pop() || 'mp4'}`;
+      const outputName = `output.${targetFormat}`;
 
-    if (AUDIO_TARGETS.includes(targetFormat)) {
-      // Extract audio only – lightweight
-      args = ['-i', inputName, '-vn', '-acodec', getAudioCodec(targetFormat), outputName];
-    } else {
-      // Video transcode – use fast settings for WASM
-      args = ['-i', inputName, '-threads', '1', ...getVideoArgs(targetFormat), outputName];
+      if (AUDIO_TARGETS.includes(targetFormat)) {
+        args = ['-i', inputName, '-vn', '-acodec', getAudioCodec(targetFormat), outputName];
+      } else {
+        args = ['-i', inputName, '-threads', '1', ...getVideoArgs(targetFormat), outputName];
+      }
+
+      const blob = await convertWithFFmpeg(file, targetFormat, onProgress, args);
+      onProgress?.(100);
+
+      const mimeMap: Record<string, string> = {
+        mp4: 'video/mp4', mov: 'video/quicktime', avi: 'video/x-msvideo',
+        mkv: 'video/x-matroska', webm: 'video/webm', flv: 'video/x-flv',
+        wmv: 'video/x-ms-wmv', '3gp': 'video/3gpp',
+        mp3: 'audio/mpeg', wav: 'audio/wav', aac: 'audio/aac',
+        ogg: 'audio/ogg', flac: 'audio/flac', m4a: 'audio/mp4',
+        aiff: 'audio/aiff', wma: 'audio/x-ms-wma',
+      };
+
+      return {
+        blob,
+        filename: `${baseName}.${targetFormat}`,
+        mimeType: mimeMap[targetFormat] || 'application/octet-stream',
+      };
+    } catch (err) {
+      console.warn('FFmpeg unavailable, falling back to cloud conversion:', err);
+      const { convertViaCloud } = await import('@/lib/cloud-converter');
+      const ext = file.name.split('.').pop()?.toLowerCase() || 'mp4';
+      return convertViaCloud(file, ext, targetFormat, onProgress);
     }
-
-    const blob = await convertWithFFmpeg(file, targetFormat, onProgress, args);
-    onProgress?.(100);
-
-    const mimeMap: Record<string, string> = {
-      mp4: 'video/mp4', mov: 'video/quicktime', avi: 'video/x-msvideo',
-      mkv: 'video/x-matroska', webm: 'video/webm', flv: 'video/x-flv',
-      wmv: 'video/x-ms-wmv', '3gp': 'video/3gpp',
-      mp3: 'audio/mpeg', wav: 'audio/wav', aac: 'audio/aac',
-      ogg: 'audio/ogg', flac: 'audio/flac', m4a: 'audio/mp4',
-      aiff: 'audio/aiff', wma: 'audio/x-ms-wma',
-    };
-
-    return {
-      blob,
-      filename: `${baseName}.${targetFormat}`,
-      mimeType: mimeMap[targetFormat] || 'application/octet-stream',
-    };
   },
 };
 

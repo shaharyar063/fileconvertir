@@ -30,28 +30,35 @@ export const audioConverter: ConverterPlugin = {
       return { blob, filename: `${baseName}.${targetFormat}`, mimeType: 'application/octet-stream' };
     }
 
-    // All audio ↔ audio via FFmpeg.wasm
-    const { convertWithFFmpeg } = await import('@/lib/ffmpeg');
+    // All audio ↔ audio via FFmpeg.wasm, with cloud fallback
+    try {
+      const { convertWithFFmpeg } = await import('@/lib/ffmpeg');
 
-    const inputName = `input.${file.name.split('.').pop() || 'mp3'}`;
-    const outputName = `output.${targetFormat}`;
-    const codec = getAudioCodec(targetFormat);
-    const args = ['-i', inputName, '-acodec', codec, outputName];
+      const inputName = `input.${file.name.split('.').pop() || 'mp3'}`;
+      const outputName = `output.${targetFormat}`;
+      const codec = getAudioCodec(targetFormat);
+      const args = ['-i', inputName, '-acodec', codec, outputName];
 
-    const blob = await convertWithFFmpeg(file, targetFormat, onProgress, args);
-    onProgress?.(100);
+      const blob = await convertWithFFmpeg(file, targetFormat, onProgress, args);
+      onProgress?.(100);
 
-    const mimeMap: Record<string, string> = {
-      mp3: 'audio/mpeg', wav: 'audio/wav', aac: 'audio/aac',
-      ogg: 'audio/ogg', flac: 'audio/flac', m4a: 'audio/mp4',
-      aiff: 'audio/aiff', wma: 'audio/x-ms-wma',
-    };
+      const mimeMap: Record<string, string> = {
+        mp3: 'audio/mpeg', wav: 'audio/wav', aac: 'audio/aac',
+        ogg: 'audio/ogg', flac: 'audio/flac', m4a: 'audio/mp4',
+        aiff: 'audio/aiff', wma: 'audio/x-ms-wma',
+      };
 
-    return {
-      blob,
-      filename: `${baseName}.${targetFormat}`,
-      mimeType: mimeMap[targetFormat] || 'application/octet-stream',
-    };
+      return {
+        blob,
+        filename: `${baseName}.${targetFormat}`,
+        mimeType: mimeMap[targetFormat] || 'application/octet-stream',
+      };
+    } catch (err) {
+      console.warn('FFmpeg unavailable, falling back to cloud conversion:', err);
+      const { convertViaCloud } = await import('@/lib/cloud-converter');
+      const ext = file.name.split('.').pop()?.toLowerCase() || 'mp3';
+      return convertViaCloud(file, ext, targetFormat, onProgress);
+    }
   },
 };
 
