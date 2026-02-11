@@ -225,6 +225,7 @@ export const archiveConverter: ConverterPlugin = {
       };
     }
 
-    throw new Error(`Unsupported archive target: ${targetFormat}`);
+    // Other archive conversions are handled by cloud processing via useConverter hook
+    throw new Error(`Archive to ${targetFormat.toUpperCase()} is not supported in the browser. Please try again.`);
   },
 };

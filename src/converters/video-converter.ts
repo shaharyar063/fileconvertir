@@ -110,7 +110,7 @@ export const videoConverter: ConverterPlugin = {
       return { blob, filename: `${baseName}.${targetFormat}`, mimeType: 'application/octet-stream' };
     }
 
-    // Video-to-video conversions require cloud
-    throw new Error(`Video-to-${targetFormat.toUpperCase()} conversion requires cloud processing. This feature is coming soon.`);
+    // Video-to-video conversions are handled by cloud processing via useConverter hook
+    throw new Error(`Video-to-${targetFormat.toUpperCase()} conversion is not supported in the browser. Please try again.`);
   },
 };

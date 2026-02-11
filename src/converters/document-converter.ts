@@ -189,7 +189,7 @@ export const documentConverter: ConverterPlugin = {
       return { blob, filename: `${baseName}.${targetFormat}`, mimeType: 'application/octet-stream' };
     }
 
-    // Cloud-required conversions
-    throw new Error(`${ext.toUpperCase()}-to-${targetFormat.toUpperCase()} conversion requires cloud processing. This feature is coming soon.`);
+    // Cloud-required conversions are handled by cloud processing via useConverter hook
+    throw new Error(`${ext.toUpperCase()}-to-${targetFormat.toUpperCase()} conversion is not supported in the browser. Please try again.`);
   },
 };

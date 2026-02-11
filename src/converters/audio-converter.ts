@@ -95,7 +95,7 @@ export const audioConverter: ConverterPlugin = {
       return { blob, filename: `${baseName}.${targetFormat}`, mimeType: 'application/octet-stream' };
     }
 
-    // Other audio formats need cloud processing
-    throw new Error(`Audio-to-${targetFormat.toUpperCase()} conversion requires cloud processing. This feature is coming soon.`);
+    // Other audio formats are handled by cloud processing via useConverter hook
+    throw new Error(`Audio-to-${targetFormat.toUpperCase()} conversion is not supported in the browser. Please try again.`);
   },
 };
