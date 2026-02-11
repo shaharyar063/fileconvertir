@@ -122,6 +122,27 @@ export function getFormatSEO(targetFormat: string): FormatSEO {
   };
 }
 
+export function getSourceFormatSEO(sourceFormat: string): FormatSEO {
+  const s = name(sourceFormat);
+  return {
+    title: `${s} File Converter — Free Online | QuickConvert`,
+    metaDescription: `Convert ${s} files to other formats instantly in your browser. No upload, no signup — 100% private.`,
+    heading: `${s} File Converter`,
+    description: `Convert your ${s} files to any supported format instantly. All processing happens in your browser — your files never leave your device.`,
+    details: desc(sourceFormat),
+    useCases: [
+      `Convert ${s} files for better compatibility with different software`,
+      `Share ${s} files in formats that recipients can open`,
+      `Optimize ${s} files for web or print use`,
+    ],
+    faqs: [
+      { q: `What formats can I convert ${s} to?`, a: `Select ${s} as input and the converter will show all available output formats.` },
+      { q: `Is the conversion free?`, a: `Yes, completely free with no limits. No signup required.` },
+      { q: `Is my data safe?`, a: `Absolutely. All processing happens locally in your browser. Your files never leave your device.` },
+    ],
+  };
+}
+
 function generateUseCases(source: string, target: string): string[] {
   const s = name(source);
   const t = name(target);

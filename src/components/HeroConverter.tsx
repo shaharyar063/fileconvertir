@@ -33,7 +33,9 @@ export function HeroConverter({ initialSource, initialTarget }: HeroConverterPro
   const isConverting = status === 'converting';
   const isDone = status === 'done';
 
-  const inputCategories = formatCategories;
+  const inputCategories = targetFormat
+    ? filterCategories(getValidSources(targetFormat))
+    : formatCategories;
 
   const outputCategories = sourceFormat
     ? filterCategories(getValidTargets(sourceFormat))
@@ -47,6 +49,8 @@ export function HeroConverter({ initialSource, initialTarget }: HeroConverterPro
     }
     if (targetFormat && validTargets.includes(targetFormat)) {
       navigate(`/${fmt}-to-${targetFormat}`);
+    } else {
+      navigate(`/${fmt}`);
     }
   }, [targetFormat, navigate]);
 
@@ -59,6 +63,8 @@ export function HeroConverter({ initialSource, initialTarget }: HeroConverterPro
     }
     if (sourceFormat && validSources.includes(sourceFormat)) {
       navigate(`/${sourceFormat}-to-${fmt}`);
+    } else {
+      navigate(`/to-${fmt}`);
     }
   }, [sourceFormat, navigate, setConverterTarget]);
 
