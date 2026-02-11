@@ -33,9 +33,7 @@ export function HeroConverter({ initialSource, initialTarget }: HeroConverterPro
   const isConverting = status === 'converting';
   const isDone = status === 'done';
 
-  const inputCategories = targetFormat
-    ? filterCategories(getValidSources(targetFormat))
-    : formatCategories;
+  const inputCategories = formatCategories; // Always show all input formats
 
   const outputCategories = sourceFormat
     ? filterCategories(getValidTargets(sourceFormat))
@@ -49,8 +47,9 @@ export function HeroConverter({ initialSource, initialTarget }: HeroConverterPro
     }
     if (targetFormat && validTargets.includes(targetFormat)) {
       navigate(`/${fmt}-to-${targetFormat}`);
+    } else {
+      navigate(`/${fmt}`);
     }
-    // Don't navigate to /:format here — let user pick the target first
   }, [targetFormat, navigate]);
 
   const handleTargetChange = useCallback((fmt: string) => {
