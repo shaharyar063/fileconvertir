@@ -3,6 +3,9 @@ import { HeroConverter } from '@/components/HeroConverter';
 import { converterRoutes } from '@/lib/converters';
 import { Shield, Zap, Globe, ArrowRight, CheckCircle, Image, FileText, Music, Film, Type, Archive } from 'lucide-react';
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@/components/ui/accordion';
+import { useDocumentHead } from '@/hooks/use-document-head';
+import { buildFAQSchema, buildWebAppSchema } from '@/lib/seo-jsonld';
+import { useMemo } from 'react';
 
 const categories = [
   { key: 'Image', icon: Image, label: 'Images', desc: 'PNG, JPG, WebP, AVIF, GIF, BMP, TIFF, SVG, HEIC, ICO' },
@@ -31,6 +34,13 @@ const faqs = [
 ];
 
 export default function Index() {
+  const jsonLd = useMemo(() => [buildWebAppSchema(), buildFAQSchema(faqs)], []);
+  useDocumentHead({
+    title: 'QuickConvert — Free Online File Converter | Images, Docs, Audio, Video',
+    description: 'Convert images, documents, audio, video, fonts & archives instantly in your browser. 100% private — your files never leave your device. No signup required.',
+    canonical: 'https://quickconvert.lovable.app/',
+    jsonLd,
+  });
 
   return (
     <article className="mx-auto max-w-3xl px-4 py-6">
