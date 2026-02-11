@@ -49,9 +49,8 @@ export function HeroConverter({ initialSource, initialTarget }: HeroConverterPro
     }
     if (targetFormat && validTargets.includes(targetFormat)) {
       navigate(`/${fmt}-to-${targetFormat}`);
-    } else {
-      navigate(`/${fmt}`);
     }
+    // Don't navigate to /:format here — let user pick the target first
   }, [targetFormat, navigate]);
 
   const handleTargetChange = useCallback((fmt: string) => {
@@ -63,9 +62,8 @@ export function HeroConverter({ initialSource, initialTarget }: HeroConverterPro
     }
     if (sourceFormat && validSources.includes(sourceFormat)) {
       navigate(`/${sourceFormat}-to-${fmt}`);
-    } else {
-      navigate(`/to-${fmt}`);
     }
+    // Don't navigate to /to-:format here — let user pick the source first
   }, [sourceFormat, navigate, setConverterTarget]);
 
   const handleFileUpload = useCallback((file: File) => {
