@@ -33,9 +33,7 @@ export function HeroConverter({ initialSource, initialTarget }: HeroConverterPro
   const isConverting = status === 'converting';
   const isDone = status === 'done';
 
-  const inputCategories = targetFormat
-    ? filterCategories(getValidSources(targetFormat))
-    : formatCategories;
+  const inputCategories = formatCategories;
 
   const outputCategories = sourceFormat
     ? filterCategories(getValidTargets(sourceFormat))
