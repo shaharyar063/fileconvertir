@@ -6,19 +6,41 @@ let ffmpeg: FFmpeg | null = null;
 export async function getFFmpeg(onProgress?: (p: number) => void): Promise<FFmpeg> {
   if (ffmpeg && ffmpeg.loaded) return ffmpeg;
 
+  if (!crossOriginIsolated) {
+    console.warn('crossOriginIsolated is false – SharedArrayBuffer unavailable. FFmpeg.wasm may not work.');
+  }
+
   ffmpeg = new FFmpeg();
 
+  ffmpeg.on('log', ({ message }) => {
+    console.log('[ffmpeg]', message);
+  });
+
   ffmpeg.on('progress', ({ progress }) => {
-    // progress is 0-1, map to 20-90 range
     onProgress?.(Math.round(20 + progress * 70));
   });
 
   const baseURL = 'https://unpkg.com/@ffmpeg/core@0.12.10/dist/esm';
 
-  await ffmpeg.load({
+  // Add a timeout so we don't hang forever if SharedArrayBuffer is unavailable
+  const loadPromise = ffmpeg.load({
     coreURL: await toBlobURL(`${baseURL}/ffmpeg-core.js`, 'text/javascript'),
     wasmURL: await toBlobURL(`${baseURL}/ffmpeg-core.wasm`, 'application/wasm'),
   });
+
+  const timeoutPromise = new Promise<never>((_, reject) =>
+    setTimeout(() => reject(new Error(
+      'FFmpeg failed to load (timeout). This browser context may not support SharedArrayBuffer. ' +
+      'Try opening the app directly (not in an iframe) or use a Chromium-based browser.'
+    )), 15000)
+  );
+
+  try {
+    await Promise.race([loadPromise, timeoutPromise]);
+  } catch (err) {
+    ffmpeg = null;
+    throw err;
+  }
 
   return ffmpeg;
 }
@@ -39,9 +61,6 @@ export async function convertWithFFmpeg(
   await ff.writeFile(inputName, await fetchFile(file));
 
   const args = ffmpegArgs || ['-i', inputName, outputName];
-  if (!ffmpegArgs) {
-    // default: just transcode
-  }
 
   await ff.exec(args.length ? args : ['-i', inputName, outputName]);
 
@@ -52,7 +71,6 @@ export async function convertWithFFmpeg(
   try { await ff.deleteFile(inputName); } catch {}
   try { await ff.deleteFile(outputName); } catch {}
 
-  // Convert FileData to a proper ArrayBuffer for Blob construction
   let blobParts: ArrayBuffer;
   if (typeof data === 'string') {
     blobParts = new TextEncoder().encode(data).buffer as ArrayBuffer;
