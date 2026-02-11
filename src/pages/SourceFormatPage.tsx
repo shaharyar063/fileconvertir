@@ -6,8 +6,9 @@ import { CheckCircle, ArrowRight } from 'lucide-react';
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@/components/ui/accordion';
 
 export default function SourceFormatPage() {
-  const { format } = useParams<{ format: string }>();
-  const page = format ? getSourceFormatPage(format) : undefined;
+  const { slug, format } = useParams<{ slug?: string; format?: string }>();
+  const fmt = slug || format;
+  const page = fmt ? getSourceFormatPage(fmt) : undefined;
 
   if (!page) return <Navigate to="/" replace />;
 
