@@ -44,11 +44,11 @@ export const videoConverter: ConverterPlugin = {
     const outputName = `output.${targetFormat}`;
 
     if (AUDIO_TARGETS.includes(targetFormat)) {
-      // Extract audio only
+      // Extract audio only – lightweight
       args = ['-i', inputName, '-vn', '-acodec', getAudioCodec(targetFormat), outputName];
     } else {
-      // Video transcode
-      args = ['-i', inputName, outputName];
+      // Video transcode – use fast settings for WASM
+      args = ['-i', inputName, '-threads', '1', ...getVideoArgs(targetFormat), outputName];
     }
 
     const blob = await convertWithFFmpeg(file, targetFormat, onProgress, args);
@@ -78,4 +78,20 @@ function getAudioCodec(format: string): string {
     aiff: 'pcm_s16be', wma: 'wmav2',
   };
   return codecs[format] || 'copy';
+}
+
+function getVideoArgs(format: string): string[] {
+  // Use fast presets and lower quality to avoid WASM memory/speed issues
+  switch (format) {
+    case 'webm':
+      return ['-c:v', 'libvpx-vp9', '-crf', '35', '-b:v', '0', '-deadline', 'realtime', '-cpu-used', '8', '-row-mt', '0', '-c:a', 'libopus'];
+    case 'mp4':
+      return ['-c:v', 'libx264', '-preset', 'ultrafast', '-crf', '28', '-c:a', 'aac'];
+    case 'mkv':
+      return ['-c:v', 'libx264', '-preset', 'ultrafast', '-crf', '28', '-c:a', 'aac'];
+    case 'avi':
+      return ['-c:v', 'libx264', '-preset', 'ultrafast', '-crf', '28', '-c:a', 'libmp3lame'];
+    default:
+      return [];
+  }
 }
