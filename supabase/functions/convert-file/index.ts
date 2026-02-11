@@ -432,27 +432,21 @@ Deno.serve(async (req) => {
       resultData = await convertArchive(fileData, sourceFormat, targetFormat);
     } else {
       // Unsupported cloud conversion
-      const unsupportedReasons: Record<string, string> = {
-        video: 'Video transcoding requires FFmpeg which is not available in edge functions.',
-        audio: 'Advanced audio encoding requires FFmpeg which is not available in edge functions.',
-        font: 'Font conversion (WOFF2/EOT) requires specialized native binaries.',
-        spreadsheet: 'Spreadsheet conversions require LibreOffice.',
-        presentation: 'Presentation conversions require LibreOffice.',
-        ebook: 'E-book conversions require Calibre or Pandoc.',
-      };
-      
-      const videoFormats = ['mp4', 'mov', 'avi', 'mkv', 'webm', 'flv', 'wmv', '3gp'];
-      const audioFormats = ['mp3', 'wav', 'aac', 'ogg', 'flac', 'm4a', 'aiff', 'wma'];
-      const fontFormats = ['ttf', 'otf', 'woff', 'woff2', 'eot'];
-      const spreadsheetFormats = ['xlsx', 'xls', 'ods'];
-      const presentationFormats = ['pptx', 'ppt', 'odp'];
-      const ebookFormats = ['epub', 'mobi'];
-      
-      let reason = `${sourceFormat.toUpperCase()} to ${targetFormat.toUpperCase()} conversion is not yet supported on the server.`;
-      
-      if (videoFormats.includes(sourceFormat) || videoFormats.includes(targetFormat)) reason = unsupportedReasons.video;
-      else if (audioFormats.includes(sourceFormat) && !['wav', 'mp3'].includes(targetFormat)) reason = unsupportedReasons.audio;
-      else if (fontFormats.includes(sourceFormat) || fontFormats.includes(targetFormat)) reason = unsupportedReasons.font;
+        const unsupportedReasons: Record<string, string> = {
+          font: 'Font conversion (WOFF2/EOT) requires specialized native binaries.',
+          spreadsheet: 'Spreadsheet conversions require LibreOffice.',
+          presentation: 'Presentation conversions require LibreOffice.',
+          ebook: 'E-book conversions require Calibre or Pandoc.',
+        };
+        
+        const fontFormats = ['ttf', 'otf', 'woff', 'woff2', 'eot'];
+        const spreadsheetFormats = ['xlsx', 'xls', 'ods'];
+        const presentationFormats = ['pptx', 'ppt', 'odp'];
+        const ebookFormats = ['epub', 'mobi'];
+        
+        let reason = `${sourceFormat.toUpperCase()} to ${targetFormat.toUpperCase()} conversion is not yet supported on the server.`;
+        
+        if (fontFormats.includes(sourceFormat) || fontFormats.includes(targetFormat)) reason = unsupportedReasons.font;
       else if (spreadsheetFormats.includes(sourceFormat)) reason = unsupportedReasons.spreadsheet;
       else if (presentationFormats.includes(sourceFormat)) reason = unsupportedReasons.presentation;
       else if (ebookFormats.includes(sourceFormat)) reason = unsupportedReasons.ebook;
