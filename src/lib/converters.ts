@@ -1,4 +1,4 @@
-import { getSourcesForTarget } from './conversion-map';
+import { getSourcesForTarget, conversionMap } from './conversion-map';
 
 export interface ConverterRoute {
   slug: string;
@@ -156,6 +156,23 @@ export const formatPages: FormatPage[] = [
   { slug: 'to-zip', targetFormat: 'zip', label: 'Convert to ZIP', description: 'Convert archives to ZIP format.', acceptedInputs: getSourcesForTarget('zip') },
   { slug: 'to-tar', targetFormat: 'tar', label: 'Convert to TAR', description: 'Convert archives to TAR format.', acceptedInputs: getSourcesForTarget('tar') },
 ];
+
+export interface SourceFormatPage {
+  sourceFormat: string;
+  label: string;
+  targets: string[];
+}
+
+/** Build source format pages from conversion map */
+export function getSourceFormatPage(format: string): SourceFormatPage | undefined {
+  const entry = conversionMap.find(e => e.source === format.toLowerCase());
+  if (!entry) return undefined;
+  return {
+    sourceFormat: entry.source,
+    label: `${entry.source.toUpperCase()} File Converter`,
+    targets: entry.targets,
+  };
+}
 
 export function getConverterBySlug(slug: string): ConverterRoute | undefined {
   return converterRoutes.find(r => r.slug === slug);

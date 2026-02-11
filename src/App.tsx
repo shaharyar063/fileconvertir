@@ -5,7 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Layout } from "./components/Layout";
 import Index from "./pages/Index";
-import ConverterPage from "./pages/ConverterPage";
+import SlugRouter from "./pages/SlugRouter";
 import FormatPage from "./pages/FormatPage";
 import NotFound from "./pages/NotFound";
 
@@ -21,7 +21,7 @@ const App = () => (
           <Route element={<Layout />}>
             <Route path="/" element={<Index />} />
             <Route path="/to-:format" element={<FormatPage />} />
-            <Route path="/:slug" element={<ConverterPage />} />
+            <Route path="/:slug" element={<SlugRouter />} />
           </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>
