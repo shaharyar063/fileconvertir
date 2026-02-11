@@ -1,6 +1,8 @@
 import { useState, useCallback } from 'react';
 import { FileInfo, ConversionStatus, ConversionResult, createFileInfo, MAX_FILE_SIZE } from '@/lib/converter-types';
 import { registry } from '@/lib/converter-registry';
+import { isCloudConversion } from '@/lib/conversion-map';
+import { convertViaCloud } from '@/lib/cloud-converter';
 
 export function useConverter(fixedTargetFormat?: string) {
   const [fileInfo, setFileInfo] = useState<FileInfo | null>(null);
@@ -45,12 +47,25 @@ export function useConverter(fixedTargetFormat?: string) {
     setError(null);
 
     try {
-      const conversionResult = await registry.convert(
-        fileInfo.file,
-        fileInfo.extension,
-        targetFormat,
-        setProgress
-      );
+      let conversionResult: ConversionResult;
+
+      if (isCloudConversion(fileInfo.extension, targetFormat)) {
+        setStatus('uploading');
+        conversionResult = await convertViaCloud(
+          fileInfo.file,
+          fileInfo.extension,
+          targetFormat,
+          setProgress
+        );
+      } else {
+        conversionResult = await registry.convert(
+          fileInfo.file,
+          fileInfo.extension,
+          targetFormat,
+          setProgress
+        );
+      }
+
       setResult(conversionResult);
       setStatus('done');
 
