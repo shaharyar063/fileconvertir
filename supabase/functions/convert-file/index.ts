@@ -431,18 +431,6 @@ Deno.serve(async (req) => {
     } else if (archiveFormats.includes(sourceFormat) && archiveFormats.includes(targetFormat)) {
       resultData = await convertArchive(fileData, sourceFormat, targetFormat);
     } else {
-      // Video/audio conversions not supported server-side
-      const videoFormats = ['mp4', 'mov', 'avi', 'mkv', 'webm', 'flv', 'wmv', '3gp'];
-      const audioFormats = ['mp3', 'wav', 'aac', 'ogg', 'flac', 'm4a', 'aiff', 'wma'];
-      
-      if (videoFormats.includes(sourceFormat) || audioFormats.includes(sourceFormat)) {
-        return errorResponse(
-          'Video and audio conversion requires opening the app directly in a browser tab (not in an iframe). ' +
-          'Please open the published app URL to use this feature.',
-          422
-        );
-      }
-      
       return errorResponse(`${sourceFormat.toUpperCase()} to ${targetFormat.toUpperCase()} conversion is not yet supported.`, 422);
     }
     
