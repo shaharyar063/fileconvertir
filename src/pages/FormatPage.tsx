@@ -2,10 +2,8 @@ import { useParams, Navigate, Link } from 'react-router-dom';
 import { useMemo } from 'react';
 import { getFormatPageBySlug, converterRoutes } from '@/lib/converters';
 import { getFormatSEO } from '@/lib/seo-content';
-import { DropZone } from '@/components/DropZone';
-import { ConversionProgress } from '@/components/ConversionProgress';
-import { useConverter } from '@/hooks/use-converter';
-import { Download, RotateCcw, ArrowRight, CheckCircle } from 'lucide-react';
+import { HeroConverter } from '@/components/HeroConverter';
+import { ArrowRight, CheckCircle } from 'lucide-react';
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@/components/ui/accordion';
 import { useDocumentHead } from '@/hooks/use-document-head';
 import { buildFAQSchema, buildBreadcrumbSchema, SITE_URL } from '@/lib/seo-jsonld';
@@ -14,10 +12,6 @@ export default function FormatPage() {
   const { format } = useParams<{ format: string }>();
   const page = format ? getFormatPageBySlug(`to-${format}`) : undefined;
   const seo = page ? getFormatSEO(page.targetFormat) : undefined;
-
-  const {
-    fileInfo, status, progress, result, error, handleFile, convert, reset,
-  } = useConverter(page?.targetFormat);
 
   const jsonLd = useMemo(() => {
     if (!seo || !page) return undefined;
@@ -37,28 +31,12 @@ export default function FormatPage() {
   });
 
   if (!page || !seo) return <Navigate to="/" replace />;
-  const isConverting = status === 'converting';
-  const isDone = status === 'done';
   const acceptHint = page.acceptedInputs.map(e => `.${e.toUpperCase()}`).join(', ');
 
-  // Related: converters that output this format
   const relatedConverters = converterRoutes.filter(r => r.targetFormat === page.targetFormat).slice(0, 6);
-
-  const handleDownload = () => {
-    if (!result) return;
-    const url = URL.createObjectURL(result.blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = result.filename;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-  };
 
   return (
     <article className="mx-auto max-w-3xl px-4 py-6">
-      {/* Breadcrumb */}
       <nav className="mb-6 text-xs text-muted-foreground">
         <Link to="/" className="hover:text-primary">Home</Link>
         <span className="mx-2">/</span>
@@ -80,58 +58,15 @@ export default function FormatPage() {
         </div>
       </header>
 
-      {/* Converter */}
-      <section className="mt-8 rounded-2xl border border-border bg-card p-6 glow-orange">
-        <div className="space-y-4">
-          <DropZone
-            onFile={handleFile}
-            fileInfo={fileInfo}
-            onClear={reset}
-            disabled={isConverting}
-            acceptHint={acceptHint}
-          />
-
-          <ConversionProgress status={status} progress={progress} />
-          {error && <p className="text-sm text-destructive">{error}</p>}
-
-          {fileInfo && !isDone && (
-            <button
-              onClick={convert}
-              disabled={isConverting}
-              className="h-12 w-full rounded-xl bg-primary text-sm font-bold uppercase tracking-wide text-primary-foreground transition-all hover:brightness-110 disabled:opacity-50"
-            >
-              {isConverting ? 'Converting…' : `Convert to ${page.targetFormat.toUpperCase()}`}
-            </button>
-          )}
-
-          {isDone && (
-            <div className="flex gap-3">
-              <button
-                onClick={handleDownload}
-                className="flex h-12 flex-1 items-center justify-center gap-2 rounded-xl bg-primary text-sm font-bold text-primary-foreground transition-all hover:brightness-110"
-              >
-                <Download className="h-4 w-4" />
-                Download {result?.filename}
-              </button>
-              <button
-                onClick={reset}
-                className="flex h-12 items-center gap-2 rounded-xl border border-border px-5 text-sm font-semibold text-foreground transition-colors hover:bg-secondary"
-              >
-                <RotateCcw className="h-4 w-4" />
-                New
-              </button>
-            </div>
-          )}
-        </div>
+      <section className="mt-8">
+        <HeroConverter initialTarget={page.targetFormat} />
       </section>
 
-      {/* Format Details */}
       <section className="mt-12">
         <h2 className="text-xl font-extrabold text-foreground">About {page.targetFormat.toUpperCase()} Format</h2>
         <p className="mt-3 text-sm text-muted-foreground leading-relaxed">{seo.details}</p>
       </section>
 
-      {/* Use Cases */}
       <section className="mt-10">
         <h2 className="text-xl font-extrabold text-foreground">Use Cases</h2>
         <ul className="mt-4 space-y-3">
@@ -144,7 +79,6 @@ export default function FormatPage() {
         </ul>
       </section>
 
-      {/* FAQs */}
       <section className="mt-10">
         <h2 className="text-xl font-extrabold text-foreground">FAQ</h2>
         <Accordion type="single" collapsible className="mt-4">
@@ -161,7 +95,6 @@ export default function FormatPage() {
         </Accordion>
       </section>
 
-      {/* Related Converters */}
       {relatedConverters.length > 0 && (
         <section className="mt-12">
           <h2 className="text-xl font-extrabold text-foreground">

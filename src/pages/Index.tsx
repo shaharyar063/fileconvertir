@@ -30,7 +30,7 @@ const faqs = [
   { q: 'Are my files uploaded to a server?', a: 'No. All conversions run locally in your browser using WebAssembly and JavaScript. Your files never leave your device, ensuring complete privacy.' },
   { q: 'What file formats are supported?', a: 'We support 200+ conversion types across images, documents, audio, video, fonts, and archives. Select a format from the converter above to see all available options.' },
   { q: 'What\'s the maximum file size?', a: 'The maximum file size is 100MB. Since processing happens in your browser, larger files may take longer depending on your device.' },
-  { q: 'Can I convert multiple files at once?', a: 'Currently, you can convert one file at a time. After downloading, click "New" to start another conversion.' },
+  { q: 'Can I convert multiple files at once?', a: 'Yes! You can select up to 20 files per batch. All files are converted sequentially and you can download them individually or as a single ZIP archive.' },
 ];
 
 export default function Index() {
