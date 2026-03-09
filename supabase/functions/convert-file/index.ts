@@ -1,5 +1,3 @@
-import "https://esm.sh/@anthropic-ai/sdk@0.39.0"
-
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version',
@@ -410,7 +408,7 @@ Deno.serve(async (req) => {
     
     const fileData = new Uint8Array(await file.arrayBuffer());
     let resultData: Uint8Array;
-    let resultMime = MIME_TYPES[targetFormat] || 'application/octet-stream';
+    const resultMime = MIME_TYPES[targetFormat] || 'application/octet-stream';
     
     // ── Route to handler ────────────────────────────────
     
