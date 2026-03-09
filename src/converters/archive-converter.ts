@@ -225,7 +225,32 @@ export const archiveConverter: ConverterPlugin = {
       };
     }
 
-    // Other archive conversions are handled by cloud processing via useConverter hook
+    if (targetFormat === 'gz') {
+      const tarBuffer = buildTar(files);
+      const stream = new Blob([tarBuffer]).stream().pipeThrough(new CompressionStream('gzip'));
+      const reader = stream.getReader();
+      const chunks: Uint8Array[] = [];
+      let done = false;
+      while (!done) {
+        const result = await reader.read();
+        if (result.value) chunks.push(result.value);
+        done = result.done;
+      }
+      const totalLen = chunks.reduce((s, c) => s + c.length, 0);
+      const gzipped = new Uint8Array(totalLen);
+      let offset = 0;
+      for (const chunk of chunks) {
+        gzipped.set(chunk, offset);
+        offset += chunk.length;
+      }
+      onProgress?.(100);
+      return {
+        blob: new Blob([gzipped], { type: 'application/gzip' }),
+        filename: `${baseName}.tar.gz`,
+        mimeType: 'application/gzip',
+      };
+    }
+
     throw new Error(`Archive to ${targetFormat.toUpperCase()} is not supported in the browser. Please try again.`);
   },
 };
