@@ -16,37 +16,37 @@ export const formatCategories: FormatCategory[] = [
     key: 'image',
     label: 'Images',
     icon: Image,
-    formats: ['jpg', 'jpeg', 'png', 'webp', 'avif', 'gif', 'bmp', 'tiff', 'svg', 'heic', 'heif', 'ico'],
+    formats: ['jpg', 'jpeg', 'png', 'webp', 'avif', 'gif', 'bmp', 'svg', 'ico'],
   },
   {
     key: 'document',
     label: 'Documents',
     icon: FileText,
-    formats: ['pdf', 'docx', 'doc', 'odt', 'txt', 'rtf', 'html', 'md', 'xlsx', 'xls', 'csv', 'ods', 'pptx', 'ppt', 'odp', 'epub', 'mobi'],
+    formats: ['pdf', 'docx', 'odt', 'txt', 'rtf', 'html', 'md', 'csv'],
   },
   {
     key: 'video',
     label: 'Video',
     icon: Film,
-    formats: ['mp4', 'mov', 'avi', 'mkv', 'webm', 'flv', 'wmv', '3gp'],
+    formats: ['mp4', 'mov', 'avi', 'mkv', 'webm'],
   },
   {
     key: 'audio',
     label: 'Audio',
     icon: Music,
-    formats: ['mp3', 'wav', 'aac', 'ogg', 'flac', 'm4a', 'aiff', 'wma'],
+    formats: ['mp3', 'wav', 'aac', 'ogg', 'flac', 'm4a'],
   },
   {
     key: 'font',
     label: 'Fonts',
     icon: Type,
-    formats: ['ttf', 'otf', 'woff', 'woff2', 'eot'],
+    formats: ['ttf', 'otf', 'woff'],
   },
   {
     key: 'archive',
     label: 'Archives',
     icon: Archive,
-    formats: ['zip', 'rar', '7z', 'tar', 'gz', 'iso'],
+    formats: ['zip', 'tar', 'gz'],
   },
 ];
 

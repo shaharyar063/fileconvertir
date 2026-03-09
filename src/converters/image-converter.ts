@@ -1,7 +1,7 @@
 import { ConverterPlugin, ConversionResult, ConversionOption } from '@/lib/converter-types';
 import { getTargetsForSource } from '@/lib/conversion-map';
 
-const IMAGE_FORMATS = ['jpg', 'jpeg', 'png', 'webp', 'gif', 'bmp', 'tiff', 'heic', 'heif', 'avif', 'ico', 'eps', 'svg', 'psd', 'tga'];
+const IMAGE_FORMATS = ['jpg', 'jpeg', 'png', 'webp', 'gif', 'bmp', 'avif', 'ico', 'eps', 'svg', 'psd', 'tga'];
 import JSZip from 'jszip';
 
 function getMimeType(format: string): string {

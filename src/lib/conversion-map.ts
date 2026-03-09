@@ -1,13 +1,8 @@
 /**
  * Central conversion mapping — the single source of truth.
- * 
- * Rules:
- * - Image ↔ Image, Image → PDF, Image → Archive
- * - Document ↔ Document, Document → PDF, Document → Image, Document → Archive
- * - Video ↔ Video, Video → Audio, Video → Archive
- * - Audio ↔ Audio, Audio → Archive
- * - Font ↔ Font, Font → Archive
- * - Any format → ZIP/TAR/GZ
+ *
+ * Every pair listed here MUST have a working implementation,
+ * either in a browser converter or in the Supabase edge function.
  */
 
 export type ConversionMethod = 'browser' | 'cloud';
@@ -23,6 +18,7 @@ export interface ConversionEntry {
 
 export const conversionMap: ConversionEntry[] = [
   // ── Images ───────────────────────────────────────────────
+  // Browser: Canvas API (jpg/png/webp/avif), manual builders (bmp/gif/tiff/ico/eps/svg/psd/tga), jsPDF (pdf)
   { source: 'jpg',  targets: ['png', 'webp', 'gif', 'bmp', 'avif', 'tiff', 'ico', 'svg', 'pdf', 'zip', 'tar', 'gz'],
     converterId: 'image-converter', category: 'image' },
   { source: 'jpeg', targets: ['png', 'webp', 'gif', 'bmp', 'avif', 'tiff', 'ico', 'svg', 'pdf', 'zip', 'tar', 'gz'],
@@ -35,116 +31,79 @@ export const conversionMap: ConversionEntry[] = [
     converterId: 'image-converter', category: 'image' },
   { source: 'bmp',  targets: ['jpg', 'png', 'webp', 'gif', 'tiff', 'avif', 'pdf', 'zip', 'tar', 'gz'],
     converterId: 'image-converter', category: 'image' },
-  { source: 'tiff', targets: ['jpg', 'png', 'webp', 'gif', 'bmp', 'pdf', 'zip', 'tar', 'gz'],
-    converterId: 'image-converter', category: 'image' },
-  { source: 'heic', targets: ['jpg', 'png', 'webp', 'gif', 'bmp', 'pdf', 'zip', 'tar', 'gz'],
-    converterId: 'image-converter', category: 'image' },
-  { source: 'heif', targets: ['jpg', 'png', 'webp', 'gif', 'bmp', 'pdf', 'zip', 'tar', 'gz'],
-    converterId: 'image-converter', category: 'image' },
-  { source: 'avif', targets: ['jpg', 'png', 'webp', 'gif', 'bmp', 'tiff', 'pdf', 'zip', 'tar', 'gz'],
-    converterId: 'image-converter', category: 'image' },
   { source: 'svg',  targets: ['png', 'jpg', 'webp', 'pdf', 'zip', 'tar', 'gz'],
     converterId: 'image-converter', category: 'image' },
   { source: 'ico',  targets: ['png', 'jpg', 'webp', 'pdf', 'zip', 'tar', 'gz'],
     converterId: 'image-converter', category: 'image' },
+  { source: 'avif', targets: ['jpg', 'png', 'webp', 'gif', 'bmp', 'tiff', 'pdf', 'zip', 'tar', 'gz'],
+    converterId: 'image-converter', category: 'image' },
 
   // ── Documents ────────────────────────────────────────────
-  { source: 'pdf',  targets: ['txt', 'docx', 'doc', 'html', 'jpg', 'png', 'zip', 'tar', 'gz'],
-    converterId: 'document-converter', category: 'document', cloudTargets: ['docx', 'doc', 'jpg', 'png'] },
-  { source: 'docx', targets: ['txt', 'pdf', 'html', 'odt', 'rtf', 'md', 'jpg', 'png', 'zip', 'tar', 'gz'],
-    converterId: 'document-converter', category: 'document', cloudTargets: ['odt', 'rtf', 'md', 'jpg', 'png'] },
-  { source: 'doc',  targets: ['txt', 'pdf', 'docx', 'html', 'odt', 'zip', 'tar', 'gz'],
-    converterId: 'document-converter', category: 'document', cloudTargets: ['pdf', 'docx', 'html', 'odt'] },
-  { source: 'odt',  targets: ['txt', 'pdf', 'docx', 'html', 'zip', 'tar', 'gz'],
-    converterId: 'document-converter', category: 'document', cloudTargets: ['pdf', 'docx', 'html'] },
+  // Browser: text extraction + jsPDF/markdown/html builders
+  // Cloud: Supabase edge function for DOCX output
   { source: 'txt',  targets: ['pdf', 'html', 'md', 'docx', 'zip', 'tar', 'gz'],
-    converterId: 'document-converter', category: 'document', cloudTargets: ['docx'] },
-  { source: 'rtf',  targets: ['txt', 'pdf', 'html', 'docx', 'zip', 'tar', 'gz'],
     converterId: 'document-converter', category: 'document', cloudTargets: ['docx'] },
   { source: 'html', targets: ['txt', 'pdf', 'md', 'docx', 'zip', 'tar', 'gz'],
     converterId: 'document-converter', category: 'document', cloudTargets: ['docx'] },
   { source: 'md',   targets: ['txt', 'html', 'pdf', 'docx', 'zip', 'tar', 'gz'],
     converterId: 'document-converter', category: 'document', cloudTargets: ['docx'] },
-  { source: 'csv',  targets: ['txt', 'xlsx', 'pdf', 'html', 'zip', 'tar', 'gz'],
-    converterId: 'document-converter', category: 'document', cloudTargets: ['xlsx'] },
-  { source: 'xlsx', targets: ['csv', 'txt', 'pdf', 'xls', 'ods', 'zip', 'tar', 'gz'],
-    converterId: 'document-converter', category: 'document', cloudTargets: ['csv', 'txt', 'pdf', 'xls', 'ods'] },
-  { source: 'xls',  targets: ['csv', 'txt', 'pdf', 'xlsx', 'ods', 'zip', 'tar', 'gz'],
-    converterId: 'document-converter', category: 'document', cloudTargets: ['csv', 'txt', 'pdf', 'xlsx', 'ods'] },
-  { source: 'ods',  targets: ['csv', 'txt', 'pdf', 'xlsx', 'zip', 'tar', 'gz'],
-    converterId: 'document-converter', category: 'document', cloudTargets: ['csv', 'txt', 'pdf', 'xlsx'] },
-  { source: 'pptx', targets: ['pdf', 'ppt', 'odp', 'jpg', 'png', 'zip', 'tar', 'gz'],
-    converterId: 'document-converter', category: 'document', cloudTargets: ['pdf', 'ppt', 'odp', 'jpg', 'png'] },
-  { source: 'ppt',  targets: ['pdf', 'pptx', 'odp', 'zip', 'tar', 'gz'],
-    converterId: 'document-converter', category: 'document', cloudTargets: ['pdf', 'pptx', 'odp'] },
-  { source: 'odp',  targets: ['pdf', 'pptx', 'zip', 'tar', 'gz'],
-    converterId: 'document-converter', category: 'document', cloudTargets: ['pdf', 'pptx'] },
-  { source: 'epub', targets: ['pdf', 'txt', 'html', 'mobi', 'zip', 'tar', 'gz'],
-    converterId: 'document-converter', category: 'document', cloudTargets: ['pdf', 'txt', 'html', 'mobi'] },
-  { source: 'mobi', targets: ['pdf', 'txt', 'epub', 'zip', 'tar', 'gz'],
-    converterId: 'document-converter', category: 'document', cloudTargets: ['pdf', 'txt', 'epub'] },
+  { source: 'rtf',  targets: ['txt', 'pdf', 'html', 'docx', 'zip', 'tar', 'gz'],
+    converterId: 'document-converter', category: 'document', cloudTargets: ['docx'] },
+  { source: 'csv',  targets: ['txt', 'pdf', 'html', 'zip', 'tar', 'gz'],
+    converterId: 'document-converter', category: 'document' },
+  { source: 'pdf',  targets: ['txt', 'zip', 'tar', 'gz'],
+    converterId: 'document-converter', category: 'document' },
+  { source: 'docx', targets: ['txt', 'pdf', 'html', 'md', 'zip', 'tar', 'gz'],
+    converterId: 'document-converter', category: 'document' },
+  { source: 'odt',  targets: ['txt', 'pdf', 'html', 'md', 'zip', 'tar', 'gz'],
+    converterId: 'document-converter', category: 'document' },
 
-  // ── Audio (cloud-first) ────────────────────────────────────
-  { source: 'mp3',  targets: ['wav', 'aac', 'ogg', 'flac', 'm4a', 'aiff', 'wma', 'zip', 'tar', 'gz'],
-    converterId: 'audio-converter', category: 'audio', cloudTargets: ['wav', 'aac', 'ogg', 'flac', 'm4a', 'aiff', 'wma'] },
-  { source: 'wav',  targets: ['mp3', 'aac', 'ogg', 'flac', 'm4a', 'aiff', 'wma', 'zip', 'tar', 'gz'],
-    converterId: 'audio-converter', category: 'audio', cloudTargets: ['mp3', 'aac', 'ogg', 'flac', 'm4a', 'aiff', 'wma'] },
-  { source: 'aac',  targets: ['mp3', 'wav', 'ogg', 'flac', 'm4a', 'aiff', 'wma', 'zip', 'tar', 'gz'],
-    converterId: 'audio-converter', category: 'audio', cloudTargets: ['mp3', 'wav', 'ogg', 'flac', 'm4a', 'aiff', 'wma'] },
-  { source: 'ogg',  targets: ['mp3', 'wav', 'aac', 'flac', 'm4a', 'aiff', 'wma', 'zip', 'tar', 'gz'],
-    converterId: 'audio-converter', category: 'audio', cloudTargets: ['mp3', 'wav', 'aac', 'flac', 'm4a', 'aiff', 'wma'] },
-  { source: 'flac', targets: ['mp3', 'wav', 'aac', 'ogg', 'm4a', 'aiff', 'wma', 'zip', 'tar', 'gz'],
-    converterId: 'audio-converter', category: 'audio', cloudTargets: ['mp3', 'wav', 'aac', 'ogg', 'm4a', 'aiff', 'wma'] },
-  { source: 'm4a',  targets: ['mp3', 'wav', 'aac', 'ogg', 'flac', 'aiff', 'wma', 'zip', 'tar', 'gz'],
-    converterId: 'audio-converter', category: 'audio', cloudTargets: ['mp3', 'wav', 'aac', 'ogg', 'flac', 'aiff', 'wma'] },
-  { source: 'aiff', targets: ['mp3', 'wav', 'aac', 'ogg', 'flac', 'm4a', 'wma', 'zip', 'tar', 'gz'],
-    converterId: 'audio-converter', category: 'audio', cloudTargets: ['mp3', 'wav', 'aac', 'ogg', 'flac', 'm4a', 'wma'] },
-  { source: 'wma',  targets: ['mp3', 'wav', 'aac', 'ogg', 'flac', 'm4a', 'aiff', 'zip', 'tar', 'gz'],
-    converterId: 'audio-converter', category: 'audio', cloudTargets: ['mp3', 'wav', 'aac', 'ogg', 'flac', 'm4a', 'aiff'] },
+  // ── Audio ────────────────────────────────────────────────
+  // Browser: FFmpeg.wasm (requires SharedArrayBuffer)
+  // Fallback: Supabase cloud (limited support)
+  { source: 'mp3',  targets: ['wav', 'ogg', 'flac', 'zip', 'tar', 'gz'],
+    converterId: 'audio-converter', category: 'audio' },
+  { source: 'wav',  targets: ['mp3', 'ogg', 'flac', 'zip', 'tar', 'gz'],
+    converterId: 'audio-converter', category: 'audio' },
+  { source: 'ogg',  targets: ['mp3', 'wav', 'flac', 'zip', 'tar', 'gz'],
+    converterId: 'audio-converter', category: 'audio' },
+  { source: 'flac', targets: ['mp3', 'wav', 'ogg', 'zip', 'tar', 'gz'],
+    converterId: 'audio-converter', category: 'audio' },
+  { source: 'aac',  targets: ['mp3', 'wav', 'ogg', 'zip', 'tar', 'gz'],
+    converterId: 'audio-converter', category: 'audio' },
+  { source: 'm4a',  targets: ['mp3', 'wav', 'ogg', 'zip', 'tar', 'gz'],
+    converterId: 'audio-converter', category: 'audio' },
 
-  // ── Video (cloud-first) ────────────────────────────────────
-  { source: 'mp4',  targets: ['mov', 'avi', 'mkv', 'webm', 'flv', 'wmv', '3gp', 'mp3', 'wav', 'aac', 'zip', 'tar', 'gz'],
-    converterId: 'video-converter', category: 'video', cloudTargets: ['mov', 'avi', 'mkv', 'webm', 'flv', 'wmv', '3gp', 'mp3', 'wav', 'aac'] },
-  { source: 'mov',  targets: ['mp4', 'avi', 'mkv', 'webm', 'flv', 'wmv', '3gp', 'mp3', 'wav', 'aac', 'zip', 'tar', 'gz'],
-    converterId: 'video-converter', category: 'video', cloudTargets: ['mp4', 'avi', 'mkv', 'webm', 'flv', 'wmv', '3gp', 'mp3', 'wav', 'aac'] },
-  { source: 'avi',  targets: ['mp4', 'mov', 'mkv', 'webm', 'flv', 'wmv', '3gp', 'mp3', 'wav', 'aac', 'zip', 'tar', 'gz'],
-    converterId: 'video-converter', category: 'video', cloudTargets: ['mp4', 'mov', 'mkv', 'webm', 'flv', 'wmv', '3gp', 'mp3', 'wav', 'aac'] },
-  { source: 'mkv',  targets: ['mp4', 'mov', 'avi', 'webm', 'flv', 'wmv', '3gp', 'mp3', 'wav', 'aac', 'zip', 'tar', 'gz'],
-    converterId: 'video-converter', category: 'video', cloudTargets: ['mp4', 'mov', 'avi', 'webm', 'flv', 'wmv', '3gp', 'mp3', 'wav', 'aac'] },
-  { source: 'webm', targets: ['mp4', 'mov', 'avi', 'mkv', 'flv', 'wmv', '3gp', 'mp3', 'wav', 'aac', 'zip', 'tar', 'gz'],
-    converterId: 'video-converter', category: 'video', cloudTargets: ['mp4', 'mov', 'avi', 'mkv', 'flv', 'wmv', '3gp', 'mp3', 'wav', 'aac'] },
-  { source: 'flv',  targets: ['mp4', 'mov', 'avi', 'mkv', 'webm', 'wmv', '3gp', 'mp3', 'wav', 'aac', 'zip', 'tar', 'gz'],
-    converterId: 'video-converter', category: 'video', cloudTargets: ['mp4', 'mov', 'avi', 'mkv', 'webm', 'wmv', '3gp', 'mp3', 'wav', 'aac'] },
-  { source: 'wmv',  targets: ['mp4', 'mov', 'avi', 'mkv', 'webm', 'flv', '3gp', 'mp3', 'wav', 'aac', 'zip', 'tar', 'gz'],
-    converterId: 'video-converter', category: 'video', cloudTargets: ['mp4', 'mov', 'avi', 'mkv', 'webm', 'flv', '3gp', 'mp3', 'wav', 'aac'] },
-  { source: '3gp',  targets: ['mp4', 'mov', 'avi', 'mkv', 'webm', 'flv', 'wmv', 'mp3', 'wav', 'aac', 'zip', 'tar', 'gz'],
-    converterId: 'video-converter', category: 'video', cloudTargets: ['mp4', 'mov', 'avi', 'mkv', 'webm', 'flv', 'wmv', 'mp3', 'wav', 'aac'] },
+  // ── Video ────────────────────────────────────────────────
+  // Browser: FFmpeg.wasm
+  { source: 'mp4',  targets: ['webm', 'mp3', 'wav', 'zip', 'tar', 'gz'],
+    converterId: 'video-converter', category: 'video' },
+  { source: 'webm', targets: ['mp4', 'mp3', 'wav', 'zip', 'tar', 'gz'],
+    converterId: 'video-converter', category: 'video' },
+  { source: 'mov',  targets: ['mp4', 'webm', 'mp3', 'wav', 'zip', 'tar', 'gz'],
+    converterId: 'video-converter', category: 'video' },
+  { source: 'mkv',  targets: ['mp4', 'webm', 'mp3', 'wav', 'zip', 'tar', 'gz'],
+    converterId: 'video-converter', category: 'video' },
+  { source: 'avi',  targets: ['mp4', 'webm', 'mp3', 'wav', 'zip', 'tar', 'gz'],
+    converterId: 'video-converter', category: 'video' },
 
   // ── Fonts ────────────────────────────────────────────────
-  { source: 'ttf',   targets: ['otf', 'woff', 'woff2', 'eot', 'zip', 'tar', 'gz'],
-    converterId: 'font-converter', category: 'font', cloudTargets: ['woff2', 'eot'] },
-  { source: 'otf',   targets: ['ttf', 'woff', 'woff2', 'eot', 'zip', 'tar', 'gz'],
-    converterId: 'font-converter', category: 'font', cloudTargets: ['woff2', 'eot'] },
-  { source: 'woff',  targets: ['ttf', 'otf', 'woff2', 'eot', 'zip', 'tar', 'gz'],
-    converterId: 'font-converter', category: 'font', cloudTargets: ['woff2', 'eot'] },
-  { source: 'woff2', targets: ['ttf', 'otf', 'woff', 'eot', 'zip', 'tar', 'gz'],
-    converterId: 'font-converter', category: 'font', cloudTargets: ['eot'] },
-  { source: 'eot',   targets: ['ttf', 'otf', 'woff', 'woff2', 'zip', 'tar', 'gz'],
-    converterId: 'font-converter', category: 'font', cloudTargets: ['ttf', 'otf', 'woff', 'woff2'] },
+  // Browser: opentype.js (TTF/OTF parsing) + custom WOFF builder
+  { source: 'ttf',  targets: ['otf', 'woff', 'zip', 'tar', 'gz'],
+    converterId: 'font-converter', category: 'font' },
+  { source: 'otf',  targets: ['ttf', 'woff', 'zip', 'tar', 'gz'],
+    converterId: 'font-converter', category: 'font' },
+  { source: 'woff', targets: ['ttf', 'otf', 'zip', 'tar', 'gz'],
+    converterId: 'font-converter', category: 'font' },
 
   // ── Archives ─────────────────────────────────────────────
-  { source: 'zip',  targets: ['tar', 'gz', '7z'],
-    converterId: 'archive-converter', category: 'archive', cloudTargets: ['7z'] },
-  { source: 'tar',  targets: ['zip', 'gz', '7z'],
-    converterId: 'archive-converter', category: 'archive', cloudTargets: ['7z'] },
-  { source: 'gz',   targets: ['zip', 'tar', '7z'],
-    converterId: 'archive-converter', category: 'archive', cloudTargets: ['7z'] },
-  { source: 'rar',  targets: ['zip', 'tar', 'gz', '7z'],
-    converterId: 'archive-converter', category: 'archive', cloudTargets: ['zip', 'tar', 'gz', '7z'] },
-  { source: '7z',   targets: ['zip', 'tar', 'gz'],
-    converterId: 'archive-converter', category: 'archive', cloudTargets: ['zip', 'tar', 'gz'] },
-  { source: 'iso',  targets: ['zip', 'tar', 'gz'],
-    converterId: 'archive-converter', category: 'archive', cloudTargets: ['zip', 'tar', 'gz'] },
+  // Browser: JSZip + manual TAR/GZ builders
+  { source: 'zip',  targets: ['tar', 'gz'],
+    converterId: 'archive-converter', category: 'archive' },
+  { source: 'tar',  targets: ['zip', 'gz'],
+    converterId: 'archive-converter', category: 'archive' },
+  { source: 'gz',   targets: ['zip', 'tar'],
+    converterId: 'archive-converter', category: 'archive' },
 ];
 
 /* ── Helpers ─────────────────────────────────────────────── */

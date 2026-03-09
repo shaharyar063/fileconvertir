@@ -8,11 +8,11 @@ import { buildFAQSchema, buildWebAppSchema } from '@/lib/seo-jsonld';
 import { useMemo } from 'react';
 
 const categories = [
-  { key: 'Image', icon: Image, label: 'Images', desc: 'PNG, JPG, WebP, AVIF, GIF, BMP, TIFF, SVG, HEIC, ICO' },
-  { key: 'Document', icon: FileText, label: 'Documents', desc: 'PDF, DOCX, TXT, HTML, Markdown, CSV, RTF' },
+  { key: 'Image', icon: Image, label: 'Images', desc: 'PNG, JPG, WebP, AVIF, GIF, BMP, SVG, ICO' },
+  { key: 'Document', icon: FileText, label: 'Documents', desc: 'PDF, DOCX, ODT, TXT, HTML, Markdown, CSV, RTF' },
   { key: 'Audio', icon: Music, label: 'Audio', desc: 'MP3, WAV, AAC, OGG, FLAC, M4A' },
-  { key: 'Video', icon: Film, label: 'Video', desc: 'MP4, MOV, WebM — extract audio' },
-  { key: 'Font', icon: Type, label: 'Fonts', desc: 'TTF, OTF, WOFF, WOFF2' },
+  { key: 'Video', icon: Film, label: 'Video', desc: 'MP4, MOV, AVI, MKV, WebM — extract audio' },
+  { key: 'Font', icon: Type, label: 'Fonts', desc: 'TTF, OTF, WOFF' },
   { key: 'Archive', icon: Archive, label: 'Archives', desc: 'ZIP, TAR, GZ' },
 ];
 

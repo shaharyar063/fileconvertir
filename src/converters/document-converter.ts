@@ -1,7 +1,7 @@
 import { ConverterPlugin, ConversionResult, ConversionOption } from '@/lib/converter-types';
 import { getTargetsForSource } from '@/lib/conversion-map';
 
-const DOC_SOURCES = ['pdf', 'docx', 'doc', 'odt', 'txt', 'rtf', 'html', 'md', 'csv', 'xlsx', 'xls', 'ods', 'pptx', 'ppt', 'odp', 'epub', 'mobi'];
+const DOC_SOURCES = ['pdf', 'docx', 'odt', 'txt', 'rtf', 'html', 'md', 'csv'];
 
 async function readTextFile(file: File): Promise<string> {
   return file.text();
@@ -97,13 +97,21 @@ async function textToPdf(text: string, filename: string): Promise<Blob> {
   return doc.output('blob');
 }
 
+async function odtToText(file: File): Promise<string> {
+  const JSZip = (await import('jszip')).default;
+  const zip = await JSZip.loadAsync(await file.arrayBuffer());
+  const contentXml = await zip.file('content.xml')?.async('text');
+  if (!contentXml) throw new Error('Invalid ODT file: content.xml not found');
+  return contentXml.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+}
+
 async function extractText(file: File, ext: string): Promise<string> {
   switch (ext) {
     case 'txt':
     case 'csv': return readTextFile(file);
     case 'html': return htmlToText(file);
     case 'docx': return docxToText(file);
-    case 'doc': return readTextFile(file);
+    case 'odt': return odtToText(file);
     case 'rtf': return rtfToText(file);
     case 'pdf': return pdfToText(file);
     case 'md': return readTextFile(file);
