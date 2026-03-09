@@ -37,7 +37,7 @@ async function rtfToText(file: File): Promise<string> {
 
 function mdToHtml(md: string): string {
   // Basic markdown → HTML conversion
-  let html = md
+  const html = md
     // Code blocks
     .replace(/```(\w*)\n([\s\S]*?)```/g, '<pre><code class="$1">$2</code></pre>')
     .replace(/`([^`]+)`/g, '<code>$1</code>')

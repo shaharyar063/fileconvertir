@@ -83,7 +83,7 @@ export function DropZone({ onFile, fileInfo, onClear, disabled, acceptHint }: Dr
           Drop a file here or <span className="text-primary">browse</span>
         </p>
         <p className="mt-1 text-xs text-muted-foreground">
-          {acceptHint ? `${acceptHint} files` : 'All supported formats'} · Up to 50MB
+          {acceptHint ? `${acceptHint} files` : 'All supported formats'} · Up to 100MB
         </p>
       </div>
     </div>

@@ -71,8 +71,8 @@ export async function convertWithFFmpeg(
   onProgress?.(95);
 
   // Cleanup
-  try { await ff.deleteFile(inputName); } catch {}
-  try { await ff.deleteFile(outputName); } catch {}
+  try { await ff.deleteFile(inputName); } catch { /* cleanup failure is non-fatal */ }
+  try { await ff.deleteFile(outputName); } catch { /* cleanup failure is non-fatal */ }
 
   let blobParts: ArrayBuffer;
   if (typeof data === 'string') {
