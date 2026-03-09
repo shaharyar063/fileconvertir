@@ -28,6 +28,13 @@ export function useDocumentHead({ title, description, canonical, jsonLd }: Docum
     // OG tags
     setMetaProperty('og:title', title);
     setMetaProperty('og:description', description);
+    if (canonical) {
+      setMetaProperty('og:url', canonical);
+    }
+
+    // Twitter tags
+    setMetaTag('twitter:title', title);
+    setMetaTag('twitter:description', description);
 
     // Canonical
     let linkCanonical = document.querySelector('link[rel="canonical"]') as HTMLLinkElement | null;
@@ -67,6 +74,16 @@ function setMetaProperty(property: string, content: string) {
   if (!meta) {
     meta = document.createElement('meta');
     meta.setAttribute('property', property);
+    document.head.appendChild(meta);
+  }
+  meta.content = content;
+}
+
+function setMetaTag(name: string, content: string) {
+  let meta = document.querySelector(`meta[name="${name}"]`) as HTMLMetaElement | null;
+  if (!meta) {
+    meta = document.createElement('meta');
+    meta.name = name;
     document.head.appendChild(meta);
   }
   meta.content = content;

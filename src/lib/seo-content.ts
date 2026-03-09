@@ -28,14 +28,19 @@ export interface FormatSEO {
 
 const formatNames: Record<string, string> = {
   jpg: 'JPEG', jpeg: 'JPEG', png: 'PNG', webp: 'WebP', gif: 'GIF', bmp: 'BMP',
-  tiff: 'TIFF', svg: 'SVG', heic: 'HEIC', ico: 'ICO', avif: 'AVIF',
+  tiff: 'TIFF', svg: 'SVG', heic: 'HEIC', heif: 'HEIF', ico: 'ICO', avif: 'AVIF',
   eps: 'EPS', psd: 'PSD', tga: 'TGA',
   pdf: 'PDF', docx: 'DOCX', doc: 'DOC', txt: 'TXT', csv: 'CSV',
   rtf: 'RTF', html: 'HTML', md: 'Markdown', odt: 'ODT',
+  xlsx: 'XLSX', xls: 'XLS', ods: 'ODS',
+  pptx: 'PPTX', ppt: 'PPT', odp: 'ODP',
+  epub: 'EPUB', mobi: 'MOBI',
   mp3: 'MP3', wav: 'WAV', aac: 'AAC', ogg: 'OGG', flac: 'FLAC', m4a: 'M4A',
+  aiff: 'AIFF', wma: 'WMA',
   mp4: 'MP4', webm: 'WebM', mkv: 'MKV', mov: 'MOV', avi: 'AVI',
-  ttf: 'TTF', otf: 'OTF', woff: 'WOFF', woff2: 'WOFF2',
-  zip: 'ZIP', tar: 'TAR', gz: 'GZ', '7z': '7Z', rar: 'RAR',
+  flv: 'FLV', wmv: 'WMV', '3gp': '3GP',
+  ttf: 'TTF', otf: 'OTF', woff: 'WOFF', woff2: 'WOFF2', eot: 'EOT',
+  zip: 'ZIP', tar: 'TAR', gz: 'GZ', '7z': '7Z', rar: 'RAR', iso: 'ISO',
 };
 
 const formatDescriptions: Record<string, string> = {
@@ -72,9 +77,31 @@ const formatDescriptions: Record<string, string> = {
   otf: 'OpenType Font (OTF) extends TTF with advanced typographic features.',
   woff: 'WOFF (Web Open Font Format) is optimized for web delivery with built-in compression.',
   woff2: 'WOFF2 offers even better compression than WOFF for faster web font loading.',
+  eot: 'EOT (Embedded OpenType) is a legacy web font format primarily used by older versions of Internet Explorer.',
+  heif: 'HEIF (High Efficiency Image File Format) stores images with better compression than JPEG, used on Apple devices.',
+  xlsx: 'XLSX is the modern Microsoft Excel spreadsheet format based on Open XML, supporting formulas and charts.',
+  xls: 'XLS is the legacy Microsoft Excel spreadsheet format, still widely used for compatibility.',
+  ods: 'ODS (OpenDocument Spreadsheet) is an open-standard spreadsheet format used by LibreOffice and OpenOffice.',
+  pptx: 'PPTX is the modern Microsoft PowerPoint format for slide presentations.',
+  ppt: 'PPT is the legacy Microsoft PowerPoint format for slide presentations.',
+  odp: 'ODP (OpenDocument Presentation) is an open-standard format for slide presentations.',
+  epub: 'EPUB is the standard e-book format supporting reflowable content across various readers and devices.',
+  mobi: 'MOBI is Amazon Kindle\'s e-book format, optimized for reading on Kindle devices.',
+  aiff: 'AIFF (Audio Interchange File Format) is an uncompressed audio format developed by Apple for professional audio.',
+  wma: 'WMA (Windows Media Audio) is a Microsoft audio format offering good compression for music and podcasts.',
+  mkv: 'MKV (Matroska) is a flexible, open-standard multimedia container supporting unlimited video, audio, and subtitle tracks.',
+  avi: 'AVI (Audio Video Interleave) is a classic Microsoft multimedia container format with broad compatibility.',
+  flv: 'FLV (Flash Video) is a container format originally used for streaming video via Adobe Flash Player.',
+  wmv: 'WMV (Windows Media Video) is a Microsoft video format commonly used for streaming and download.',
+  '3gp': '3GP is a multimedia container format designed for 3G mobile phones with small file sizes.',
+  doc: 'DOC is the legacy Microsoft Word document format, widely supported across word processors.',
+  odt: 'ODT (OpenDocument Text) is an open-standard word processing format used by LibreOffice and OpenOffice.',
   zip: 'ZIP is the most common archive format for compressing and bundling files.',
   tar: 'TAR bundles multiple files into a single archive, commonly used on Unix/Linux systems.',
   gz: 'GZ (Gzip) provides single-file compression, often used alongside TAR on Linux.',
+  '7z': '7Z is a high-compression archive format that supports strong AES-256 encryption.',
+  rar: 'RAR is a proprietary archive format known for high compression ratios and split archive support.',
+  iso: 'ISO is a disc image format that contains an exact copy of data from an optical disc.',
 };
 
 function name(ext: string): string {
@@ -199,12 +226,12 @@ function generateFAQs(source: string, target: string): { q: string; a: string }[
 }
 
 function getCategoryForFormat(ext: string): string {
-  const imageFormats = ['jpg', 'jpeg', 'png', 'webp', 'gif', 'bmp', 'tiff', 'svg', 'heic', 'ico', 'avif', 'eps', 'psd', 'tga'];
-  const docFormats = ['pdf', 'docx', 'doc', 'txt', 'csv', 'rtf', 'html', 'md', 'odt'];
-  const audioFormats = ['mp3', 'wav', 'aac', 'ogg', 'flac', 'm4a'];
-  const videoFormats = ['mp4', 'webm', 'mkv', 'mov', 'avi'];
-  const fontFormats = ['ttf', 'otf', 'woff', 'woff2'];
-  const archiveFormats = ['zip', 'tar', 'gz', '7z', 'rar'];
+  const imageFormats = ['jpg', 'jpeg', 'png', 'webp', 'gif', 'bmp', 'tiff', 'svg', 'heic', 'heif', 'ico', 'avif', 'eps', 'psd', 'tga'];
+  const docFormats = ['pdf', 'docx', 'doc', 'txt', 'csv', 'rtf', 'html', 'md', 'odt', 'xlsx', 'xls', 'ods', 'pptx', 'ppt', 'odp', 'epub', 'mobi'];
+  const audioFormats = ['mp3', 'wav', 'aac', 'ogg', 'flac', 'm4a', 'aiff', 'wma'];
+  const videoFormats = ['mp4', 'webm', 'mkv', 'mov', 'avi', 'flv', 'wmv', '3gp'];
+  const fontFormats = ['ttf', 'otf', 'woff', 'woff2', 'eot'];
+  const archiveFormats = ['zip', 'tar', 'gz', '7z', 'rar', 'iso'];
 
   if (imageFormats.includes(ext)) return 'image';
   if (docFormats.includes(ext)) return 'document';
