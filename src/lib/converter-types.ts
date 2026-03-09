@@ -36,6 +36,19 @@ export interface FileInfo {
 export type ConversionStatus = 'idle' | 'uploading' | 'converting' | 'done' | 'error';
 
 export const MAX_FILE_SIZE = 100 * 1024 * 1024; // 100MB
+export const MAX_BATCH_FILES = 20;
+export const MAX_BATCH_SIZE = 500 * 1024 * 1024; // 500MB total
+
+export type BulkItemStatus = 'queued' | 'converting' | 'done' | 'error';
+
+export interface BulkFileItem {
+  id: string;
+  info: FileInfo;
+  status: BulkItemStatus;
+  progress: number;
+  result: ConversionResult | null;
+  error: string | null;
+}
 
 export function getFileExtension(filename: string): string {
   return filename.split('.').pop()?.toLowerCase() || '';
