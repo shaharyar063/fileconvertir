@@ -367,6 +367,22 @@ export const imageConverter: ConverterPlugin = {
       return { blob, filename: `${baseName}.${targetFormat}`, mimeType: getMimeType(targetFormat) };
     }
 
+    // PDF (browser-based using jsPDF)
+    if (targetFormat === 'pdf') {
+      const { jsPDF } = await import('jspdf');
+      const orientation = w > h ? 'landscape' : 'portrait';
+      const pdf = new jsPDF({ orientation, unit: 'px', format: [w, h] });
+      const dataUrl = canvas.toDataURL('image/jpeg', 0.92);
+      pdf.addImage(dataUrl, 'JPEG', 0, 0, w, h);
+      URL.revokeObjectURL(img.src);
+      onProgress?.(100);
+      return {
+        blob: pdf.output('blob'),
+        filename: `${baseName}.pdf`,
+        mimeType: 'application/pdf',
+      };
+    }
+
     // Archive wrapping: zip, tar, gz
     if (['zip', 'tar', 'gz'].includes(targetFormat)) {
       // Convert image to PNG first, then wrap in archive
