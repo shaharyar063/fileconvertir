@@ -1,9 +1,9 @@
 import { ConverterPlugin, ConversionResult, ConversionOption } from '@/lib/converter-types';
 import { getTargetsForSource } from '@/lib/conversion-map';
 
-const VIDEO_SOURCES = ['mp4', 'mov', 'avi', 'mkv', 'webm', 'flv', 'wmv', '3gp'];
-const AUDIO_TARGETS = ['mp3', 'wav', 'aac', 'ogg', 'flac', 'm4a', 'aiff', 'wma'];
-const VIDEO_TARGETS = ['mp4', 'mov', 'avi', 'mkv', 'webm', 'flv', 'wmv', '3gp'];
+const VIDEO_SOURCES = ['mp4', 'mov', 'avi', 'mkv', 'webm'];
+const AUDIO_TARGETS = ['mp3', 'wav'];
+const VIDEO_TARGETS = ['mp4', 'webm'];
 
 export const videoConverter: ConverterPlugin = {
   id: 'video-converter',

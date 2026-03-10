@@ -8,11 +8,11 @@ import { buildFAQSchema, buildWebAppSchema } from '@/lib/seo-jsonld';
 import { useMemo } from 'react';
 
 const categories = [
-  { key: 'Image', icon: Image, label: 'Images', desc: 'PNG, JPG, WebP, AVIF, GIF, BMP, TIFF, SVG, HEIC, ICO' },
-  { key: 'Document', icon: FileText, label: 'Documents', desc: 'PDF, DOCX, TXT, HTML, Markdown, CSV, RTF' },
+  { key: 'Image', icon: Image, label: 'Images', desc: 'PNG, JPG, WebP, AVIF, GIF, BMP, SVG, ICO' },
+  { key: 'Document', icon: FileText, label: 'Documents', desc: 'PDF, DOCX, ODT, TXT, HTML, Markdown, CSV, RTF' },
   { key: 'Audio', icon: Music, label: 'Audio', desc: 'MP3, WAV, AAC, OGG, FLAC, M4A' },
-  { key: 'Video', icon: Film, label: 'Video', desc: 'MP4, MOV, WebM — extract audio' },
-  { key: 'Font', icon: Type, label: 'Fonts', desc: 'TTF, OTF, WOFF, WOFF2' },
+  { key: 'Video', icon: Film, label: 'Video', desc: 'MP4, MOV, AVI, MKV, WebM — extract audio' },
+  { key: 'Font', icon: Type, label: 'Fonts', desc: 'TTF, OTF, WOFF' },
   { key: 'Archive', icon: Archive, label: 'Archives', desc: 'ZIP, TAR, GZ' },
 ];
 
@@ -30,7 +30,7 @@ const faqs = [
   { q: 'Are my files uploaded to a server?', a: 'No. All conversions run locally in your browser using WebAssembly and JavaScript. Your files never leave your device, ensuring complete privacy.' },
   { q: 'What file formats are supported?', a: 'We support 200+ conversion types across images, documents, audio, video, fonts, and archives. Select a format from the converter above to see all available options.' },
   { q: 'What\'s the maximum file size?', a: 'The maximum file size is 100MB. Since processing happens in your browser, larger files may take longer depending on your device.' },
-  { q: 'Can I convert multiple files at once?', a: 'Currently, you can convert one file at a time. After downloading, click "New" to start another conversion.' },
+  { q: 'Can I convert multiple files at once?', a: 'Yes! You can select up to 20 files per batch. All files are converted sequentially and you can download them individually or as a single ZIP archive.' },
 ];
 
 export default function Index() {

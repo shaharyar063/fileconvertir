@@ -2,7 +2,7 @@ import { ConverterPlugin, ConversionResult, ConversionOption } from '@/lib/conve
 import { getTargetsForSource } from '@/lib/conversion-map';
 import opentype from 'opentype.js';
 
-const FONT_SOURCES = ['ttf', 'otf', 'woff', 'woff2', 'eot'];
+const FONT_SOURCES = ['ttf', 'otf', 'woff'];
 
 function getMimeType(format: string): string {
   const map: Record<string, string> = {

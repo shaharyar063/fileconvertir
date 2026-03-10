@@ -2,7 +2,7 @@ import { ConverterPlugin, ConversionResult, ConversionOption } from '@/lib/conve
 import { getTargetsForSource } from '@/lib/conversion-map';
 import JSZip from 'jszip';
 
-const ARCHIVE_SOURCES = ['zip', 'tar', 'gz', 'rar', '7z', 'iso'];
+const ARCHIVE_SOURCES = ['zip', 'tar', 'gz'];
 
 /**
  * Parse a TAR archive and return its files.

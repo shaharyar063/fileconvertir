@@ -36,18 +36,31 @@ export interface FileInfo {
 export type ConversionStatus = 'idle' | 'uploading' | 'converting' | 'done' | 'error';
 
 export const MAX_FILE_SIZE = 100 * 1024 * 1024; // 100MB
+export const MAX_BATCH_FILES = 20;
+export const MAX_BATCH_SIZE = 500 * 1024 * 1024; // 500MB total
+
+export type BulkItemStatus = 'queued' | 'converting' | 'done' | 'error';
+
+export interface BulkFileItem {
+  id: string;
+  info: FileInfo;
+  status: BulkItemStatus;
+  progress: number;
+  result: ConversionResult | null;
+  error: string | null;
+}
 
 export function getFileExtension(filename: string): string {
   return filename.split('.').pop()?.toLowerCase() || '';
 }
 
 export function getFileCategory(extension: string): FileCategory {
-  const imageExts = ['jpg', 'jpeg', 'png', 'webp', 'gif', 'bmp', 'svg', 'tiff', 'heic', 'heif', 'avif', 'ico'];
-  const docExts = ['pdf', 'docx', 'doc', 'odt', 'txt', 'rtf', 'html', 'md', 'csv', 'xlsx', 'xls', 'ods', 'pptx', 'ppt', 'odp', 'epub', 'mobi'];
-  const audioExts = ['mp3', 'wav', 'ogg', 'aac', 'flac', 'm4a', 'aiff', 'wma'];
-  const videoExts = ['mp4', 'avi', 'mov', 'mkv', 'webm', 'flv', 'wmv', '3gp'];
-  const fontExts = ['ttf', 'otf', 'woff', 'woff2', 'eot'];
-  const archiveExts = ['zip', 'tar', 'gz', 'rar', '7z', 'iso'];
+  const imageExts = ['jpg', 'jpeg', 'png', 'webp', 'gif', 'bmp', 'svg', 'avif', 'ico'];
+  const docExts = ['pdf', 'docx', 'odt', 'txt', 'rtf', 'html', 'md', 'csv'];
+  const audioExts = ['mp3', 'wav', 'ogg', 'aac', 'flac', 'm4a'];
+  const videoExts = ['mp4', 'avi', 'mov', 'mkv', 'webm'];
+  const fontExts = ['ttf', 'otf', 'woff'];
+  const archiveExts = ['zip', 'tar', 'gz'];
 
   if (imageExts.includes(extension)) return 'image';
   if (docExts.includes(extension)) return 'document';
