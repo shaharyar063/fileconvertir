@@ -4,7 +4,7 @@ import { converterRoutes } from '@/lib/converters';
 import { Shield, Zap, Globe, ArrowRight, CheckCircle, Image, FileText, Music, Film, Type, Archive } from 'lucide-react';
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@/components/ui/accordion';
 import { useDocumentHead } from '@/hooks/use-document-head';
-import { buildFAQSchema, buildWebAppSchema } from '@/lib/seo-jsonld';
+import { buildFAQSchema, buildWebAppSchema, buildWebSiteSchema, SITE_URL } from '@/lib/seo-jsonld';
 import { useMemo } from 'react';
 
 const categories = [
@@ -30,15 +30,15 @@ const faqs = [
   { q: 'Are my files uploaded to a server?', a: 'No. All conversions run locally in your browser using WebAssembly and JavaScript. Your files never leave your device, ensuring complete privacy.' },
   { q: 'What file formats are supported?', a: 'We support 200+ conversion types across images, documents, audio, video, fonts, and archives. Select a format from the converter above to see all available options.' },
   { q: 'What\'s the maximum file size?', a: 'The maximum file size is 100MB. Since processing happens in your browser, larger files may take longer depending on your device.' },
-  { q: 'Can I convert multiple files at once?', a: 'Yes! You can select up to 20 files per batch. All files are converted sequentially and you can download them individually or as a single ZIP archive.' },
+  { q: 'Can I convert multiple files at once?', a: 'Yes! You can batch convert up to 20 files at once. Select multiple files, choose your output format, and download them all individually or as a single ZIP archive.' },
 ];
 
 export default function Index() {
-  const jsonLd = useMemo(() => [buildWebAppSchema(), buildFAQSchema(faqs)], []);
+  const jsonLd = useMemo(() => [buildWebSiteSchema(), buildWebAppSchema(), buildFAQSchema(faqs)], []);
   useDocumentHead({
     title: 'QuickConvert — Free Online File Converter | Images, Docs, Audio, Video',
     description: 'Convert images, documents, audio, video, fonts & archives instantly in your browser. 100% private — your files never leave your device. No signup required.',
-    canonical: 'https://quickconvert.lovable.app/',
+    canonical: `${SITE_URL}/`,
     jsonLd,
   });
 

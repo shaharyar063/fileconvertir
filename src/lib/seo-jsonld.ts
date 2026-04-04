@@ -1,9 +1,50 @@
-/**
- * JSON-LD structured data generators for SEO.
- */
-
+const SITE_URL = (import.meta.env.VITE_SITE_URL as string) || 'https://quickconvert.app';
 const SITE_NAME = 'QuickConvert';
-const SITE_URL = 'https://quickconvert.lovable.app'; // Update with actual domain
+
+export { SITE_URL };
+
+export function buildWebAppSchema() {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'WebApplication',
+    name: SITE_NAME,
+    url: SITE_URL,
+    applicationCategory: 'UtilitiesApplication',
+    operatingSystem: 'Any',
+    browserRequirements: 'Requires JavaScript. Requires a modern browser.',
+    offers: {
+      '@type': 'Offer',
+      price: '0',
+      priceCurrency: 'USD',
+    },
+    description: 'Free online file converter. Convert images, documents, audio, video, fonts & archives instantly in your browser. 100% private — files never leave your device.',
+    featureList: [
+      '100% browser-based — no file uploads',
+      'Supports 200+ conversion types',
+      'Batch conversion up to 20 files',
+      'No signup or account required',
+      'Images, documents, audio, video, fonts, archives',
+    ],
+  };
+}
+
+export function buildWebSiteSchema() {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: SITE_NAME,
+    url: SITE_URL,
+    description: 'Free online file converter supporting images, documents, audio, video, fonts and archives.',
+    potentialAction: {
+      '@type': 'SearchAction',
+      target: {
+        '@type': 'EntryPoint',
+        urlTemplate: `${SITE_URL}/{search_term_string}-converter`,
+      },
+      'query-input': 'required name=search_term_string',
+    },
+  };
+}
 
 export function buildFAQSchema(faqs: { q: string; a: string }[]) {
   return {
@@ -17,23 +58,6 @@ export function buildFAQSchema(faqs: { q: string; a: string }[]) {
         text: faq.a,
       },
     })),
-  };
-}
-
-export function buildWebAppSchema() {
-  return {
-    '@context': 'https://schema.org',
-    '@type': 'WebApplication',
-    name: SITE_NAME,
-    url: SITE_URL,
-    applicationCategory: 'UtilitiesApplication',
-    operatingSystem: 'Any',
-    offers: {
-      '@type': 'Offer',
-      price: '0',
-      priceCurrency: 'USD',
-    },
-    description: 'Free online file converter. Convert images, documents, audio, video, fonts & archives instantly in your browser.',
   };
 }
 
@@ -65,5 +89,3 @@ export function buildSoftwareAppSchema(name: string, description: string) {
     },
   };
 }
-
-export { SITE_URL };

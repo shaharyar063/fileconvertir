@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#09090b"/>
+  <rect x="0" y="0" width="1200" height="630" fill="url(#grad)"/>
+  <defs>
+    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#09090b;stop-opacity:1"/>
+      <stop offset="100%" style="stop-color:#18181b;stop-opacity:1"/>
+    </linearGradient>
+  </defs>
+  <!-- Bolt icon -->
+  <g transform="translate(480, 180)">
+    <rect width="240" height="240" rx="48" fill="#f97316" opacity="0.15"/>
+    <text x="120" y="165" font-family="system-ui,sans-serif" font-size="120" text-anchor="middle" fill="#f97316">⚡</text>
+  </g>
+  <!-- Title -->
+  <text x="600" y="490" font-family="system-ui,-apple-system,sans-serif" font-size="72" font-weight="800" text-anchor="middle" fill="#fafafa">QuickConvert</text>
+  <!-- Subtitle -->
+  <text x="600" y="560" font-family="system-ui,-apple-system,sans-serif" font-size="32" text-anchor="middle" fill="#a1a1aa">Free Online File Converter — 100% Private</text>
+</svg>

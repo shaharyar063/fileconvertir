@@ -1,31 +1,32 @@
 import { Plugin } from 'vite';
 import { conversionMap } from '../src/lib/conversion-map';
 
-const SITE_URL = 'https://quickconvert.lovable.app';
+const SITE_URL = process.env.VITE_SITE_URL || 'https://quickconvert.app';
 
 export function sitemapPlugin(): Plugin {
   return {
     name: 'generate-sitemap',
     generateBundle() {
+      const now = new Date().toISOString().split('T')[0];
       const urls: string[] = [];
 
-      urls.push(`  <url><loc>${SITE_URL}/</loc><priority>1.0</priority><changefreq>weekly</changefreq></url>`);
+      urls.push(`  <url><loc>${SITE_URL}/</loc><lastmod>${now}</lastmod><priority>1.0</priority><changefreq>weekly</changefreq></url>`);
 
       conversionMap.forEach(entry => {
         entry.targets.forEach(target => {
-          urls.push(`  <url><loc>${SITE_URL}/${entry.source}-to-${target}</loc><priority>0.8</priority><changefreq>monthly</changefreq></url>`);
+          urls.push(`  <url><loc>${SITE_URL}/${entry.source}-to-${target}</loc><lastmod>${now}</lastmod><priority>0.8</priority><changefreq>monthly</changefreq></url>`);
         });
       });
 
       const sources = new Set(conversionMap.map(e => e.source));
       sources.forEach(source => {
-        urls.push(`  <url><loc>${SITE_URL}/${source}</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>`);
+        urls.push(`  <url><loc>${SITE_URL}/${source}</loc><lastmod>${now}</lastmod><priority>0.7</priority><changefreq>monthly</changefreq></url>`);
       });
 
       const targets = new Set<string>();
       conversionMap.forEach(e => e.targets.forEach(t => targets.add(t)));
       targets.forEach(target => {
-        urls.push(`  <url><loc>${SITE_URL}/to-${target}</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>`);
+        urls.push(`  <url><loc>${SITE_URL}/to-${target}</loc><lastmod>${now}</lastmod><priority>0.7</priority><changefreq>monthly</changefreq></url>`);
       });
 
       const sitemap = `<?xml version="1.0" encoding="UTF-8"?>

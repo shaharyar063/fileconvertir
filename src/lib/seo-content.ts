@@ -219,8 +219,8 @@ function generateFAQs(source: string, target: string): { q: string; a: string }[
       a: `The maximum file size is 100MB. Since processing happens in your browser, larger files may take longer depending on your device.`,
     },
     {
-      q: `Can I convert multiple files?`,
-      a: `Currently, you can convert one file at a time. After downloading, click "New" to start another conversion.`,
+      q: `Can I convert multiple files at once?`,
+      a: `Yes! You can batch convert up to 20 files at once. Select multiple files, choose your output format, and download them all as a ZIP archive when done.`,
     },
   ];
 }
