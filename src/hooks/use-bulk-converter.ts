@@ -23,19 +23,23 @@ export function useBulkConverter(fixedTargetFormat?: string) {
     const items: BulkFileItem[] = [];
     let totalSize = files.reduce((s, f) => s + f.info.size, 0);
     const currentCount = files.length;
+    let localError: string | null = null;
 
     for (const file of newFiles) {
       if (currentCount + items.length >= MAX_BATCH_FILES) {
-        setError(`Maximum ${MAX_BATCH_FILES} files per batch. Extra files were skipped.`);
+        localError = `Maximum ${MAX_BATCH_FILES} files per batch. Extra files were skipped.`;
+        setError(localError);
         break;
       }
       if (file.size > MAX_FILE_SIZE) {
-        setError(`${file.name} exceeds ${MAX_FILE_SIZE / 1024 / 1024}MB limit and was skipped.`);
+        localError = `${file.name} exceeds ${MAX_FILE_SIZE / 1024 / 1024}MB limit and was skipped.`;
+        setError(localError);
         continue;
       }
       totalSize += file.size;
       if (totalSize > MAX_BATCH_SIZE) {
-        setError(`Total batch size exceeds ${formatFileSize(MAX_BATCH_SIZE)}. Some files were skipped.`);
+        localError = `Total batch size exceeds ${formatFileSize(MAX_BATCH_SIZE)}. Some files were skipped.`;
+        setError(localError);
         break;
       }
 
@@ -53,7 +57,7 @@ export function useBulkConverter(fixedTargetFormat?: string) {
       });
     }
 
-    if (items.length === 0 && !error) {
+    if (items.length === 0 && !localError) {
       setError('No supported files were found.');
       return;
     }
@@ -67,7 +71,7 @@ export function useBulkConverter(fixedTargetFormat?: string) {
         setTargetFormat(formats[0].targetFormat);
       }
     }
-  }, [files, targetFormat, fixedTargetFormat, error]);
+  }, [files, targetFormat, fixedTargetFormat]);
 
   const removeFile = useCallback((id: string) => {
     setFiles(prev => prev.filter(f => f.id !== id));

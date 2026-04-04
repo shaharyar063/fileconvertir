@@ -3,12 +3,15 @@ import { fetchFile } from '@ffmpeg/util';
 
 let ffmpeg: FFmpeg | null = null;
 let loadFailed = false;
+let currentOnProgress: ((p: number) => void) | undefined;
 
 export function didFFmpegFail(): boolean {
   return loadFailed;
 }
 
 export async function getFFmpeg(onProgress?: (p: number) => void): Promise<FFmpeg> {
+  currentOnProgress = onProgress;
+
   if (ffmpeg && ffmpeg.loaded) return ffmpeg;
   if (loadFailed) throw new Error('FFMPEG_UNAVAILABLE');
 
@@ -23,7 +26,7 @@ export async function getFFmpeg(onProgress?: (p: number) => void): Promise<FFmpe
   });
 
   ffmpeg.on('progress', ({ progress }) => {
-    onProgress?.(Math.round(20 + progress * 70));
+    currentOnProgress?.(Math.round(20 + progress * 70));
   });
 
   const baseURL = 'https://unpkg.com/@ffmpeg/core@0.12.10/dist/esm';
