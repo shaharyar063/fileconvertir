@@ -1,73 +1,57 @@
-# Welcome to your Lovable project
+# FileConvertir
 
-## Project info
+Free online file converter at **[fileconvertir.com](https://fileconvertir.com)**.
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+Convert images, documents, audio, video, fonts, and archives — 100% in the browser. Your files never leave your device.
 
-## How can I edit this code?
+## Tech Stack
 
-There are several ways of editing your application.
+- **React 18** + TypeScript
+- **Vite** build tool
+- **Tailwind CSS** + shadcn/ui (Radix UI)
+- **React Router v6**
+- **FFmpeg.wasm** — audio & video conversion in-browser
+- **jsPDF** — document to PDF
+- **mammoth.js** — DOCX parsing
+- **JSZip** — archive handling
+- **opentype.js** — font conversion
+- **Supabase** — backend / edge functions
 
-**Use Lovable**
-
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
-
-Changes made via Lovable will be committed automatically to this repo.
-
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
+## Local Development
 
 ```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+# Install dependencies
+npm install
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# Start dev server
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+## Project Structure
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+```
+src/
+  components/       # UI components (SiteHeader, DropZone, HeroConverter, etc.)
+  converters/       # Per-category conversion logic (image, audio, video, document, font, archive)
+  hooks/            # Custom React hooks (useConverter, useDocumentHead, etc.)
+  lib/              # Converter registry, SEO helpers, conversion map
+  pages/            # Route views (Index, ConverterPage, FormatPage, SlugRouter, etc.)
+public/
+  favicon.svg       # FileConvertir brand icon (SVG)
+  favicon.ico       # Legacy fallback favicon
+  sitemap.xml       # Pre-generated sitemap (347 URLs) for Google Search Console
+  robots.txt        # Crawler instructions
+plugins/
+  vite-sitemap.ts   # Build-time sitemap generator
+```
 
-**Use GitHub Codespaces**
+## SEO
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+- 347-URL sitemap covering 278 converter pairs, 37 source pages, 31 target pages
+- Submit `https://fileconvertir.com/sitemap.xml` to Google Search Console
+- JSON-LD structured data on all converter and format pages
+- Hand-crafted meta descriptions for the highest-traffic keywords (HEIC→JPG, PNG↔JPG, MP4→MP3, etc.)
 
-## What technologies are used for this project?
+## Deployment
 
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+Deploy via Replit — the app builds with `npm run build` and serves from `dist/`.
