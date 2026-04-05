@@ -112,15 +112,108 @@ function desc(ext: string): string {
   return formatDescriptions[ext] || `${name(ext)} file format.`;
 }
 
+/**
+ * Hand-crafted content for the highest-traffic converter pairs.
+ * Unique descriptions improve CTR and signal content quality to Google.
+ */
+const converterSpecific: Record<string, { metaDescription: string; description: string }> = {
+  'heic-to-jpg': {
+    metaDescription: 'Convert HEIC photos to JPG instantly — no upload, 100% private. Works with iPhone & Apple device photos. Free, unlimited, no signup needed.',
+    description: 'Convert HEIC (High-Efficiency Image Format) photos from your iPhone or Mac to widely-compatible JPEG format. Works entirely in your browser — your photos never leave your device.',
+  },
+  'heic-to-png': {
+    metaDescription: 'Convert HEIC to PNG free online — no upload required. Keeps transparency. Works with iPhone photos. 100% private, runs in your browser.',
+    description: 'Convert HEIC images from iPhone and Apple devices to PNG format with lossless quality. Everything runs in your browser — no servers, no privacy risk.',
+  },
+  'heif-to-jpg': {
+    metaDescription: 'Convert HEIF to JPG free online — no file upload, 100% private. Works instantly in your browser. No signup required.',
+    description: 'Convert HEIF (High-Efficiency Image Format) files to universally compatible JPEG. No file upload needed — conversion happens entirely in your browser.',
+  },
+  'tiff-to-jpg': {
+    metaDescription: 'Convert TIFF to JPG online, free — no upload, 100% private. Perfect for photographers and print workflows. Instant browser-based conversion.',
+    description: 'Convert TIFF images to JPEG format for web sharing and email. TIFF files stay on your device — all processing runs locally in your browser.',
+  },
+  'png-to-jpg': {
+    metaDescription: 'Convert PNG to JPG free online — no upload, 100% private. Instant in-browser conversion, no signup. Reduce file size without losing quality.',
+    description: 'Convert PNG images to JPEG format to reduce file size for web, email, or social media. No file upload — conversion runs entirely in your browser.',
+  },
+  'jpg-to-png': {
+    metaDescription: 'Convert JPG to PNG free online — no upload, 100% private. Add transparency support. Instant browser-based, no signup required.',
+    description: 'Convert JPEG images to PNG format to gain transparency support and lossless quality. Your files stay local — nothing is ever uploaded to a server.',
+  },
+  'webp-to-jpg': {
+    metaDescription: 'Convert WebP to JPG free online — no upload, 100% private. Fix WebP compatibility issues. Instant, browser-based, no signup.',
+    description: 'Convert WebP images to JPEG for broader compatibility with apps, email clients, and social media. Runs entirely in your browser — no data is uploaded.',
+  },
+  'webp-to-png': {
+    metaDescription: 'Convert WebP to PNG free online — no upload, 100% private. Preserve transparency. Instant in-browser conversion, no signup required.',
+    description: 'Convert WebP images to PNG to preserve transparency and lossless quality. No file upload ever — all conversion happens locally in your browser.',
+  },
+  'svg-to-png': {
+    metaDescription: 'Convert SVG to PNG free online — no upload, 100% private. Choose output size. Instant browser conversion, no signup needed.',
+    description: 'Convert scalable SVG vector graphics to raster PNG images at any resolution. Your files never leave your browser — 100% private conversion.',
+  },
+  'avif-to-jpg': {
+    metaDescription: 'Convert AVIF to JPG free online — no upload, 100% private. Fix AVIF compatibility instantly. Browser-based, no signup required.',
+    description: 'Convert AVIF next-gen images to universally supported JPEG format. Runs entirely in your browser — your files are never uploaded to any server.',
+  },
+  'bmp-to-jpg': {
+    metaDescription: 'Convert BMP to JPG free online — no upload, 100% private. Reduce huge BMP file sizes. Instant, browser-based, no signup.',
+    description: 'Convert large BMP bitmap images to compact JPEG format. All processing runs locally in your browser — your files never leave your device.',
+  },
+  'mp4-to-mp3': {
+    metaDescription: 'Extract audio from MP4 video to MP3 free online — no upload, 100% private. Runs in your browser, no signup required.',
+    description: 'Extract and convert audio from MP4 video files to MP3 format. Uses FFmpeg.wasm to process everything locally — your video files never leave your device.',
+  },
+  'm4a-to-mp3': {
+    metaDescription: 'Convert M4A to MP3 free online — no upload, 100% private. Works with Apple Music and iPhone audio. Instant browser conversion.',
+    description: 'Convert M4A audio files (common on iPhone and Apple Music) to universally compatible MP3. Runs entirely in your browser using FFmpeg — no file upload needed.',
+  },
+  'wav-to-mp3': {
+    metaDescription: 'Convert WAV to MP3 free online — no upload, 100% private. Shrink large WAV files instantly. Browser-based conversion, no signup.',
+    description: 'Convert large uncompressed WAV audio to compact MP3 format. Runs locally in your browser with FFmpeg.wasm — your audio files are never uploaded.',
+  },
+  'flac-to-mp3': {
+    metaDescription: 'Convert FLAC to MP3 free online — no upload, 100% private. Perfect for portable playback. Instant browser-based, no signup required.',
+    description: 'Convert lossless FLAC audio to MP3 for portable playback on any device. FFmpeg processes your files entirely in-browser — no server, no upload.',
+  },
+  'aac-to-mp3': {
+    metaDescription: 'Convert AAC to MP3 free online — no upload, 100% private. Broad player compatibility. Instant in-browser, no signup needed.',
+    description: 'Convert AAC audio to MP3 for maximum player compatibility. Everything runs in your browser via FFmpeg.wasm — your audio files stay on your device.',
+  },
+  'ogg-to-mp3': {
+    metaDescription: 'Convert OGG to MP3 free online — no upload, 100% private. Browser-based FFmpeg conversion, no signup required.',
+    description: 'Convert OGG Vorbis audio to widely supported MP3 format. Uses FFmpeg.wasm in your browser — files are never uploaded to any server.',
+  },
+  'mov-to-mp4': {
+    metaDescription: 'Convert MOV to MP4 free online — no upload, 100% private. Fix QuickTime compatibility instantly. Browser-based, no signup.',
+    description: 'Convert Apple QuickTime MOV videos to universally compatible MP4. FFmpeg runs locally in your browser — your video files never leave your device.',
+  },
+  'mkv-to-mp4': {
+    metaDescription: 'Convert MKV to MP4 free online — no upload, 100% private. Fix MKV playback issues instantly. Browser FFmpeg, no signup.',
+    description: 'Convert Matroska MKV video files to widely compatible MP4 format. All processing runs in your browser — no server upload, no privacy risk.',
+  },
+  'docx-to-pdf': {
+    metaDescription: 'Convert DOCX to PDF free online — no upload, 100% private. Preserve formatting. Instant browser conversion, no signup required.',
+    description: 'Convert Microsoft Word DOCX documents to PDF for universal sharing. All conversion runs in your browser — your documents are never uploaded to a server.',
+  },
+  'txt-to-pdf': {
+    metaDescription: 'Convert TXT to PDF free online — no upload, 100% private. Instant in-browser conversion. No signup, no file size limits.',
+    description: 'Convert plain text files to PDF format for professional sharing. Runs entirely in your browser using jsPDF — your files stay local.',
+  },
+};
+
 export function getConverterSEO(source: string, target: string): ConverterSEO {
   const s = name(source);
   const t = name(target);
+  const key = `${source}-to-${target}`;
+  const specific = converterSpecific[key];
 
   return {
     title: `${s} to ${t} Converter — Free Online | FileConvertir`,
-    metaDescription: `Convert ${s} files to ${t} format instantly in your browser. No upload to servers, no signup required. Free and private.`,
+    metaDescription: specific?.metaDescription ?? `Convert ${s} to ${t} free online — no file upload, 100% private. Runs instantly in your browser. No signup required.`,
     heading: `Convert ${s} to ${t}`,
-    description: `Instantly convert your ${s} files to ${t} format. The conversion runs entirely in your browser — your files never leave your device.`,
+    description: specific?.description ?? `Instantly convert your ${s} files to ${t} format. The conversion runs entirely in your browser — your files never leave your device.`,
     sourceInfo: desc(source),
     targetInfo: desc(target),
     useCases: generateUseCases(source, target),

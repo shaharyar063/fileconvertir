@@ -1,7 +1,7 @@
 import { Plugin } from 'vite';
 import { conversionMap } from '../src/lib/conversion-map';
 
-const SITE_URL = process.env.VITE_SITE_URL || 'https://quickconvert.app';
+const SITE_URL = process.env.VITE_SITE_URL || 'https://fileconvertir.com';
 
 export function sitemapPlugin(): Plugin {
   return {

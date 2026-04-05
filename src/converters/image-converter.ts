@@ -1,7 +1,9 @@
 import { ConverterPlugin, ConversionResult, ConversionOption } from '@/lib/converter-types';
 import { getTargetsForSource } from '@/lib/conversion-map';
 
-const IMAGE_FORMATS = ['jpg', 'jpeg', 'png', 'webp', 'gif', 'bmp', 'avif', 'ico', 'eps', 'svg', 'psd', 'tga'];
+// heic/heif: natively rendered by modern browsers (iOS Safari, Chrome on macOS/Windows 11+)
+// tiff: supported via canvas in all modern browsers
+const IMAGE_FORMATS = ['jpg', 'jpeg', 'png', 'webp', 'gif', 'bmp', 'avif', 'tiff', 'heic', 'heif', 'ico', 'eps', 'svg', 'psd', 'tga'];
 import JSZip from 'jszip';
 
 function getMimeType(format: string): string {
@@ -19,6 +21,8 @@ function getMimeType(format: string): string {
     psd: 'image/vnd.adobe.photoshop',
     tga: 'image/x-tga',
     avif: 'image/avif',
+    heic: 'image/heic',
+    heif: 'image/heif',
   };
   return map[format] || 'image/png';
 }

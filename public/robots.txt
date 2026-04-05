@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
+Disallow: /api/
 
-Sitemap: https://quickconvert.app/sitemap.xml
+Sitemap: https://fileconvertir.com/sitemap.xml

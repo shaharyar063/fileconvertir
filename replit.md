@@ -2,6 +2,15 @@
 
 Free online file converter at **fileconvertir.com**. All conversions run 100% locally in the browser — files never leave the user's device.
 
+## SEO Status (April 2026)
+
+- **Sitemap**: `public/sitemap.xml` — 347 URLs (278 converter pairs, 37 source pages, 31 target pages). Submit to Google Search Console at: `https://fileconvertir.com/sitemap.xml`
+- **Robots.txt**: `public/robots.txt` references the sitemap and allows all crawlers
+- **Meta tags**: Title + description set client-side via `useDocumentHead` on all routes
+- **JSON-LD schema**: SoftwareApplication + FAQPage on all converter pages; WebSite + FAQPage on homepage
+- **High-traffic keywords targeted**: HEIC→JPG (1.8M/mo), PNG↔JPG, WebP↔JPG, MP4→MP3, M4A→MP3, WAV→MP3, FLAC→MP3, MOV→MP4, MKV→MP4 — all have unique hand-crafted meta descriptions in `seo-content.ts`
+- **SEO differentiator**: "Files never leave your device" — used in all meta descriptions and page copy
+
 ## Tech Stack
 
 - **Framework**: React 18 + TypeScript

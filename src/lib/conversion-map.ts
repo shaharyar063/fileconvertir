@@ -37,6 +37,14 @@ export const conversionMap: ConversionEntry[] = [
     converterId: 'image-converter', category: 'image' },
   { source: 'avif', targets: ['jpg', 'png', 'webp', 'gif', 'bmp', 'tiff', 'pdf', 'zip', 'tar', 'gz'],
     converterId: 'image-converter', category: 'image' },
+  // HEIC/HEIF: Apple's modern image formats — 1.8M+ monthly searches for "heic to jpg"
+  { source: 'heic', targets: ['jpg', 'png', 'webp', 'gif', 'bmp', 'tiff', 'pdf', 'zip', 'tar', 'gz'],
+    converterId: 'image-converter', category: 'image' },
+  { source: 'heif', targets: ['jpg', 'png', 'webp', 'gif', 'bmp', 'tiff', 'pdf', 'zip', 'tar', 'gz'],
+    converterId: 'image-converter', category: 'image' },
+  // TIFF: High-demand in photography/print workflows (~200k/month "tiff to jpg")
+  { source: 'tiff', targets: ['jpg', 'png', 'webp', 'gif', 'bmp', 'avif', 'pdf', 'zip', 'tar', 'gz'],
+    converterId: 'image-converter', category: 'image' },
 
   // ── Documents ────────────────────────────────────────────
   // Browser: text extraction + jsPDF/markdown/html builders
@@ -61,17 +69,18 @@ export const conversionMap: ConversionEntry[] = [
   // ── Audio ────────────────────────────────────────────────
   // Browser: FFmpeg.wasm (requires SharedArrayBuffer)
   // Fallback: Supabase cloud (limited support)
-  { source: 'mp3',  targets: ['wav', 'ogg', 'flac', 'zip', 'tar', 'gz'],
+  // AAC and M4A added as targets — FFmpeg.wasm natively supports both codecs
+  { source: 'mp3',  targets: ['wav', 'aac', 'ogg', 'flac', 'm4a', 'zip', 'tar', 'gz'],
     converterId: 'audio-converter', category: 'audio' },
-  { source: 'wav',  targets: ['mp3', 'ogg', 'flac', 'zip', 'tar', 'gz'],
+  { source: 'wav',  targets: ['mp3', 'aac', 'ogg', 'flac', 'm4a', 'zip', 'tar', 'gz'],
     converterId: 'audio-converter', category: 'audio' },
-  { source: 'ogg',  targets: ['mp3', 'wav', 'flac', 'zip', 'tar', 'gz'],
+  { source: 'ogg',  targets: ['mp3', 'wav', 'aac', 'flac', 'm4a', 'zip', 'tar', 'gz'],
     converterId: 'audio-converter', category: 'audio' },
-  { source: 'flac', targets: ['mp3', 'wav', 'ogg', 'zip', 'tar', 'gz'],
+  { source: 'flac', targets: ['mp3', 'wav', 'aac', 'ogg', 'm4a', 'zip', 'tar', 'gz'],
     converterId: 'audio-converter', category: 'audio' },
-  { source: 'aac',  targets: ['mp3', 'wav', 'ogg', 'zip', 'tar', 'gz'],
+  { source: 'aac',  targets: ['mp3', 'wav', 'ogg', 'flac', 'm4a', 'zip', 'tar', 'gz'],
     converterId: 'audio-converter', category: 'audio' },
-  { source: 'm4a',  targets: ['mp3', 'wav', 'ogg', 'zip', 'tar', 'gz'],
+  { source: 'm4a',  targets: ['mp3', 'wav', 'aac', 'ogg', 'flac', 'zip', 'tar', 'gz'],
     converterId: 'audio-converter', category: 'audio' },
 
   // ── Video ────────────────────────────────────────────────
