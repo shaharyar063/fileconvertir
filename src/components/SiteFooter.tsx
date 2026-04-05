@@ -1,5 +1,22 @@
 import { Link } from 'react-router-dom';
-import { Zap } from 'lucide-react';
+
+function ConvertIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      className={className}
+      aria-hidden="true"
+    >
+      <rect width="24" height="24" rx="5.5" fill="currentColor" />
+      <path d="M5 9h9" stroke="white" strokeWidth="1.8" strokeLinecap="round" />
+      <path d="M11 6.5L14.5 9 11 11.5" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M19 15H10" stroke="#a5f3fc" strokeWidth="1.8" strokeLinecap="round" />
+      <path d="M13 12.5L9.5 15 13 17.5" stroke="#a5f3fc" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
 
 export function SiteFooter() {
   return (
@@ -8,11 +25,14 @@ export function SiteFooter() {
         <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
           {/* Brand */}
           <div className="col-span-2 md:col-span-1">
-            <Link to="/" className="flex items-center gap-2 text-sm font-extrabold text-foreground">
-              <Zap className="h-4 w-4 text-primary" />
-              QuickConvert
+            <Link to="/" className="flex items-center gap-2 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/70 rounded-lg">
+              <ConvertIcon className="h-5 w-5 text-primary shrink-0" />
+              <span className="text-sm font-extrabold tracking-tight">
+                <span className="text-foreground">File</span>
+                <span className="text-primary">Convertir</span>
+              </span>
             </Link>
-            <p className="mt-2 text-xs text-muted-foreground leading-relaxed">
+            <p className="mt-2.5 text-xs text-muted-foreground leading-relaxed">
               Free online file converter. All conversions run locally in your browser — your files never leave your device.
             </p>
           </div>
@@ -52,7 +72,7 @@ export function SiteFooter() {
         </div>
 
         <div className="mt-8 border-t border-border pt-6 text-center text-xs text-muted-foreground">
-          © {new Date().getFullYear()} QuickConvert — All conversions run in your browser. No data is uploaded.
+          © {new Date().getFullYear()} FileConvertir — All conversions run in your browser. No data is uploaded.
         </div>
       </div>
     </footer>

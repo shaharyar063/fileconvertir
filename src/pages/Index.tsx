@@ -26,7 +26,7 @@ const useCases = [
 ];
 
 const faqs = [
-  { q: 'Is QuickConvert really free?', a: 'Yes, completely free with no limits. No signup, no account, no hidden fees. Just drop a file and convert.' },
+  { q: 'Is FileConvertir really free?', a: 'Yes, completely free with no limits. No signup, no account, no hidden fees. Just drop a file and convert.' },
   { q: 'Are my files uploaded to a server?', a: 'No. All conversions run locally in your browser using WebAssembly and JavaScript. Your files never leave your device, ensuring complete privacy.' },
   { q: 'What file formats are supported?', a: 'We support 200+ conversion types across images, documents, audio, video, fonts, and archives. Select a format from the converter above to see all available options.' },
   { q: 'What\'s the maximum file size?', a: 'The maximum file size is 100MB. Since processing happens in your browser, larger files may take longer depending on your device.' },
@@ -36,7 +36,7 @@ const faqs = [
 export default function Index() {
   const jsonLd = useMemo(() => [buildWebSiteSchema(), buildWebAppSchema(), buildFAQSchema(faqs)], []);
   useDocumentHead({
-    title: 'QuickConvert — Free Online File Converter | Images, Docs, Audio, Video',
+    title: 'FileConvertir — Free Online File Converter | Images, Docs, Audio, Video',
     description: 'Convert images, documents, audio, video, fonts & archives instantly in your browser. 100% private — your files never leave your device. No signup required.',
     canonical: `${SITE_URL}/`,
     jsonLd,
@@ -61,13 +61,16 @@ export default function Index() {
       </section>
 
       {/* Features Row */}
-      <section className="mt-12 grid gap-6 md:grid-cols-3">
+      <section className="mt-12 grid gap-4 md:grid-cols-3" aria-label="Key features">
         {[
           { icon: Shield, title: '100% Private', desc: 'Files never leave your device. All processing happens in your browser.' },
           { icon: Zap, title: 'Lightning Fast', desc: 'No upload wait. Conversions start instantly using local processing.' },
           { icon: Globe, title: 'No Signup', desc: 'Free to use, no account required. Just drop a file and convert.' },
         ].map(f => (
-          <div key={f.title} className="rounded-xl border border-border bg-card p-5">
+          <div
+            key={f.title}
+            className="rounded-xl border border-border bg-card p-5 card-hover"
+          >
             <div className="flex items-center gap-3">
               <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
                 <f.icon className="h-4 w-4" />
@@ -79,10 +82,10 @@ export default function Index() {
         ))}
       </section>
 
-      {/* Why Use QuickConvert */}
+      {/* Why Use FileConvertir */}
       <section className="mt-12">
         <h2 className="text-xl font-extrabold text-foreground">
-          Why Use QuickConvert?
+          Why Use FileConvertir?
         </h2>
         <ul className="mt-4 space-y-3">
           {useCases.map((uc, i) => (
@@ -95,7 +98,7 @@ export default function Index() {
       </section>
 
       {/* Category Sections */}
-      <section className="mt-12">
+      <section className="mt-12" id="categories" aria-label="Conversion categories">
         <h2 className="text-xl font-extrabold text-foreground">
           All Conversion Categories
         </h2>
@@ -110,7 +113,7 @@ export default function Index() {
             return (
               <div
                 key={cat.key}
-                className="rounded-xl border border-border bg-card p-5 transition-colors hover:border-primary/40"
+                className="rounded-xl border border-border bg-card p-5 transition-all duration-200 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/5 hover:-translate-y-0.5"
               >
                 <div className="flex items-center gap-3">
                   <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary/10 text-primary">
@@ -122,15 +125,15 @@ export default function Index() {
                   </div>
                 </div>
                 <p className="mt-3 text-xs text-muted-foreground leading-relaxed">{cat.desc}</p>
-                <div className="mt-4 space-y-1.5">
+                <div className="mt-4 space-y-1">
                   {topRoutes.map(r => (
                     <Link
                       key={r.slug}
                       to={`/${r.slug}`}
-                      className="flex w-full items-center justify-between rounded-lg px-3 py-2 text-left text-xs font-medium text-foreground transition-colors hover:bg-secondary hover:text-primary"
+                      className="flex w-full items-center justify-between rounded-lg px-3 py-2 text-left text-xs font-medium text-foreground transition-colors hover:bg-primary/10 hover:text-primary group"
                     >
                       <span>{r.label}</span>
-                      <ArrowRight className="h-3 w-3 text-muted-foreground" />
+                      <ArrowRight className="h-3 w-3 text-muted-foreground group-hover:text-primary transition-colors" />
                     </Link>
                   ))}
                 </div>
@@ -141,14 +144,14 @@ export default function Index() {
       </section>
 
       {/* FAQs */}
-      <section className="mt-12">
+      <section className="mt-12" aria-label="Frequently asked questions">
         <h2 className="text-xl font-extrabold text-foreground">
           Frequently Asked Questions
         </h2>
         <Accordion type="single" collapsible className="mt-4">
           {faqs.map((faq, i) => (
             <AccordionItem key={i} value={`faq-${i}`}>
-              <AccordionTrigger className="text-sm text-foreground hover:no-underline">
+              <AccordionTrigger className="text-sm text-foreground hover:no-underline hover:text-primary transition-colors text-left">
                 {faq.q}
               </AccordionTrigger>
               <AccordionContent className="text-sm text-muted-foreground leading-relaxed">

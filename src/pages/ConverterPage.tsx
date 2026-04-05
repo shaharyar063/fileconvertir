@@ -24,7 +24,7 @@ export default function ConverterPage() {
     ];
   }, [seo, route]);
   useDocumentHead({
-    title: seo?.title ?? 'QuickConvert',
+    title: seo?.title ?? 'FileConvertir',
     description: seo?.metaDescription ?? '',
     canonical: route ? `${SITE_URL}/${route.slug}` : undefined,
     jsonLd,

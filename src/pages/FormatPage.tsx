@@ -24,7 +24,7 @@ export default function FormatPage() {
     ];
   }, [seo, page]);
   useDocumentHead({
-    title: seo?.title ?? 'QuickConvert',
+    title: seo?.title ?? 'FileConvertir',
     description: seo?.metaDescription ?? '',
     canonical: page ? `${SITE_URL}/to-${page.targetFormat}` : undefined,
     jsonLd,

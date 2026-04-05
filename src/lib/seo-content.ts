@@ -117,7 +117,7 @@ export function getConverterSEO(source: string, target: string): ConverterSEO {
   const t = name(target);
 
   return {
-    title: `${s} to ${t} Converter — Free Online | QuickConvert`,
+    title: `${s} to ${t} Converter — Free Online | FileConvertir`,
     metaDescription: `Convert ${s} files to ${t} format instantly in your browser. No upload to servers, no signup required. Free and private.`,
     heading: `Convert ${s} to ${t}`,
     description: `Instantly convert your ${s} files to ${t} format. The conversion runs entirely in your browser — your files never leave your device.`,
@@ -131,7 +131,7 @@ export function getConverterSEO(source: string, target: string): ConverterSEO {
 export function getFormatSEO(targetFormat: string): FormatSEO {
   const t = name(targetFormat);
   return {
-    title: `Convert to ${t} — Free Online Converter | QuickConvert`,
+    title: `Convert to ${t} — Free Online Converter | FileConvertir`,
     metaDescription: `Convert files to ${t} format online for free. Supports multiple input formats. No upload, no signup — runs in your browser.`,
     heading: `Convert to ${t}`,
     description: `Convert your files to ${t} format instantly. Upload any supported file and download the converted ${t} file in seconds.`,
@@ -152,7 +152,7 @@ export function getFormatSEO(targetFormat: string): FormatSEO {
 export function getSourceFormatSEO(sourceFormat: string): FormatSEO {
   const s = name(sourceFormat);
   return {
-    title: `${s} File Converter — Free Online | QuickConvert`,
+    title: `${s} File Converter — Free Online | FileConvertir`,
     metaDescription: `Convert ${s} files to other formats instantly in your browser. No upload, no signup — 100% private.`,
     heading: `${s} File Converter`,
     description: `Convert your ${s} files to any supported format instantly. All processing happens in your browser — your files never leave your device.`,
