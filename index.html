@@ -10,13 +10,26 @@
     <meta name="keywords" content="file converter, image converter, pdf converter, audio converter, video converter, online converter, free converter, png to jpg, jpg to pdf, mp3 converter, webp converter, fileconvertir" />
     <meta name="author" content="FileConvertir" />
     <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
-    <meta name="theme-color" content="#6366F1" />
+    <meta name="theme-color" content="#FBF3DC" />
+    <script>
+      (function () {
+        try {
+          var saved = localStorage.getItem('fc-theme');
+          var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+          var theme = saved === 'light' || saved === 'dark' ? saved : (prefersDark ? 'dark' : 'light');
+          if (theme === 'dark') document.documentElement.classList.add('dark');
+          document.documentElement.style.colorScheme = theme;
+          var meta = document.querySelector('meta[name="theme-color"]');
+          if (meta) meta.content = theme === 'dark' ? '#0A0A0A' : '#FBF3DC';
+        } catch (e) {}
+      })();
+    </script>
     <link rel="canonical" href="https://fileconvertir.com/" />
 
     <!-- Favicon — SVG for modern browsers, ICO fallback -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="alternate icon" type="image/x-icon" href="/favicon.ico" />
-    <link rel="mask-icon" href="/favicon.svg" color="#6366F1" />
+    <link rel="mask-icon" href="/favicon.svg" color="#0A0A0A" />
 
     <!-- Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-KMFZDE0H67"></script>

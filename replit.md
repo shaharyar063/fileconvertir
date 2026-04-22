@@ -45,13 +45,12 @@ plugins/            # Vite plugins (sitemap generator)
 
 - **Brand name**: FileConvertir
 - **Domain**: fileconvertir.com
-- **Logo**: Custom SVG arrows-cycle icon (two arrows: white right-arrow + cyan left-arrow on indigo rounded square)
-- **Primary color**: Electric Indigo — `hsl(239, 84%, 67%)` / `#6366F1`
-- **Background**: Deep navy-black — `hsl(235, 28%, 8%)` — not pure black, easier on eyes
-- **Accent**: Cyan `#a5f3fc` for conversion direction arrows
+- **Brand system (April 2026 rebrand)**: strict two-color palette inspired by glyphy.io — **cream `#FBF3DC`** (`hsl(45 80% 92%)`) and **near-black `#0A0A0A`** (`hsl(0 0% 4%)`). Light mode = cream bg + black fg. Dark mode = black bg + cream fg. Primary always equals foreground; switching modes literally swaps the two colors. Defined as CSS variables in `src/index.css` under `:root` and `.dark`.
+- **Logo**: `src/components/BrandLogo.tsx` — rounded square in `hsl(var(--foreground))` with two-arrow conversion mark cut to `hsl(var(--background))`. Inverts automatically with the theme.
+- **Theme toggle**: `src/components/ThemeToggle.tsx` — top-right of header, sun/moon icon. State held in `src/hooks/use-theme.tsx` (localStorage `fc-theme`, defaults to system preference). FOUC-prevention script in `index.html` sets the `dark` class before React mounts.
 - **Font**: Inter (Google Fonts)
-- **Theme**: Dark-only, perceptually uniform OKLCH-based palette
-- **Favicon**: `/public/favicon.svg` — SVG with indigo rounded-square + dual-arrow icon
+- **Theme**: Light + dark, with light as the default for first-time visitors (matches glyphy.io reference). System preference respected.
+- **Favicon**: `/public/favicon.svg` — black rounded-square with cream conversion arrows; `/public/favicon.ico` regenerated to match
 
 ## Key Files
 
@@ -67,7 +66,7 @@ plugins/            # Vite plugins (sitemap generator)
 
 - `scroll-behavior: smooth` on `html`
 - Subtle radial gradient on `body` background for depth
-- `:focus-visible` ring using brand indigo
+- `:focus-visible` ring using foreground color (theme-aware)
 - `.card-hover` utility: gentle lift + shadow on hover
 - Category cards: border color + shadow glow on hover
 - FAQ accordion: hover color transition on questions

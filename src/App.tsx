@@ -9,11 +9,13 @@ import Index from "./pages/Index";
 import SlugRouter from "./pages/SlugRouter";
 import FormatPage from "./pages/FormatPage";
 import NotFound from "./pages/NotFound";
+import { ThemeProvider } from "./hooks/use-theme";
 
 const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
+    <ThemeProvider>
     <TooltipProvider>
       <Toaster />
       <Sonner />
@@ -29,6 +31,7 @@ const App = () => (
       </BrowserRouter>
       <Analytics />
     </TooltipProvider>
+    </ThemeProvider>
   </QueryClientProvider>
 );
 

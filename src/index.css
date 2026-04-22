@@ -1,59 +1,115 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/*
+ * Two-color brand system.
+ * Light mode = cream background + near-black foreground.
+ * Dark mode  = near-black background + cream foreground.
+ * Primary always equals foreground; primary-foreground always equals background.
+ * Switching modes literally swaps the two colors.
+ *
+ * Cream:      #FBF3DC  →  hsl(45 80% 92%)
+ * Near-black: #0A0A0A  →  hsl(0 0% 4%)
+ */
+
 @layer base {
+  /* Light mode (default — matches the glyphy.io aesthetic) */
   :root {
-    /* Background: deep navy-black, not pure black — easier on eyes */
-    --background: 235 28% 8%;
-    --foreground: 230 20% 94%;
+    --background: 45 80% 92%;
+    --foreground: 0 0% 4%;
 
-    --card: 235 30% 11%;
-    --card-foreground: 230 20% 94%;
+    --card: 45 70% 88%;
+    --card-foreground: 0 0% 4%;
 
-    --popover: 235 30% 11%;
-    --popover-foreground: 230 20% 94%;
+    --popover: 45 80% 92%;
+    --popover-foreground: 0 0% 4%;
 
-    /* Primary: electric indigo — trustworthy, modern, great contrast */
-    --primary: 239 84% 67%;
-    --primary-foreground: 0 0% 100%;
+    --primary: 0 0% 4%;
+    --primary-foreground: 45 80% 92%;
 
-    --secondary: 235 25% 17%;
-    --secondary-foreground: 230 15% 80%;
+    --secondary: 45 60% 84%;
+    --secondary-foreground: 0 0% 4%;
 
-    --muted: 235 25% 17%;
-    --muted-foreground: 230 12% 55%;
+    --muted: 45 50% 86%;
+    --muted-foreground: 0 0% 30%;
 
-    --accent: 235 25% 17%;
-    --accent-foreground: 230 20% 94%;
+    --accent: 45 60% 84%;
+    --accent-foreground: 0 0% 4%;
 
-    --destructive: 0 72% 51%;
-    --destructive-foreground: 0 0% 100%;
+    --destructive: 0 72% 45%;
+    --destructive-foreground: 45 80% 92%;
 
-    --border: 235 28% 18%;
-    --input: 235 28% 18%;
-    --ring: 239 84% 67%;
+    --border: 45 25% 75%;
+    --input: 45 25% 75%;
+    --ring: 0 0% 4%;
 
     --radius: 0.75rem;
 
-    --success: 152 60% 42%;
-    --success-foreground: 0 0% 100%;
-    --warning: 38 90% 52%;
-    --warning-foreground: 0 0% 8%;
+    --success: 152 60% 35%;
+    --success-foreground: 45 80% 92%;
+    --warning: 30 80% 40%;
+    --warning-foreground: 45 80% 92%;
 
-    /* Cyan accent for conversion arrows and highlights */
-    --cyan: 195 100% 85%;
+    --cyan: 0 0% 4%;
 
-    --sidebar-background: 235 28% 9%;
-    --sidebar-foreground: 230 15% 80%;
-    --sidebar-primary: 239 84% 67%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 235 25% 17%;
-    --sidebar-accent-foreground: 230 15% 80%;
-    --sidebar-border: 235 28% 18%;
-    --sidebar-ring: 239 84% 67%;
+    --sidebar-background: 45 70% 88%;
+    --sidebar-foreground: 0 0% 4%;
+    --sidebar-primary: 0 0% 4%;
+    --sidebar-primary-foreground: 45 80% 92%;
+    --sidebar-accent: 45 60% 84%;
+    --sidebar-accent-foreground: 0 0% 4%;
+    --sidebar-border: 45 25% 75%;
+    --sidebar-ring: 0 0% 4%;
+  }
+
+  /* Dark mode — colors literally swap places */
+  .dark {
+    --background: 0 0% 4%;
+    --foreground: 45 80% 92%;
+
+    --card: 0 0% 8%;
+    --card-foreground: 45 80% 92%;
+
+    --popover: 0 0% 4%;
+    --popover-foreground: 45 80% 92%;
+
+    --primary: 45 80% 92%;
+    --primary-foreground: 0 0% 4%;
+
+    --secondary: 0 0% 12%;
+    --secondary-foreground: 45 80% 92%;
+
+    --muted: 0 0% 11%;
+    --muted-foreground: 45 30% 70%;
+
+    --accent: 0 0% 12%;
+    --accent-foreground: 45 80% 92%;
+
+    --destructive: 0 72% 55%;
+    --destructive-foreground: 45 80% 92%;
+
+    --border: 45 15% 18%;
+    --input: 45 15% 18%;
+    --ring: 45 80% 92%;
+
+    --success: 152 60% 50%;
+    --success-foreground: 0 0% 4%;
+    --warning: 38 90% 60%;
+    --warning-foreground: 0 0% 4%;
+
+    --cyan: 45 80% 92%;
+
+    --sidebar-background: 0 0% 4%;
+    --sidebar-foreground: 45 80% 92%;
+    --sidebar-primary: 45 80% 92%;
+    --sidebar-primary-foreground: 0 0% 4%;
+    --sidebar-accent: 0 0% 12%;
+    --sidebar-accent-foreground: 45 80% 92%;
+    --sidebar-border: 45 15% 18%;
+    --sidebar-ring: 45 80% 92%;
   }
 }
 
@@ -68,50 +124,29 @@
 
   body {
     @apply bg-background text-foreground font-sans antialiased;
-    /* Subtle radial gradient for depth — draws the eye inward */
-    background-image: radial-gradient(
-      ellipse 80% 50% at 50% -10%,
-      hsl(239 84% 67% / 0.07) 0%,
-      transparent 70%
-    );
-    background-attachment: fixed;
+    transition: background-color 0.2s ease, color 0.2s ease;
   }
 
-  /* Better focus rings throughout */
   :focus-visible {
     @apply outline-none ring-2 ring-primary/70 ring-offset-2 ring-offset-background;
   }
 }
 
 @layer utilities {
-  .glow-primary {
-    box-shadow: 0 0 24px hsl(239 84% 67% / 0.18), 0 0 64px hsl(239 84% 67% / 0.06);
-  }
-
-  /* Legacy alias kept for safety */
+  .glow-primary,
   .glow-orange {
-    box-shadow: 0 0 24px hsl(239 84% 67% / 0.18), 0 0 64px hsl(239 84% 67% / 0.06);
+    box-shadow: 0 0 24px hsl(var(--foreground) / 0.12), 0 0 64px hsl(var(--foreground) / 0.04);
   }
 
-  /* Smooth card lift on hover */
   .card-hover {
     @apply transition-all duration-200 ease-out;
   }
   .card-hover:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 32px hsl(239 84% 67% / 0.12);
+    box-shadow: 0 8px 32px hsl(var(--foreground) / 0.10);
   }
 
-  /* Subtle shimmer on the brand name */
   .brand-text {
-    background: linear-gradient(
-      90deg,
-      hsl(230 20% 94%) 0%,
-      hsl(239 84% 82%) 50%,
-      hsl(230 20% 94%) 100%
-    );
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: hsl(var(--foreground));
   }
 }
