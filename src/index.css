@@ -5,23 +5,26 @@
 @tailwind utilities;
 
 /*
- * Two-color brand system.
- * Light mode = cream background + near-black foreground.
- * Dark mode  = near-black background + cream foreground.
- * Primary always equals foreground; primary-foreground always equals background.
- * Switching modes literally swaps the two colors.
+ * Strict two-color brand system.
+ * Only two colors exist in the entire UI:
+ *   Cream      #FBF3DC  →  hsl(45 80% 92%)
+ *   Near-black #0A0A0A  →  hsl(0 0% 4%)
  *
- * Cream:      #FBF3DC  →  hsl(45 80% 92%)
- * Near-black: #0A0A0A  →  hsl(0 0% 4%)
+ * No tints, no shades, no opacity-blended in-betweens.
+ * Every CSS variable resolves to one of those two values.
+ * Light mode: cream is background, black is foreground.
+ * Dark mode: the two swap.
+ * Visual hierarchy comes from typography (size, weight, spacing),
+ * never from color shifts.
  */
 
 @layer base {
-  /* Light mode (default — matches the glyphy.io aesthetic) */
+  /* Light mode — cream background, black ink */
   :root {
     --background: 45 80% 92%;
     --foreground: 0 0% 4%;
 
-    --card: 45 70% 88%;
+    --card: 45 80% 92%;
     --card-foreground: 0 0% 4%;
 
     --popover: 45 80% 92%;
@@ -30,47 +33,47 @@
     --primary: 0 0% 4%;
     --primary-foreground: 45 80% 92%;
 
-    --secondary: 45 60% 84%;
-    --secondary-foreground: 0 0% 4%;
+    --secondary: 0 0% 4%;
+    --secondary-foreground: 45 80% 92%;
 
-    --muted: 45 50% 86%;
-    --muted-foreground: 0 0% 30%;
+    --muted: 45 80% 92%;
+    --muted-foreground: 0 0% 4%;
 
-    --accent: 45 60% 84%;
-    --accent-foreground: 0 0% 4%;
+    --accent: 0 0% 4%;
+    --accent-foreground: 45 80% 92%;
 
-    --destructive: 0 72% 45%;
+    --destructive: 0 0% 4%;
     --destructive-foreground: 45 80% 92%;
 
-    --border: 45 25% 75%;
-    --input: 45 25% 75%;
+    --border: 0 0% 4%;
+    --input: 0 0% 4%;
     --ring: 0 0% 4%;
 
     --radius: 0.75rem;
 
-    --success: 152 60% 35%;
+    --success: 0 0% 4%;
     --success-foreground: 45 80% 92%;
-    --warning: 30 80% 40%;
+    --warning: 0 0% 4%;
     --warning-foreground: 45 80% 92%;
 
     --cyan: 0 0% 4%;
 
-    --sidebar-background: 45 70% 88%;
+    --sidebar-background: 45 80% 92%;
     --sidebar-foreground: 0 0% 4%;
     --sidebar-primary: 0 0% 4%;
     --sidebar-primary-foreground: 45 80% 92%;
-    --sidebar-accent: 45 60% 84%;
-    --sidebar-accent-foreground: 0 0% 4%;
-    --sidebar-border: 45 25% 75%;
+    --sidebar-accent: 0 0% 4%;
+    --sidebar-accent-foreground: 45 80% 92%;
+    --sidebar-border: 0 0% 4%;
     --sidebar-ring: 0 0% 4%;
   }
 
-  /* Dark mode — colors literally swap places */
+  /* Dark mode — exact swap of the two colors */
   .dark {
     --background: 0 0% 4%;
     --foreground: 45 80% 92%;
 
-    --card: 0 0% 8%;
+    --card: 0 0% 4%;
     --card-foreground: 45 80% 92%;
 
     --popover: 0 0% 4%;
@@ -79,25 +82,25 @@
     --primary: 45 80% 92%;
     --primary-foreground: 0 0% 4%;
 
-    --secondary: 0 0% 12%;
-    --secondary-foreground: 45 80% 92%;
+    --secondary: 45 80% 92%;
+    --secondary-foreground: 0 0% 4%;
 
-    --muted: 0 0% 11%;
-    --muted-foreground: 45 30% 70%;
+    --muted: 0 0% 4%;
+    --muted-foreground: 45 80% 92%;
 
-    --accent: 0 0% 12%;
-    --accent-foreground: 45 80% 92%;
+    --accent: 45 80% 92%;
+    --accent-foreground: 0 0% 4%;
 
-    --destructive: 0 72% 55%;
-    --destructive-foreground: 45 80% 92%;
+    --destructive: 45 80% 92%;
+    --destructive-foreground: 0 0% 4%;
 
-    --border: 45 15% 18%;
-    --input: 45 15% 18%;
+    --border: 45 80% 92%;
+    --input: 45 80% 92%;
     --ring: 45 80% 92%;
 
-    --success: 152 60% 50%;
+    --success: 45 80% 92%;
     --success-foreground: 0 0% 4%;
-    --warning: 38 90% 60%;
+    --warning: 45 80% 92%;
     --warning-foreground: 0 0% 4%;
 
     --cyan: 45 80% 92%;
@@ -106,9 +109,9 @@
     --sidebar-foreground: 45 80% 92%;
     --sidebar-primary: 45 80% 92%;
     --sidebar-primary-foreground: 0 0% 4%;
-    --sidebar-accent: 0 0% 12%;
-    --sidebar-accent-foreground: 45 80% 92%;
-    --sidebar-border: 45 15% 18%;
+    --sidebar-accent: 45 80% 92%;
+    --sidebar-accent-foreground: 0 0% 4%;
+    --sidebar-border: 45 80% 92%;
     --sidebar-ring: 45 80% 92%;
   }
 }
@@ -128,22 +131,22 @@
   }
 
   :focus-visible {
-    @apply outline-none ring-2 ring-primary/70 ring-offset-2 ring-offset-background;
+    @apply outline-none ring-2 ring-foreground ring-offset-2 ring-offset-background;
   }
 }
 
 @layer utilities {
+  /* Glow / shadow utilities collapsed to flat borders — no third color allowed. */
   .glow-primary,
   .glow-orange {
-    box-shadow: 0 0 24px hsl(var(--foreground) / 0.12), 0 0 64px hsl(var(--foreground) / 0.04);
+    box-shadow: none;
   }
 
   .card-hover {
-    @apply transition-all duration-200 ease-out;
+    @apply transition-transform duration-200 ease-out;
   }
   .card-hover:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 32px hsl(var(--foreground) / 0.10);
   }
 
   .brand-text {
