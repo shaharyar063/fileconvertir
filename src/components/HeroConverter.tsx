@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef } from 'react';
+import { useState, useCallback, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FormatPickerDropdown } from './FormatPickerDropdown';
 import {
@@ -32,6 +32,22 @@ export function HeroConverter({ initialSource, initialTarget }: HeroConverterPro
     addFiles, removeFile, convertAll, downloadFile, downloadAllAsZip, reset,
     targetFormat, setTargetFormat: setBulkTarget,
   } = useBulkConverter(initialTarget);
+
+  // Sync the dropdowns to incoming route props. The same HeroConverter
+  // instance is reused across converter pages (Image→PDF, PNG→JPG, etc.),
+  // so when the route changes we must mirror the new initial formats into
+  // local state — otherwise the page content updates but the pickers stay
+  // stuck on the previously chosen formats.
+  useEffect(() => {
+    if (initialSource !== undefined) setSourceFormat(initialSource);
+  }, [initialSource]);
+
+  useEffect(() => {
+    if (initialTarget !== undefined) {
+      setTargetFmt(initialTarget);
+      setBulkTarget(initialTarget);
+    }
+  }, [initialTarget, setBulkTarget]);
 
   const isConverting = status === 'converting';
   const isDone = status === 'done';
