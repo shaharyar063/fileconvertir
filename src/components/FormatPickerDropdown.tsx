@@ -121,9 +121,17 @@ export function FormatPickerDropdown({
       {open && (
         <>
           <div className="fixed inset-0 z-40" onClick={() => setOpen(false)} />
+          {/*
+            Panel spans the entire row of pickers (CONVERT + arrow gap + TO).
+            The arrow column is 20px (icon) plus 12px gap on each side = 44px.
+            Convert (ltr) panel anchors left, stretches right across the gap + To button.
+            To (rtl) panel anchors right, stretches left across the gap + Convert button.
+          */}
           <div className={cn(
-            'absolute top-[calc(100%+6px)] z-50 w-full overflow-hidden rounded-xl border border-border bg-card',
-            isRtl ? 'right-0' : 'left-0',
+            'absolute top-[calc(100%+6px)] z-50 overflow-hidden rounded-xl border border-border bg-card',
+            isRtl
+              ? 'right-0 left-[calc(-100%-44px)]'
+              : 'left-0 right-[calc(-100%-44px)]',
           )}>
             <div className="flex">
               {isRtl ? (
