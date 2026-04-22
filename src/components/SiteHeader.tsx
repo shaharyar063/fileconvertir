@@ -4,8 +4,8 @@ import { ThemeToggle } from './ThemeToggle';
 
 export function SiteHeader() {
   return (
-    <header className="border-b border-border bg-background sticky top-0 z-50">
-      <div className="mx-auto flex max-w-4xl items-center justify-between px-4 py-3">
+    <header className="section-invert bg-background text-foreground border-b border-border sticky top-0 z-50">
+      <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3">
         <Link
           to="/"
           className="flex items-center gap-2.5 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/60 rounded-lg px-1"
@@ -20,7 +20,7 @@ export function SiteHeader() {
         <div className="flex items-center gap-2" aria-label="Site navigation">
           <a
             href="#categories"
-            className="hidden sm:inline-flex items-center text-xs font-medium text-muted-foreground hover:text-foreground transition-colors px-3 py-1.5 rounded-lg hover:bg-secondary"
+            className="hidden sm:inline-flex items-center text-xs font-bold uppercase tracking-wider text-foreground hover:opacity-70 transition-opacity px-3 py-1.5 rounded-lg"
           >
             All Formats
           </a>

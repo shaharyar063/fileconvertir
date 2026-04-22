@@ -6,7 +6,7 @@ import { Shield, Zap, Globe, ArrowRight, CheckCircle, Image, FileText, Music, Fi
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@/components/ui/accordion';
 import { useDocumentHead } from '@/hooks/use-document-head';
 import { buildFAQSchema, buildWebAppSchema, buildWebSiteSchema, SITE_URL } from '@/lib/seo-jsonld';
-import { useMemo } from 'react';
+import { useMemo, ReactNode } from 'react';
 
 const popularConversions: { slug: string; label: string; tagline: string }[] = [
   { slug: 'heic-to-jpg', label: 'HEIC to JPG', tagline: 'Open iPhone photos on Windows' },
@@ -45,6 +45,34 @@ const faqs = [
   { q: 'Can I convert multiple files at once?', a: 'Yes! You can batch convert up to 20 files at once. Select multiple files, choose your output format, and download them all individually or as a single ZIP archive.' },
 ];
 
+/**
+ * Full-bleed section band. `invert` flips the two brand colors locally
+ * so we get the glyphy.io rhythm of alternating light/dark stripes.
+ */
+function Band({
+  invert = false,
+  children,
+  id,
+  ariaLabel,
+  className = '',
+}: {
+  invert?: boolean;
+  children: ReactNode;
+  id?: string;
+  ariaLabel?: string;
+  className?: string;
+}) {
+  return (
+    <section
+      id={id}
+      aria-label={ariaLabel}
+      className={`${invert ? 'section-invert ' : ''}bg-background text-foreground ${className}`}
+    >
+      <div className="mx-auto max-w-3xl px-4 py-14 md:py-20">{children}</div>
+    </section>
+  );
+}
+
 export default function Index() {
   const jsonLd = useMemo(() => [buildWebSiteSchema(), buildWebAppSchema(), buildFAQSchema(faqs)], []);
   useDocumentHead({
@@ -55,90 +83,98 @@ export default function Index() {
   });
 
   return (
-    <article className="mx-auto max-w-3xl px-4 py-6">
-
-      {/* Title */}
-      <header>
-        <h1 className="text-3xl font-extrabold text-foreground md:text-4xl">
-          Free Online File Converter
-        </h1>
-        <p className="mt-3 max-w-xl text-base text-muted-foreground leading-relaxed">
-          Convert images, documents, audio, video, fonts & archives instantly in your browser. 100% private — your files never leave your device.
-        </p>
-      </header>
-
-      {/* Converter Tool */}
-      <section className="mt-8">
-        <HeroConverter />
-      </section>
-
-      {/* Most Popular Conversions — high-traffic priority pages */}
-      <section className="mt-12" aria-label="Most popular conversions">
-        <div className="flex items-center gap-2">
-          <TrendingUp className="h-4 w-4 text-primary" />
-          <h2 className="text-xl font-extrabold text-foreground">Most Popular Conversions</h2>
+    <>
+      {/* HERO — light band */}
+      <Band>
+        <header>
+          <h1 className="text-4xl font-extrabold tracking-tight text-foreground md:text-5xl">
+            Free Online File Converter
+          </h1>
+          <p className="mt-4 max-w-xl text-base text-foreground/90 leading-relaxed">
+            Convert images, documents, audio, video, fonts & archives instantly in your browser. 100% private — your files never leave your device.
+          </p>
+        </header>
+        <div className="mt-8">
+          <HeroConverter />
         </div>
-        <p className="mt-2 text-sm text-muted-foreground">The conversions our visitors use most — all run 100% in your browser.</p>
-        <div className="mt-5 grid gap-3 sm:grid-cols-2 md:grid-cols-3">
+      </Band>
+
+      {/* MOST POPULAR — dark band */}
+      <Band invert ariaLabel="Most popular conversions">
+        <div className="flex items-center gap-2">
+          <TrendingUp className="h-4 w-4 text-foreground" />
+          <h2 className="text-2xl md:text-3xl font-extrabold tracking-tight text-foreground">
+            Most Popular Conversions
+          </h2>
+        </div>
+        <p className="mt-3 text-sm text-foreground/80">
+          The conversions our visitors use most — all run 100% in your browser.
+        </p>
+        <div className="mt-6 grid gap-3 sm:grid-cols-2 md:grid-cols-3">
           {popularConversions.map(p => (
             <Link
               key={p.slug}
               to={`/${p.slug}`}
-              className="group rounded-xl border border-border bg-card p-4 transition-all hover:border-primary hover:-translate-y-0.5"
+              className="group rounded-xl border border-border bg-background p-4 transition-transform hover:-translate-y-0.5"
             >
               <div className="flex items-center justify-between">
-                <span className="text-sm font-bold text-foreground group-hover:text-primary transition-colors">{p.label}</span>
-                <ArrowRight className="h-3.5 w-3.5 text-muted-foreground group-hover:text-primary transition-colors" />
+                <span className="text-sm font-bold text-foreground">{p.label}</span>
+                <ArrowRight className="h-3.5 w-3.5 text-foreground transition-transform group-hover:translate-x-0.5" />
               </div>
-              <p className="mt-1 text-xs text-muted-foreground">{p.tagline}</p>
+              <p className="mt-1 text-xs text-foreground/80">{p.tagline}</p>
             </Link>
           ))}
         </div>
-      </section>
+      </Band>
 
-      {/* Features Row */}
-      <section className="mt-12 grid gap-4 md:grid-cols-3" aria-label="Key features">
-        {[
-          { icon: Shield, title: '100% Private', desc: 'Files never leave your device. All processing happens in your browser.' },
-          { icon: Zap, title: 'Lightning Fast', desc: 'No upload wait. Conversions start instantly using local processing.' },
-          { icon: Globe, title: 'No Signup', desc: 'Free to use, no account required. Just drop a file and convert.' },
-        ].map(f => (
-          <div
-            key={f.title}
-            className="rounded-xl border border-border bg-card p-5 card-hover"
-          >
-            <div className="flex items-center gap-3">
-              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                <f.icon className="h-4 w-4" />
+      {/* FEATURES — light band */}
+      <Band ariaLabel="Key features">
+        <h2 className="text-2xl md:text-3xl font-extrabold tracking-tight text-foreground">
+          Built for speed and privacy
+        </h2>
+        <div className="mt-6 grid gap-4 md:grid-cols-3">
+          {[
+            { icon: Shield, title: '100% Private', desc: 'Files never leave your device. All processing happens in your browser.' },
+            { icon: Zap, title: 'Lightning Fast', desc: 'No upload wait. Conversions start instantly using local processing.' },
+            { icon: Globe, title: 'No Signup', desc: 'Free to use, no account required. Just drop a file and convert.' },
+          ].map(f => (
+            <div
+              key={f.title}
+              className="rounded-xl border border-border bg-background p-5 card-hover"
+            >
+              <div className="flex items-center gap-3">
+                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-border">
+                  <f.icon className="h-4 w-4 text-foreground" />
+                </div>
+                <h3 className="text-sm font-bold text-foreground">{f.title}</h3>
               </div>
-              <h2 className="text-sm font-bold text-foreground">{f.title}</h2>
+              <p className="mt-3 text-xs text-foreground/80 leading-relaxed">{f.desc}</p>
             </div>
-            <p className="mt-2 text-xs text-muted-foreground leading-relaxed">{f.desc}</p>
-          </div>
-        ))}
-      </section>
+          ))}
+        </div>
+      </Band>
 
-      {/* Why Use FileConvertir */}
-      <section className="mt-12">
-        <h2 className="text-xl font-extrabold text-foreground">
+      {/* WHY — dark band */}
+      <Band invert>
+        <h2 className="text-2xl md:text-3xl font-extrabold tracking-tight text-foreground">
           Why Use FileConvertir?
         </h2>
-        <ul className="mt-4 space-y-3">
+        <ul className="mt-6 space-y-3">
           {useCases.map((uc, i) => (
-            <li key={i} className="flex items-start gap-3 text-sm text-muted-foreground">
-              <CheckCircle className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+            <li key={i} className="flex items-start gap-3 text-sm text-foreground/95">
+              <CheckCircle className="mt-0.5 h-4 w-4 shrink-0 text-foreground" />
               <span>{uc}</span>
             </li>
           ))}
         </ul>
-      </section>
+      </Band>
 
-      {/* Category Sections */}
-      <section className="mt-12" id="categories" aria-label="Conversion categories">
-        <h2 className="text-xl font-extrabold text-foreground">
+      {/* CATEGORIES — light band */}
+      <Band id="categories" ariaLabel="Conversion categories">
+        <h2 className="text-2xl md:text-3xl font-extrabold tracking-tight text-foreground">
           All Conversion Categories
         </h2>
-        <p className="mt-2 text-sm text-muted-foreground">
+        <p className="mt-3 text-sm text-foreground/80">
           Choose a category below or select formats above to get started.
         </p>
 
@@ -149,27 +185,27 @@ export default function Index() {
             return (
               <div
                 key={cat.key}
-                className="rounded-xl border border-border bg-card p-5 transition-all duration-200 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/5 hover:-translate-y-0.5"
+                className="rounded-xl border border-border bg-background p-5 card-hover"
               >
                 <div className="flex items-center gap-3">
-                  <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                    <cat.icon className="h-4 w-4" />
+                  <div className="flex h-9 w-9 items-center justify-center rounded-lg border border-border">
+                    <cat.icon className="h-4 w-4 text-foreground" />
                   </div>
                   <div>
                     <h3 className="text-sm font-bold text-foreground">{cat.label}</h3>
-                    <p className="text-xs text-muted-foreground">{routes.length} converters</p>
+                    <p className="text-xs text-foreground/80">{routes.length} converters</p>
                   </div>
                 </div>
-                <p className="mt-3 text-xs text-muted-foreground leading-relaxed">{cat.desc}</p>
+                <p className="mt-3 text-xs text-foreground/80 leading-relaxed">{cat.desc}</p>
                 <div className="mt-4 space-y-1">
                   {topRoutes.map(r => (
                     <Link
                       key={r.slug}
                       to={`/${r.slug}`}
-                      className="flex w-full items-center justify-between rounded-lg px-3 py-2 text-left text-xs font-medium text-foreground transition-colors hover:bg-primary/10 hover:text-primary group"
+                      className="flex w-full items-center justify-between rounded-lg px-3 py-2 text-left text-xs font-medium text-foreground transition-transform hover:translate-x-0.5 group"
                     >
                       <span>{r.label}</span>
-                      <ArrowRight className="h-3 w-3 text-muted-foreground group-hover:text-primary transition-colors" />
+                      <ArrowRight className="h-3 w-3 text-foreground transition-transform group-hover:translate-x-0.5" />
                     </Link>
                   ))}
                 </div>
@@ -177,26 +213,26 @@ export default function Index() {
             );
           })}
         </div>
-      </section>
+      </Band>
 
-      {/* FAQs */}
-      <section className="mt-12" aria-label="Frequently asked questions">
-        <h2 className="text-xl font-extrabold text-foreground">
+      {/* FAQ — dark band */}
+      <Band invert ariaLabel="Frequently asked questions">
+        <h2 className="text-2xl md:text-3xl font-extrabold tracking-tight text-foreground">
           Frequently Asked Questions
         </h2>
-        <Accordion type="single" collapsible className="mt-4">
+        <Accordion type="single" collapsible className="mt-6">
           {faqs.map((faq, i) => (
-            <AccordionItem key={i} value={`faq-${i}`}>
-              <AccordionTrigger className="text-sm text-foreground hover:no-underline hover:text-primary transition-colors text-left">
+            <AccordionItem key={i} value={`faq-${i}`} className="border-border">
+              <AccordionTrigger className="text-sm text-foreground hover:no-underline text-left">
                 {faq.q}
               </AccordionTrigger>
-              <AccordionContent className="text-sm text-muted-foreground leading-relaxed">
+              <AccordionContent className="text-sm text-foreground/85 leading-relaxed">
                 {faq.a}
               </AccordionContent>
             </AccordionItem>
           ))}
         </Accordion>
-      </section>
-    </article>
+      </Band>
+    </>
   );
 }

@@ -153,3 +153,62 @@
     color: hsl(var(--foreground));
   }
 }
+
+/*
+ * Section invert — full-bleed band that locally swaps the two colors.
+ * Apply `.section-invert` to any wrapper (a <section>, <header>, etc.) and
+ * every variable inside it flips: background ↔ foreground, primary ↔ secondary,
+ * borders, cards, everything. Children written with `bg-background`,
+ * `text-foreground`, `border-border`, etc. need no changes.
+ *
+ * Combined with the global light/dark toggle this gives the glyphy.io rhythm:
+ * sections alternate light→dark→light→dark, and the toggle just swaps which
+ * physical color is "light" vs "dark" — the rhythm itself is preserved.
+ */
+@layer base {
+  /* In light mode, an inverted section becomes near-black with cream ink. */
+  .section-invert {
+    --background: 0 0% 4%;
+    --foreground: 45 80% 92%;
+    --card: 0 0% 4%;
+    --card-foreground: 45 80% 92%;
+    --popover: 0 0% 4%;
+    --popover-foreground: 45 80% 92%;
+    --primary: 45 80% 92%;
+    --primary-foreground: 0 0% 4%;
+    --secondary: 45 80% 92%;
+    --secondary-foreground: 0 0% 4%;
+    --muted: 0 0% 4%;
+    --muted-foreground: 45 80% 92%;
+    --accent: 45 80% 92%;
+    --accent-foreground: 0 0% 4%;
+    --destructive: 45 80% 92%;
+    --destructive-foreground: 0 0% 4%;
+    --border: 45 80% 92%;
+    --input: 45 80% 92%;
+    --ring: 45 80% 92%;
+  }
+
+  /* In dark mode, an inverted section becomes cream with black ink — the swap mirrors. */
+  .dark .section-invert {
+    --background: 45 80% 92%;
+    --foreground: 0 0% 4%;
+    --card: 45 80% 92%;
+    --card-foreground: 0 0% 4%;
+    --popover: 45 80% 92%;
+    --popover-foreground: 0 0% 4%;
+    --primary: 0 0% 4%;
+    --primary-foreground: 45 80% 92%;
+    --secondary: 0 0% 4%;
+    --secondary-foreground: 45 80% 92%;
+    --muted: 45 80% 92%;
+    --muted-foreground: 0 0% 4%;
+    --accent: 0 0% 4%;
+    --accent-foreground: 45 80% 92%;
+    --destructive: 0 0% 4%;
+    --destructive-foreground: 45 80% 92%;
+    --border: 0 0% 4%;
+    --input: 0 0% 4%;
+    --ring: 0 0% 4%;
+  }
+}
