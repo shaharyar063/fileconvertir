@@ -46,7 +46,7 @@ export function FormatPickerDropdown({
 
   const sidebar = (
     <div className={cn(
-      'w-[100px] shrink-0 bg-secondary/30 py-1 sm:w-[120px] md:w-[140px]',
+      'w-[88px] shrink-0 py-1 sm:w-[110px] md:w-[130px]',
       isRtl ? 'border-l border-border' : 'border-r border-border',
     )}>
       {categories.map(cat => {
@@ -122,7 +122,7 @@ export function FormatPickerDropdown({
         <>
           <div className="fixed inset-0 z-40" onClick={() => setOpen(false)} />
           <div className={cn(
-            'absolute top-[calc(100%+6px)] z-50 w-[min(calc(100vw-2.5rem),400px)] overflow-hidden rounded-xl border border-border bg-card shadow-xl shadow-black/40',
+            'absolute top-[calc(100%+6px)] z-50 w-full overflow-hidden rounded-xl border border-border bg-card',
             isRtl ? 'right-0' : 'left-0',
           )}>
             <div className="flex">
