@@ -74,6 +74,21 @@ export function buildBreadcrumbSchema(items: { name: string; url: string }[]) {
   };
 }
 
+export function buildHowToSchema(name: string, steps: { name: string; text: string }[], totalTime = 'PT1M') {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'HowTo',
+    name,
+    totalTime,
+    step: steps.map((s, i) => ({
+      '@type': 'HowToStep',
+      position: i + 1,
+      name: s.name,
+      text: s.text,
+    })),
+  };
+}
+
 export function buildSoftwareAppSchema(name: string, description: string) {
   return {
     '@context': 'https://schema.org',

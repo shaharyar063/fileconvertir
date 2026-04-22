@@ -3,10 +3,10 @@ import { useMemo } from 'react';
 import { getConverterBySlug } from '@/lib/converters';
 import { getConverterSEO, getRelatedConverters } from '@/lib/seo-content';
 import { HeroConverter } from '@/components/HeroConverter';
-import { CheckCircle, ArrowRight } from 'lucide-react';
+import { CheckCircle, ArrowRight, Sparkles } from 'lucide-react';
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@/components/ui/accordion';
 import { useDocumentHead } from '@/hooks/use-document-head';
-import { buildFAQSchema, buildBreadcrumbSchema, SITE_URL } from '@/lib/seo-jsonld';
+import { buildFAQSchema, buildBreadcrumbSchema, buildHowToSchema, SITE_URL } from '@/lib/seo-jsonld';
 
 export default function ConverterPage() {
   const { slug } = useParams<{ slug: string }>();
@@ -15,13 +15,17 @@ export default function ConverterPage() {
   const related = route ? getRelatedConverters(route.sourceFormat, route.targetFormat) : [];
   const jsonLd = useMemo(() => {
     if (!seo || !route) return undefined;
-    return [
+    const schemas: object[] = [
       buildFAQSchema(seo.faqs),
       buildBreadcrumbSchema([
         { name: 'Home', url: SITE_URL },
         { name: seo.heading, url: `${SITE_URL}/${route.slug}` },
       ]),
     ];
+    if (seo.howToSteps && seo.howToSteps.length > 0) {
+      schemas.push(buildHowToSchema(`How to ${seo.heading}`, seo.howToSteps));
+    }
+    return schemas;
   }, [seo, route]);
   useDocumentHead({
     title: seo?.title ?? 'FileConvertir',
@@ -58,6 +62,57 @@ export default function ConverterPage() {
           initialTarget={route.targetFormat}
         />
       </section>
+
+      {/* Long-form description for priority pages — placed near top for E-E-A-T signal */}
+      {seo.longDescription && (
+        <section className="mt-10 rounded-xl border border-border bg-card/40 p-5 md:p-6">
+          <p className="text-sm md:text-base text-foreground/90 leading-relaxed">
+            {seo.longDescription}
+          </p>
+        </section>
+      )}
+
+      {/* How To — step-by-step guide (priority pages only) */}
+      {seo.howToSteps && seo.howToSteps.length > 0 && (
+        <section className="mt-12">
+          <h2 className="text-xl font-extrabold text-foreground">
+            How to {seo.heading}
+          </h2>
+          <ol className="mt-5 space-y-4">
+            {seo.howToSteps.map((step, i) => (
+              <li key={i} className="flex gap-4">
+                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary text-sm font-bold text-primary-foreground">
+                  {i + 1}
+                </div>
+                <div className="pt-1">
+                  <h3 className="text-sm font-bold text-foreground">{step.name}</h3>
+                  <p className="mt-1 text-sm text-muted-foreground leading-relaxed">{step.text}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
+        </section>
+      )}
+
+      {/* Why Choose Us — comparison points (priority pages only) */}
+      {seo.whyChooseUs && seo.whyChooseUs.length > 0 && (
+        <section className="mt-12">
+          <h2 className="text-xl font-extrabold text-foreground">
+            Why use FileConvertir for this conversion?
+          </h2>
+          <div className="mt-5 grid gap-4 md:grid-cols-2">
+            {seo.whyChooseUs.map((item, i) => (
+              <div key={i} className="rounded-xl border border-border bg-card p-5">
+                <div className="flex items-center gap-2">
+                  <Sparkles className="h-4 w-4 text-primary" />
+                  <h3 className="text-sm font-bold text-foreground">{item.title}</h3>
+                </div>
+                <p className="mt-2 text-sm text-muted-foreground leading-relaxed">{item.text}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* Format Info */}
       <section className="mt-12 grid gap-6 md:grid-cols-2">

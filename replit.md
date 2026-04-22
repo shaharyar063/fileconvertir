@@ -8,8 +8,11 @@ Free online file converter at **fileconvertir.com**. All conversions run 100% lo
 - **Robots.txt**: `public/robots.txt` references the sitemap and allows all crawlers
 - **Meta tags**: Title + description set client-side via `useDocumentHead` on all routes
 - **JSON-LD schema**: SoftwareApplication + FAQPage on all converter pages; WebSite + FAQPage on homepage
-- **High-traffic keywords targeted**: HEIC→JPG (1.8M/mo), PNG↔JPG, WebP↔JPG, MP4→MP3, M4A→MP3, WAV→MP3, FLAC→MP3, MOV→MP4, MKV→MP4 — all have unique hand-crafted meta descriptions in `seo-content.ts`
+- **6 priority "money pages"** (`PRIORITY_CONVERTERS` in `seo-content.ts`): heic-to-jpg (~1.5M/mo), avif-to-jpg (~150k/mo, low DR), m4a-to-mp3 (~300k/mo), mov-to-mp4 (~300k/mo), tiff-to-jpg (~200k/mo), webp-to-png (~250k/mo). These pages get hand-written long descriptions, HowTo step schema, "Why Choose Us" comparison sections, and 7-10 long-tail-targeted FAQs.
+- **Sitemap priority weighting**: priority pages = 1.0 + weekly changefreq, other converter pairs = 0.6 + monthly, format hub pages = 0.5
+- **Homepage** features a prominent "Most Popular Conversions" grid linking to the 6 priority pages for internal-link authority flow
 - **SEO differentiator**: "Files never leave your device" — used in all meta descriptions and page copy
+- **Realistic ranking expectations**: head keywords (1M+/mo) need 6-12 months for a 1-month-old DR-low site; mid-tier (100-300k) need 3-6 months; long-tail variants achievable in 1-3 months
 
 ## Tech Stack
 

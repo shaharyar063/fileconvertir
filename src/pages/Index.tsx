@@ -1,11 +1,23 @@
 import { Link } from 'react-router-dom';
 import { HeroConverter } from '@/components/HeroConverter';
 import { converterRoutes } from '@/lib/converters';
-import { Shield, Zap, Globe, ArrowRight, CheckCircle, Image, FileText, Music, Film, Type, Archive } from 'lucide-react';
+import { PRIORITY_CONVERTERS } from '@/lib/seo-content';
+import { Shield, Zap, Globe, ArrowRight, CheckCircle, Image, FileText, Music, Film, Type, Archive, TrendingUp } from 'lucide-react';
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@/components/ui/accordion';
 import { useDocumentHead } from '@/hooks/use-document-head';
 import { buildFAQSchema, buildWebAppSchema, buildWebSiteSchema, SITE_URL } from '@/lib/seo-jsonld';
 import { useMemo } from 'react';
+
+const popularConversions: { slug: string; label: string; tagline: string }[] = [
+  { slug: 'heic-to-jpg', label: 'HEIC to JPG', tagline: 'Open iPhone photos on Windows' },
+  { slug: 'm4a-to-mp3',  label: 'M4A to MP3',  tagline: 'Apple audio for any device' },
+  { slug: 'mov-to-mp4',  label: 'MOV to MP4',  tagline: 'Fix QuickTime compatibility' },
+  { slug: 'webp-to-png', label: 'WebP to PNG', tagline: 'Preserve transparency' },
+  { slug: 'tiff-to-jpg', label: 'TIFF to JPG', tagline: 'Shrink huge scans for email' },
+  { slug: 'avif-to-jpg', label: 'AVIF to JPG', tagline: 'Fix AVIF compatibility' },
+];
+// Reference PRIORITY_CONVERTERS so the link list stays in sync with the priority list
+void PRIORITY_CONVERTERS;
 
 const categories = [
   { key: 'Image', icon: Image, label: 'Images', desc: 'PNG, JPG, WebP, AVIF, HEIC, HEIF, GIF, BMP, TIFF, SVG, ICO' },
@@ -58,6 +70,30 @@ export default function Index() {
       {/* Converter Tool */}
       <section className="mt-8">
         <HeroConverter />
+      </section>
+
+      {/* Most Popular Conversions — high-traffic priority pages */}
+      <section className="mt-12" aria-label="Most popular conversions">
+        <div className="flex items-center gap-2">
+          <TrendingUp className="h-4 w-4 text-primary" />
+          <h2 className="text-xl font-extrabold text-foreground">Most Popular Conversions</h2>
+        </div>
+        <p className="mt-2 text-sm text-muted-foreground">The conversions our visitors use most — all run 100% in your browser.</p>
+        <div className="mt-5 grid gap-3 sm:grid-cols-2 md:grid-cols-3">
+          {popularConversions.map(p => (
+            <Link
+              key={p.slug}
+              to={`/${p.slug}`}
+              className="group rounded-xl border border-border bg-card p-4 transition-all hover:border-primary hover:-translate-y-0.5"
+            >
+              <div className="flex items-center justify-between">
+                <span className="text-sm font-bold text-foreground group-hover:text-primary transition-colors">{p.label}</span>
+                <ArrowRight className="h-3.5 w-3.5 text-muted-foreground group-hover:text-primary transition-colors" />
+              </div>
+              <p className="mt-1 text-xs text-muted-foreground">{p.tagline}</p>
+            </Link>
+          ))}
+        </div>
       </section>
 
       {/* Features Row */}
