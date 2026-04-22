@@ -46,7 +46,10 @@ export function FormatPickerDropdown({
 
   const sidebar = (
     <div className={cn(
-      'w-[88px] shrink-0 py-1 sm:w-[110px] md:w-[130px]',
+      // Sidebar width = trigger button width, so its inner divider aligns
+      // exactly with the gap between CONVERT and TO. Panel width is
+      // 2*button + 44px gap, so each button = calc(50% - 22px) of the panel.
+      'w-[calc(50%-22px)] shrink-0 py-1',
       isRtl ? 'border-l border-border' : 'border-r border-border',
     )}>
       {categories.map(cat => {
