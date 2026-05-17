@@ -550,12 +550,7 @@ function getCategoryForFormat(ext: string): string {
   return 'other';
 }
 
-export function getRelatedConverters(source: string, target: string, limit = 6) {
-  return converterRoutes
-    .filter(r => r.slug !== `${source}-to-${target}`)
-    .filter(r => r.sourceFormat === source || r.targetFormat === target || r.sourceFormat === target)
-    .slice(0, limit);
-}
+export { getRelatedConverters } from './site-navigation';
 
 export function getCategoryStats() {
   const cats: Record<string, number> = {};

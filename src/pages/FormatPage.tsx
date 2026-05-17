@@ -33,7 +33,9 @@ export default function FormatPage() {
   if (!page || !seo) return <Navigate to="/" replace />;
   const acceptHint = page.acceptedInputs.map(e => `.${e.toUpperCase()}`).join(', ');
 
-  const relatedConverters = converterRoutes.filter(r => r.targetFormat === page.targetFormat).slice(0, 6);
+  const relatedConverters = converterRoutes.filter(
+    (r) => r.targetFormat === page.targetFormat,
+  );
 
   return (
     <article className="mx-auto max-w-3xl px-4 py-6">

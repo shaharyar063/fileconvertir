@@ -7,7 +7,6 @@ interface ConversionProgressProps {
 
 const statusLabels: Record<ConversionStatus, string> = {
   idle: '',
-  uploading: 'Preparing…',
   converting: 'Converting…',
   done: 'Done!',
   error: 'Failed',

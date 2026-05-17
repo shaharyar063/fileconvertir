@@ -4,7 +4,7 @@ import { getTargetsForSource } from '@/lib/conversion-map';
 // heic/heif: natively rendered by modern browsers (iOS Safari, Chrome on macOS/Windows 11+)
 // tiff: supported via canvas in all modern browsers
 const IMAGE_FORMATS = ['jpg', 'jpeg', 'png', 'webp', 'gif', 'bmp', 'avif', 'tiff', 'heic', 'heif', 'ico', 'eps', 'svg', 'psd', 'tga'];
-import JSZip from 'jszip';
+import { ArchiveFormat, buildSingleFileArchive } from '@/lib/build-archive';
 
 function getMimeType(format: string): string {
   const map: Record<string, string> = {
@@ -391,28 +391,21 @@ export const imageConverter: ConverterPlugin = {
       };
     }
 
-    // Archive wrapping: zip, tar, gz
     if (['zip', 'tar', 'gz'].includes(targetFormat)) {
-      // Convert image to PNG first, then wrap in archive
       const pngBlob = await new Promise<Blob>((res, rej) => {
-        canvas.toBlob(b => b ? res(b) : rej(new Error('Failed')), 'image/png');
+        canvas.toBlob(b => b ? res(b) : rej(new Error('Failed to render PNG')), 'image/png');
       });
       const pngData = new Uint8Array(await pngBlob.arrayBuffer());
       URL.revokeObjectURL(img.src);
 
-      if (targetFormat === 'zip') {
-        const zip = new JSZip();
-        zip.file(`${baseName}.png`, pngData);
-        const archiveBlob = await zip.generateAsync({ type: 'blob', compression: 'DEFLATE' });
-        onProgress?.(100);
-        return { blob: archiveBlob, filename: `${baseName}.zip`, mimeType: 'application/zip' };
-      }
-      // For tar/gz, delegate to archive converter (simplified: wrap as zip)
-      const zip = new JSZip();
-      zip.file(`${baseName}.png`, pngData);
-      const archiveBlob = await zip.generateAsync({ type: 'blob', compression: 'DEFLATE' });
+      const result = await buildSingleFileArchive(
+        `${baseName}.png`,
+        pngData,
+        targetFormat as ArchiveFormat,
+        baseName,
+      );
       onProgress?.(100);
-      return { blob: archiveBlob, filename: `${baseName}.${targetFormat}`, mimeType: 'application/octet-stream' };
+      return result;
     }
 
     // Canvas-native formats: jpg, jpeg, png, webp, avif

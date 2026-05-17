@@ -1,5 +1,6 @@
 import { ConverterPlugin, ConversionResult, ConversionOption } from '@/lib/converter-types';
 import { getTargetsForSource } from '@/lib/conversion-map';
+import { ArchiveFormat, buildSingleFileArchive } from '@/lib/build-archive';
 import opentype from 'opentype.js';
 
 const FONT_SOURCES = ['ttf', 'otf', 'woff'];
@@ -194,14 +195,16 @@ export const fontConverter: ConverterPlugin = {
       };
     }
 
-    // Archive wrapping
     if (['zip', 'tar', 'gz'].includes(targetFormat)) {
-      const JSZip = (await import('jszip')).default;
-      const zip = new JSZip();
-      zip.file(file.name, await file.arrayBuffer());
-      const blob = await zip.generateAsync({ type: 'blob', compression: 'DEFLATE' });
+      const data = new Uint8Array(await file.arrayBuffer());
+      const result = await buildSingleFileArchive(
+        file.name,
+        data,
+        targetFormat as ArchiveFormat,
+        baseName,
+      );
       onProgress?.(100);
-      return { blob, filename: `${baseName}.${targetFormat}`, mimeType: 'application/octet-stream' };
+      return result;
     }
 
     // TTF and OTF: opentype.js outputs OpenType (OTF/TTF) format

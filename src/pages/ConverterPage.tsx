@@ -1,7 +1,8 @@
 import { useParams, Navigate, Link } from 'react-router-dom';
 import { useMemo } from 'react';
 import { getConverterBySlug } from '@/lib/converters';
-import { getConverterSEO, getRelatedConverters } from '@/lib/seo-content';
+import { getConverterSEO } from '@/lib/seo-content';
+import { getRelatedConverters } from '@/lib/site-navigation';
 import { HeroConverter } from '@/components/HeroConverter';
 import { CheckCircle, ArrowRight, Sparkles } from 'lucide-react';
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@/components/ui/accordion';
@@ -12,7 +13,9 @@ export default function ConverterPage() {
   const { slug } = useParams<{ slug: string }>();
   const route = slug ? getConverterBySlug(slug) : undefined;
   const seo = route ? getConverterSEO(route.sourceFormat, route.targetFormat) : undefined;
-  const related = route ? getRelatedConverters(route.sourceFormat, route.targetFormat) : [];
+  const related = route
+    ? getRelatedConverters(route.sourceFormat, route.targetFormat, 12)
+    : [];
   const jsonLd = useMemo(() => {
     if (!seo || !route) return undefined;
     const schemas: object[] = [
@@ -41,6 +44,14 @@ export default function ConverterPage() {
       {/* Breadcrumb */}
       <nav className="mb-6 text-xs text-muted-foreground">
         <Link to="/" className="hover:text-primary">Home</Link>
+        <span className="mx-2">/</span>
+        <Link to={`/${route.sourceFormat}`} className="hover:text-primary">
+          {route.sourceFormat.toUpperCase()}
+        </Link>
+        <span className="mx-2">/</span>
+        <Link to={`/to-${route.targetFormat}`} className="hover:text-primary">
+          To {route.targetFormat.toUpperCase()}
+        </Link>
         <span className="mx-2">/</span>
         <span className="text-foreground">{seo.heading}</span>
       </nav>

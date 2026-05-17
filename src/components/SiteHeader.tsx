@@ -17,15 +17,15 @@ export function SiteHeader() {
           </span>
         </Link>
 
-        <div className="flex items-center gap-2" aria-label="Site navigation">
-          <a
-            href="#categories"
+        <nav className="flex items-center gap-2" aria-label="Site navigation">
+          <Link
+            to="/#categories"
             className="hidden sm:inline-flex items-center text-xs font-bold uppercase tracking-wider text-foreground hover:opacity-70 transition-opacity px-3 py-1.5 rounded-lg"
           >
             All Formats
-          </a>
+          </Link>
           <ThemeToggle />
-        </div>
+        </nav>
       </div>
     </header>
   );

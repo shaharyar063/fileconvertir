@@ -5,18 +5,27 @@ interface DocumentHeadOptions {
   description: string;
   canonical?: string;
   jsonLd?: object;
+  /** Set to true for pages that should be excluded from search engines (e.g. 404). */
+  noindex?: boolean;
 }
+
+const DEFAULT_ROBOTS =
+  'index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1';
 
 /**
  * Sets dynamic <title>, <meta description>, <link rel="canonical">,
- * and optional JSON-LD structured data for SEO.
+ * robots directive, and optional JSON-LD structured data for SEO.
  */
-export function useDocumentHead({ title, description, canonical, jsonLd }: DocumentHeadOptions) {
+export function useDocumentHead({
+  title,
+  description,
+  canonical,
+  jsonLd,
+  noindex,
+}: DocumentHeadOptions) {
   useEffect(() => {
-    // Title
     document.title = title;
 
-    // Meta description
     let metaDesc = document.querySelector('meta[name="description"]') as HTMLMetaElement | null;
     if (!metaDesc) {
       metaDesc = document.createElement('meta');
@@ -25,18 +34,17 @@ export function useDocumentHead({ title, description, canonical, jsonLd }: Docum
     }
     metaDesc.content = description;
 
-    // OG tags
+    setMetaTag('robots', noindex ? 'noindex, follow' : DEFAULT_ROBOTS);
+
     setMetaProperty('og:title', title);
     setMetaProperty('og:description', description);
     if (canonical) {
       setMetaProperty('og:url', canonical);
     }
 
-    // Twitter tags
     setMetaTag('twitter:title', title);
     setMetaTag('twitter:description', description);
 
-    // Canonical
     let linkCanonical = document.querySelector('link[rel="canonical"]') as HTMLLinkElement | null;
     if (canonical) {
       if (!linkCanonical) {
@@ -49,7 +57,6 @@ export function useDocumentHead({ title, description, canonical, jsonLd }: Docum
       linkCanonical.remove();
     }
 
-    // JSON-LD
     const existingScript = document.querySelector('script[data-seo-jsonld]');
     if (existingScript) existingScript.remove();
 
@@ -62,11 +69,10 @@ export function useDocumentHead({ title, description, canonical, jsonLd }: Docum
     }
 
     return () => {
-      // Cleanup JSON-LD on unmount
       const script = document.querySelector('script[data-seo-jsonld]');
       if (script) script.remove();
     };
-  }, [title, description, canonical, jsonLd]);
+  }, [title, description, canonical, jsonLd, noindex]);
 }
 
 function setMetaProperty(property: string, content: string) {

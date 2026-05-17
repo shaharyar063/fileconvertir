@@ -1,5 +1,7 @@
 import { ConverterPlugin, ConversionResult, ConversionOption } from '@/lib/converter-types';
 import { getTargetsForSource } from '@/lib/conversion-map';
+import { formatConversionError } from '@/lib/conversion-errors';
+import { ArchiveFormat, buildSingleFileArchive } from '@/lib/build-archive';
 
 const AUDIO_SOURCES = ['mp3', 'wav', 'aac', 'ogg', 'flac', 'm4a'];
 
@@ -19,18 +21,19 @@ export const audioConverter: ConverterPlugin = {
   async convert(file, targetFormat, onProgress): Promise<ConversionResult> {
     const baseName = file.name.replace(/\.[^/.]+$/, '');
 
-    // Archive wrapping
     if (['zip', 'tar', 'gz'].includes(targetFormat)) {
       onProgress?.(50);
-      const JSZip = (await import('jszip')).default;
-      const zip = new JSZip();
-      zip.file(file.name, await file.arrayBuffer());
-      const blob = await zip.generateAsync({ type: 'blob', compression: 'DEFLATE' });
+      const data = new Uint8Array(await file.arrayBuffer());
+      const result = await buildSingleFileArchive(
+        file.name,
+        data,
+        targetFormat as ArchiveFormat,
+        baseName,
+      );
       onProgress?.(100);
-      return { blob, filename: `${baseName}.${targetFormat}`, mimeType: 'application/octet-stream' };
+      return result;
     }
 
-    // All audio ↔ audio via FFmpeg.wasm, with cloud fallback
     try {
       const { convertWithFFmpeg } = await import('@/lib/ffmpeg');
 
@@ -54,10 +57,7 @@ export const audioConverter: ConverterPlugin = {
         mimeType: mimeMap[targetFormat] || 'application/octet-stream',
       };
     } catch (err) {
-      console.warn('FFmpeg unavailable, falling back to cloud conversion:', err);
-      const { convertViaCloud } = await import('@/lib/cloud-converter');
-      const ext = file.name.split('.').pop()?.toLowerCase() || 'mp3';
-      return convertViaCloud(file, ext, targetFormat, onProgress);
+      throw formatConversionError(err);
     }
   },
 };

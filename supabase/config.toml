@@ -1,4 +1,0 @@
-project_id = "jiantnfptuosghzkhnxb"
-
-[functions.convert-file]
-verify_jwt = false

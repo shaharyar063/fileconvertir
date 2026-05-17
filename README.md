@@ -15,7 +15,8 @@ Convert images, documents, audio, video, fonts, and archives — 100% in the bro
 - **mammoth.js** — DOCX parsing
 - **JSZip** — archive handling
 - **opentype.js** — font conversion
-- **Supabase** — backend / edge functions
+- **pdf.js** — PDF text extraction
+- **Build-time prerender** — per-route SEO meta (347 pages)
 
 ## Local Development
 
@@ -41,8 +42,11 @@ public/
   favicon.ico       # Legacy fallback favicon
   sitemap.xml       # Pre-generated sitemap (347 URLs) for Google Search Console
   robots.txt        # Crawler instructions
+  _headers          # COOP/COEP for FFmpeg (Cloudflare Pages)
+  _redirects        # SPA fallback
 plugins/
   vite-sitemap.ts   # Build-time sitemap generator
+  vite-prerender-meta.ts  # Per-route HTML with canonical/title
 ```
 
 ## SEO
@@ -54,4 +58,4 @@ plugins/
 
 ## Deployment
 
-Deploy via Replit — the app builds with `npm run build` and serves from `dist/`.
+Cloudflare Pages: build command `npm run build`, output directory `dist`. Optional env: `VITE_SITE_URL=https://fileconvertir.com`.

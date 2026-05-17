@@ -1,4 +1,7 @@
-const SITE_URL = (import.meta.env.VITE_SITE_URL as string) || 'https://fileconvertir.com';
+const SITE_URL =
+  (typeof import.meta !== 'undefined' &&
+    (import.meta.env?.VITE_SITE_URL as string | undefined)) ||
+  'https://fileconvertir.com';
 const SITE_NAME = 'FileConvertir';
 
 export { SITE_URL };

@@ -1,60 +1,104 @@
 import { Link } from 'react-router-dom';
 import { BrandLogo } from './BrandLogo';
+import {
+  getSourceHubSections,
+  getTargetHubSections,
+  POPULAR_LINKS,
+} from '@/lib/site-navigation';
+
+const sourceSections = getSourceHubSections();
+const targetSections = getTargetHubSections();
 
 export function SiteFooter() {
   return (
     <footer className="bg-background text-foreground border-t border-border mt-auto">
-      <div className="mx-auto max-w-5xl px-4 py-12">
-        <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
-          {/* Brand */}
-          <div className="col-span-2 md:col-span-1">
-            <Link to="/" className="flex items-center gap-2 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/60 rounded-lg">
+      <div className="mx-auto max-w-6xl px-4 py-12">
+        <div className="grid grid-cols-2 gap-8 md:grid-cols-4 lg:grid-cols-6">
+          <div className="col-span-2 md:col-span-2 lg:col-span-2">
+            <Link
+              to="/"
+              className="flex items-center gap-2 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/60 rounded-lg"
+            >
               <BrandLogo className="h-5 w-5 shrink-0" />
               <span className="text-sm font-extrabold tracking-tight text-foreground">
                 FileConvertir
               </span>
             </Link>
             <p className="mt-2.5 text-xs text-muted-foreground leading-relaxed">
-              Free online file converter. All conversions run locally in your browser — your files never leave your device.
+              Free online file converter. All conversions run locally in your browser — your files
+              never leave your device.
+            </p>
+            <p className="mt-3">
+              <Link
+                to="/#browse-formats"
+                className="text-xs font-medium text-primary hover:underline"
+              >
+                Browse all formats →
+              </Link>
             </p>
           </div>
 
-          {/* Categories */}
+          {sourceSections.map((section) => (
+            <div key={section.title}>
+              <h4 className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
+                {section.title}
+              </h4>
+              <ul className="mt-3 max-h-48 space-y-1 overflow-y-auto text-xs">
+                {section.links.map((link) => (
+                  <li key={link.href}>
+                    <Link
+                      to={link.href}
+                      className="text-muted-foreground transition-colors hover:text-primary"
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+
+        <div className="mt-10 grid gap-8 border-t border-border pt-8 md:grid-cols-2">
           <div>
-            <h4 className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Categories</h4>
-            <ul className="mt-3 space-y-2 text-xs">
-              <li><Link to="/png-to-jpg" className="text-muted-foreground transition-colors hover:text-primary">Image Converters</Link></li>
-              <li><Link to="/txt-to-pdf" className="text-muted-foreground transition-colors hover:text-primary">Document Converters</Link></li>
-              <li><Link to="/wav-to-mp3" className="text-muted-foreground transition-colors hover:text-primary">Audio Converters</Link></li>
-              <li><Link to="/ttf-to-woff" className="text-muted-foreground transition-colors hover:text-primary">Font Converters</Link></li>
+            <h4 className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
+              Popular converters
+            </h4>
+            <ul className="mt-3 grid grid-cols-2 gap-x-4 gap-y-1 text-xs sm:grid-cols-3">
+              {POPULAR_LINKS.map((link) => (
+                <li key={link.href}>
+                  <Link
+                    to={link.href}
+                    className="text-muted-foreground transition-colors hover:text-primary"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
-
-          {/* Popular */}
           <div>
-            <h4 className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Popular</h4>
-            <ul className="mt-3 space-y-2 text-xs">
-              <li><Link to="/png-to-jpg" className="text-muted-foreground transition-colors hover:text-primary">PNG to JPG</Link></li>
-              <li><Link to="/jpg-to-png" className="text-muted-foreground transition-colors hover:text-primary">JPG to PNG</Link></li>
-              <li><Link to="/png-to-webp" className="text-muted-foreground transition-colors hover:text-primary">PNG to WebP</Link></li>
-              <li><Link to="/wav-to-mp3" className="text-muted-foreground transition-colors hover:text-primary">WAV to MP3</Link></li>
-            </ul>
-          </div>
-
-          {/* Company */}
-          <div>
-            <h4 className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Company</h4>
-            <ul className="mt-3 space-y-2 text-xs">
-              <li><a href="#" className="text-muted-foreground transition-colors hover:text-primary">About</a></li>
-              <li><a href="#" className="text-muted-foreground transition-colors hover:text-primary">Contact</a></li>
-              <li><a href="#" className="text-muted-foreground transition-colors hover:text-primary">Privacy Policy</a></li>
-              <li><a href="#" className="text-muted-foreground transition-colors hover:text-primary">Terms of Service</a></li>
+            <h4 className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
+              Convert to format
+            </h4>
+            <ul className="mt-3 flex flex-wrap gap-x-3 gap-y-1 text-xs">
+              {targetSections.flatMap((s) => s.links).map((link) => (
+                <li key={link.href}>
+                  <Link
+                    to={link.href}
+                    className="text-muted-foreground transition-colors hover:text-primary"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
         </div>
 
         <div className="mt-8 border-t border-border pt-6 text-center text-xs text-muted-foreground">
-          © {new Date().getFullYear()} FileConvertir — All conversions run in your browser. No data is uploaded.
+          © {new Date().getFullYear()} FileConvertir — All conversions run in your browser. No data
+          is uploaded.
         </div>
       </div>
     </footer>

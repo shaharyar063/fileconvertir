@@ -1,19 +1,14 @@
 /**
  * Central conversion mapping — the single source of truth.
  *
- * Every pair listed here MUST have a working implementation,
- * either in a browser converter or in the Supabase edge function.
+ * Every pair listed here MUST have a working browser implementation.
  */
-
-export type ConversionMethod = 'browser' | 'cloud';
 
 export interface ConversionEntry {
   source: string;
   targets: string[];
   converterId: string;
   category: 'image' | 'document' | 'audio' | 'video' | 'font' | 'archive';
-  /** Which targets need cloud processing (all others are browser-capable) */
-  cloudTargets?: string[];
 }
 
 export const conversionMap: ConversionEntry[] = [
@@ -47,16 +42,15 @@ export const conversionMap: ConversionEntry[] = [
     converterId: 'image-converter', category: 'image' },
 
   // ── Documents ────────────────────────────────────────────
-  // Browser: text extraction + jsPDF/markdown/html builders
-  // Cloud: Supabase edge function for DOCX output
+  // Browser: text extraction + jsPDF/markdown/html/DOCX builders
   { source: 'txt',  targets: ['pdf', 'html', 'md', 'docx', 'zip', 'tar', 'gz'],
-    converterId: 'document-converter', category: 'document', cloudTargets: ['docx'] },
+    converterId: 'document-converter', category: 'document' },
   { source: 'html', targets: ['txt', 'pdf', 'md', 'docx', 'zip', 'tar', 'gz'],
-    converterId: 'document-converter', category: 'document', cloudTargets: ['docx'] },
+    converterId: 'document-converter', category: 'document' },
   { source: 'md',   targets: ['txt', 'html', 'pdf', 'docx', 'zip', 'tar', 'gz'],
-    converterId: 'document-converter', category: 'document', cloudTargets: ['docx'] },
+    converterId: 'document-converter', category: 'document' },
   { source: 'rtf',  targets: ['txt', 'pdf', 'html', 'docx', 'zip', 'tar', 'gz'],
-    converterId: 'document-converter', category: 'document', cloudTargets: ['docx'] },
+    converterId: 'document-converter', category: 'document' },
   { source: 'csv',  targets: ['txt', 'pdf', 'html', 'zip', 'tar', 'gz'],
     converterId: 'document-converter', category: 'document' },
   { source: 'pdf',  targets: ['txt', 'zip', 'tar', 'gz'],
@@ -67,9 +61,7 @@ export const conversionMap: ConversionEntry[] = [
     converterId: 'document-converter', category: 'document' },
 
   // ── Audio ────────────────────────────────────────────────
-  // Browser: FFmpeg.wasm (requires SharedArrayBuffer)
-  // Fallback: Supabase cloud (limited support)
-  // AAC and M4A added as targets — FFmpeg.wasm natively supports both codecs
+  // Browser: FFmpeg.wasm (requires SharedArrayBuffer / COOP+COEP headers)
   { source: 'mp3',  targets: ['wav', 'aac', 'ogg', 'flac', 'm4a', 'zip', 'tar', 'gz'],
     converterId: 'audio-converter', category: 'audio' },
   { source: 'wav',  targets: ['mp3', 'aac', 'ogg', 'flac', 'm4a', 'zip', 'tar', 'gz'],
@@ -139,16 +131,4 @@ export function getAllTargetFormats(): string[] {
 
 export function getAllSourceFormats(): string[] {
   return [...new Set(conversionMap.map(e => e.source))];
-}
-
-/** Check if a specific conversion requires cloud processing */
-export function isCloudConversion(source: string, target: string): boolean {
-  const entry = getConversionEntry(source);
-  if (!entry) return false;
-  return entry.cloudTargets?.includes(target.toLowerCase()) ?? false;
-}
-
-/** Get the conversion method for a specific pair */
-export function getConversionMethod(source: string, target: string): ConversionMethod {
-  return isCloudConversion(source, target) ? 'cloud' : 'browser';
 }

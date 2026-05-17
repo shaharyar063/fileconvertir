@@ -33,7 +33,7 @@ export interface FileInfo {
   category: FileCategory;
 }
 
-export type ConversionStatus = 'idle' | 'uploading' | 'converting' | 'done' | 'error';
+export type ConversionStatus = 'idle' | 'converting' | 'done' | 'error';
 
 export const MAX_FILE_SIZE = 100 * 1024 * 1024; // 100MB
 export const MAX_BATCH_FILES = 20;

@@ -1,5 +1,8 @@
 import { ConverterPlugin, ConversionResult, ConversionOption } from '@/lib/converter-types';
 import { getTargetsForSource } from '@/lib/conversion-map';
+import { textToDocx } from '@/lib/build-docx';
+import { extractPdfText } from '@/lib/pdf-text';
+import { ArchiveFormat, buildSingleFileArchive } from '@/lib/build-archive';
 
 const DOC_SOURCES = ['pdf', 'docx', 'odt', 'txt', 'rtf', 'html', 'md', 'csv'];
 
@@ -22,12 +25,7 @@ async function htmlToText(file: File): Promise<string> {
 }
 
 async function pdfToText(file: File): Promise<string> {
-  const text = await file.text();
-  const matches = text.match(/\(([^)]+)\)/g);
-  if (matches && matches.length > 0) {
-    return matches.map(m => m.slice(1, -1)).join(' ');
-  }
-  return '[PDF text extraction requires a server-side processor. The file structure was preserved.]';
+  return extractPdfText(file);
 }
 
 async function rtfToText(file: File): Promise<string> {
@@ -83,7 +81,7 @@ function mdToText(md: string): string {
     .trim();
 }
 
-async function textToPdf(text: string, filename: string): Promise<Blob> {
+async function textToPdf(text: string): Promise<Blob> {
   const { jsPDF } = await import('jspdf');
   const doc = new jsPDF();
   const lines = doc.splitTextToSize(text, 180);
@@ -173,7 +171,7 @@ export const documentConverter: ConverterPlugin = {
     }
 
     if (targetFormat === 'pdf') {
-      const blob = await textToPdf(text, baseName);
+      const blob = await textToPdf(text);
       onProgress?.(100);
       return { blob, filename: `${baseName}.pdf`, mimeType: 'application/pdf' };
     }
@@ -187,17 +185,28 @@ export const documentConverter: ConverterPlugin = {
       };
     }
 
-    // Archive wrapping
-    if (['zip', 'tar', 'gz'].includes(targetFormat)) {
-      const JSZip = (await import('jszip')).default;
-      const zip = new JSZip();
-      zip.file(file.name, await file.arrayBuffer());
-      const blob = await zip.generateAsync({ type: 'blob', compression: 'DEFLATE' });
+    if (targetFormat === 'docx') {
+      const blob = await textToDocx(text);
       onProgress?.(100);
-      return { blob, filename: `${baseName}.${targetFormat}`, mimeType: 'application/octet-stream' };
+      return {
+        blob,
+        filename: `${baseName}.docx`,
+        mimeType: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+      };
     }
 
-    // Cloud-required conversions are handled by cloud processing via useConverter hook
-    throw new Error(`${ext.toUpperCase()}-to-${targetFormat.toUpperCase()} conversion is not supported in the browser. Please try again.`);
+    if (['zip', 'tar', 'gz'].includes(targetFormat)) {
+      const data = new Uint8Array(await file.arrayBuffer());
+      const result = await buildSingleFileArchive(
+        file.name,
+        data,
+        targetFormat as ArchiveFormat,
+        baseName,
+      );
+      onProgress?.(100);
+      return result;
+    }
+
+    throw new Error(`${ext.toUpperCase()}-to-${targetFormat.toUpperCase()} conversion is not supported. Please try another format.`);
   },
 };

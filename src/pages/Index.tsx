@@ -7,6 +7,8 @@ import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@/
 import { useDocumentHead } from '@/hooks/use-document-head';
 import { buildFAQSchema, buildWebAppSchema, buildWebSiteSchema, SITE_URL } from '@/lib/seo-jsonld';
 import { useMemo, ReactNode } from 'react';
+import { InternalLinkGrid } from '@/components/InternalLinkGrid';
+import { getSourceHubSections, getTargetHubSections } from '@/lib/site-navigation';
 
 const popularConversions: { slug: string; label: string; tagline: string }[] = [
   { slug: 'heic-to-jpg', label: 'HEIC to JPG', tagline: 'Open iPhone photos on Windows' },
@@ -197,8 +199,21 @@ export default function Index() {
                   </div>
                 </div>
                 <p className="mt-3 text-xs text-foreground/80 leading-relaxed">{cat.desc}</p>
+                <div className="mt-3 flex flex-wrap gap-1">
+                  {[...new Set(routes.map((r) => r.sourceFormat))]
+                    .sort()
+                    .map((src) => (
+                      <Link
+                        key={src}
+                        to={`/${src}`}
+                        className="rounded-md border border-border px-2 py-0.5 text-[10px] font-medium uppercase text-foreground hover:border-primary"
+                      >
+                        {src}
+                      </Link>
+                    ))}
+                </div>
                 <div className="mt-4 space-y-1">
-                  {topRoutes.map(r => (
+                  {topRoutes.map((r) => (
                     <Link
                       key={r.slug}
                       to={`/${r.slug}`}
@@ -212,6 +227,31 @@ export default function Index() {
               </div>
             );
           })}
+        </div>
+      </Band>
+
+      <Band id="browse-formats" ariaLabel="Browse all file formats">
+        <h2 className="text-2xl md:text-3xl font-extrabold tracking-tight text-foreground">
+          Browse All Formats
+        </h2>
+        <p className="mt-3 text-sm text-foreground/80">
+          Pick an input format hub or a target output format to see every supported conversion.
+        </p>
+        <div className="mt-8">
+          <h3 className="text-sm font-bold text-foreground">By input format</h3>
+          <InternalLinkGrid
+            className="mt-4"
+            sections={getSourceHubSections()}
+            columns="grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5"
+          />
+        </div>
+        <div className="mt-10">
+          <h3 className="text-sm font-bold text-foreground">By output format</h3>
+          <InternalLinkGrid
+            className="mt-4"
+            sections={getTargetHubSections()}
+            columns="grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5"
+          />
         </div>
       </Band>
 

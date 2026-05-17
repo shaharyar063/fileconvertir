@@ -5,8 +5,6 @@ import {
   BulkFileItem, formatFileSize,
 } from '@/lib/converter-types';
 import { registry } from '@/lib/converter-registry';
-import { isCloudConversion } from '@/lib/conversion-map';
-import { convertViaCloud } from '@/lib/cloud-converter';
 
 let nextId = 0;
 
@@ -93,22 +91,18 @@ export function useBulkConverter(fixedTargetFormat?: string) {
       ));
 
       try {
-        let result: ConversionResult;
         const onProgress = (p: number) => {
           setFiles(prev => prev.map(f =>
             f.id === item.id ? { ...f, progress: p } : f
           ));
         };
 
-        if (isCloudConversion(item.info.extension, targetFormat)) {
-          result = await convertViaCloud(
-            item.info.file, item.info.extension, targetFormat, onProgress
-          );
-        } else {
-          result = await registry.convert(
-            item.info.file, item.info.extension, targetFormat, onProgress
-          );
-        }
+        const result = await registry.convert(
+          item.info.file,
+          item.info.extension,
+          targetFormat,
+          onProgress
+        );
 
         setFiles(prev => prev.map(f =>
           f.id === item.id ? { ...f, status: 'done', progress: 100, result } : f
