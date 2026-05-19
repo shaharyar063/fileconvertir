@@ -1,6 +1,6 @@
 import { Plugin } from 'vite';
 import { conversionMap } from '../src/lib/conversion-map';
-import { absoluteUrl } from '../src/lib/site-url';
+import { absoluteUrl, isSitemapExcludedPath } from '../src/lib/site-url';
 
 export function sitemapPlugin(): Plugin {
   return {
@@ -15,14 +15,17 @@ export function sitemapPlugin(): Plugin {
 
       conversionMap.forEach((entry) => {
         entry.targets.forEach((target) => {
+          const slug = `${entry.source}-to-${target}`;
+          if (isSitemapExcludedPath(slug)) return;
           urls.push(
-            `  <url><loc>${absoluteUrl(`${entry.source}-to-${target}`)}</loc><lastmod>${now}</lastmod><priority>0.8</priority><changefreq>monthly</changefreq></url>`,
+            `  <url><loc>${absoluteUrl(slug)}</loc><lastmod>${now}</lastmod><priority>0.8</priority><changefreq>monthly</changefreq></url>`,
           );
         });
       });
 
       const sources = new Set(conversionMap.map((e) => e.source));
       sources.forEach((source) => {
+        if (isSitemapExcludedPath(source)) return;
         urls.push(
           `  <url><loc>${absoluteUrl(source)}</loc><lastmod>${now}</lastmod><priority>0.7</priority><changefreq>monthly</changefreq></url>`,
         );

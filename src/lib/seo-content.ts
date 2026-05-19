@@ -223,6 +223,22 @@ const converterSpecific: Record<string, { metaDescription: string; description: 
     metaDescription: 'Convert TXT to PDF free online — no upload, 100% private. Instant in-browser conversion. No signup, no file size limits.',
     description: 'Convert plain text files to PDF format for professional sharing. Runs entirely in your browser using jsPDF — your files stay local.',
   },
+  'jpg-to-pdf': {
+    metaDescription: 'Convert JPG to PDF free online — no upload, 100% private. Combine images into a PDF instantly. Browser-based, no signup.',
+    description: 'Turn JPG photos into a PDF document for printing, emailing, or archiving. All conversion happens in your browser with no server upload.',
+  },
+  'pdf-to-txt': {
+    metaDescription: 'Extract text from PDF free online — no upload, 100% private. Copy PDF text to TXT instantly in your browser. No signup.',
+    description: 'Extract readable text from PDF files into plain TXT format. Uses pdf.js in your browser — your documents stay on your device.',
+  },
+  'mp3-to-wav': {
+    metaDescription: 'Convert MP3 to WAV free online — no upload, 100% private. Uncompress audio for editing. Instant browser conversion, no signup.',
+    description: 'Convert MP3 to uncompressed WAV for audio editing, mastering, or systems that require WAV. FFmpeg runs locally in your browser.',
+  },
+  'png-to-ico': {
+    metaDescription: 'Convert PNG to ICO free online — no upload, 100% private. Create Windows favicons and app icons. Browser-based, no signup.',
+    description: 'Convert PNG images to ICO format for favicons, Windows shortcuts, and legacy applications. Runs entirely in your browser.',
+  },
 };
 
 /**

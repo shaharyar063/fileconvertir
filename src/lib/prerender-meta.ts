@@ -11,7 +11,9 @@ import {
   buildHowToSchema,
 } from './seo-jsonld';
 import { getAllSitewideNavLinks, getPrerenderInternalLinks } from './site-navigation';
-import { SITE_URL, absoluteUrl } from './site-url';
+import { SITE_URL, absoluteUrl, canonicalSlug } from './site-url';
+
+const HOME_TITLE = 'FileConvertir — Free Online File Converter';
 
 export { SITE_URL };
 
@@ -29,7 +31,7 @@ export function getAllPrerenderPages(): PrerenderPageMeta[] {
   const pages: PrerenderPageMeta[] = [
     {
       path: '',
-      title: 'FileConvertir — Free Online File Converter | Images, Docs, Audio, Video',
+      title: HOME_TITLE,
       description:
         'Convert images, documents, audio, video, fonts & archives instantly in your browser. 100% private — your files never leave your device. No signup required.',
       canonical: `${SITE_URL}/`,
@@ -43,7 +45,7 @@ export function getAllPrerenderPages(): PrerenderPageMeta[] {
       buildFAQSchema(seo.faqs),
       buildBreadcrumbSchema([
         { name: 'Home', url: absoluteUrl() },
-        { name: seo.heading, url: absoluteUrl(route.slug) },
+        { name: seo.heading, url: absoluteUrl(canonicalSlug(route.slug)) },
       ]),
     ];
     if (seo.howToSteps?.length) {

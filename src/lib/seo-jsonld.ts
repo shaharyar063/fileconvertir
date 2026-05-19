@@ -9,7 +9,7 @@ export function buildWebAppSchema() {
     '@context': 'https://schema.org',
     '@type': 'WebApplication',
     name: SITE_NAME,
-    url: SITE_URL,
+    url: absoluteUrl(),
     applicationCategory: 'UtilitiesApplication',
     operatingSystem: 'Any',
     browserRequirements: 'Requires JavaScript. Requires a modern browser.',
@@ -34,16 +34,8 @@ export function buildWebSiteSchema() {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
     name: SITE_NAME,
-    url: SITE_URL,
+    url: absoluteUrl(),
     description: 'Free online file converter supporting images, documents, audio, video, fonts and archives.',
-    potentialAction: {
-      '@type': 'SearchAction',
-      target: {
-        '@type': 'EntryPoint',
-        urlTemplate: `${SITE_URL}/{search_term_string}-converter`,
-      },
-      'query-input': 'required name=search_term_string',
-    },
   };
 }
 

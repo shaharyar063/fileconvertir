@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { escapeHtml, injectPageMeta } from '@/lib/prerender-meta';
+import { escapeHtml, getAllPrerenderPages, injectPageMeta } from '@/lib/prerender-meta';
 
 const baseHtml = `<!doctype html>
 <html><head>
@@ -34,5 +34,10 @@ describe('prerender-meta', () => {
     expect(html).toContain('href="https://fileconvertir.com/png-to-jpg/"');
     expect(html).not.toContain('href="https://fileconvertir.com/png-to-jpg"');
     expect(html).toContain('data-prerender="true"');
+  });
+
+  it('canonicalizes jpeg-to-* routes to jpg-to-*', () => {
+    const page = getAllPrerenderPages().find((p) => p.path === 'jpeg-to-png');
+    expect(page?.canonical).toBe('https://fileconvertir.com/jpg-to-png/');
   });
 });
