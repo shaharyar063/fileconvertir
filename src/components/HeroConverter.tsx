@@ -6,7 +6,9 @@ import {
   filterCategories,
   getValidTargets,
   getValidSources,
+  isValidConversion,
 } from '@/lib/format-categories';
+import { sitePath } from '@/lib/site-url';
 import { useBulkConverter } from '@/hooks/use-bulk-converter';
 import { createFileInfo, formatFileSize, MAX_BATCH_FILES, BulkFileItem } from '@/lib/converter-types';
 import {
@@ -17,9 +19,18 @@ import {
 interface HeroConverterProps {
   initialSource?: string;
   initialTarget?: string;
+  /** Do not clear the source format when picking a target (source hub pages). */
+  lockSource?: boolean;
+  /** Do not clear the target format when picking a source (target hub pages). */
+  lockTarget?: boolean;
 }
 
-export function HeroConverter({ initialSource, initialTarget }: HeroConverterProps) {
+export function HeroConverter({
+  initialSource,
+  initialTarget,
+  lockSource,
+  lockTarget,
+}: HeroConverterProps) {
   const navigate = useNavigate();
   const [sourceFormat, setSourceFormat] = useState(initialSource ?? '');
   const [targetFmt, setTargetFmt] = useState(initialTarget ?? '');
@@ -53,35 +64,49 @@ export function HeroConverter({ initialSource, initialTarget }: HeroConverterPro
   const isDone = status === 'done';
   const hasFiles = files.length > 0;
 
-  const inputCategories = formatCategories;
-  const outputCategories = sourceFormat
-    ? filterCategories(getValidTargets(sourceFormat))
+  const activeSource = sourceFormat || initialSource || '';
+  const activeTarget = targetFmt || initialTarget || '';
+  const inputCategories = activeTarget
+    ? filterCategories(getValidSources(activeTarget))
+    : formatCategories;
+  const outputCategories = activeSource
+    ? filterCategories(getValidTargets(activeSource))
     : formatCategories;
 
   const handleSourceChange = useCallback((fmt: string) => {
     setSourceFormat(fmt);
+    const tgt = targetFmt || initialTarget || '';
     const validTargets = getValidTargets(fmt);
-    if (targetFmt && !validTargets.includes(targetFmt)) {
-      setTargetFmt('');
+    if (tgt && !validTargets.includes(tgt)) {
+      if (!lockTarget && !initialTarget) {
+        setTargetFmt('');
+        setBulkTarget('');
+      }
     }
-    if (targetFmt && validTargets.includes(targetFmt)) {
-      navigate(`/${fmt}-to-${targetFmt}`);
+    if (tgt && validTargets.includes(tgt)) {
+      navigate(sitePath(`${fmt}-to-${tgt}`));
     } else {
-      navigate(`/${fmt}`);
+      navigate(sitePath(fmt));
     }
-  }, [targetFmt, navigate]);
+  }, [targetFmt, initialTarget, lockTarget, navigate, setBulkTarget]);
 
   const handleTargetChange = useCallback((fmt: string) => {
     setTargetFmt(fmt);
     setBulkTarget(fmt);
-    const validSources = getValidSources(fmt);
-    if (sourceFormat && !validSources.includes(sourceFormat)) {
-      setSourceFormat('');
+    const src = sourceFormat || initialSource || '';
+    if (!src) return;
+
+    if (!isValidConversion(src, fmt)) {
+      if (!lockSource && !initialSource) setSourceFormat('');
+      return;
     }
-    if (sourceFormat && validSources.includes(sourceFormat)) {
-      navigate(`/${sourceFormat}-to-${fmt}`);
+
+    if (!sourceFormat && initialSource) {
+      setSourceFormat(initialSource);
     }
-  }, [sourceFormat, navigate, setBulkTarget]);
+
+    navigate(sitePath(`${src}-to-${fmt}`));
+  }, [sourceFormat, initialSource, lockSource, navigate, setBulkTarget]);
 
   const handleFilesSelected = useCallback((selectedFiles: FileList | File[]) => {
     const arr = Array.from(selectedFiles);
@@ -142,7 +167,7 @@ export function HeroConverter({ initialSource, initialTarget }: HeroConverterPro
         <div className="flex items-end gap-3">
           <FormatPickerDropdown
             label="Convert"
-            value={sourceFormat}
+            value={activeSource}
             categories={inputCategories}
             onChange={handleSourceChange}
             placeholder=""
@@ -152,7 +177,7 @@ export function HeroConverter({ initialSource, initialTarget }: HeroConverterPro
           </div>
           <FormatPickerDropdown
             label="To"
-            value={targetFmt}
+            value={activeTarget}
             categories={outputCategories}
             onChange={handleTargetChange}
             placeholder=""

@@ -62,7 +62,7 @@ export default function FormatPage() {
       </header>
 
       <section className="mt-8">
-        <HeroConverter initialTarget={page.targetFormat} />
+        <HeroConverter initialTarget={page.targetFormat} lockTarget />
       </section>
 
       <section className="mt-12">

@@ -62,17 +62,31 @@ export function getAllTargets(): string[] {
   return [...set];
 }
 
+function findSourceEntry(source: string) {
+  const key = source.toLowerCase();
+  return (
+    conversionMap.find((e) => e.source === key) ??
+    (key === 'jpg' ? conversionMap.find((e) => e.source === 'jpeg') : undefined) ??
+    (key === 'jpeg' ? conversionMap.find((e) => e.source === 'jpg') : undefined)
+  );
+}
+
 /** Given a source format, get all valid target formats */
 export function getValidTargets(source: string): string[] {
-  const entry = conversionMap.find(e => e.source === source.toLowerCase());
-  return entry?.targets ?? [];
+  return findSourceEntry(source)?.targets ?? [];
 }
 
 /** Given a target format, get all valid source formats */
 export function getValidSources(target: string): string[] {
+  const key = target.toLowerCase();
   return conversionMap
-    .filter(e => e.targets.includes(target.toLowerCase()))
-    .map(e => e.source);
+    .filter((e) => e.targets.includes(key))
+    .map((e) => e.source);
+}
+
+/** Whether source can convert to target per conversion map (jpg/jpeg aliased). */
+export function isValidConversion(source: string, target: string): boolean {
+  return getValidTargets(source).includes(target.toLowerCase());
 }
 
 /** Filter categories to only show formats in the allowed set */

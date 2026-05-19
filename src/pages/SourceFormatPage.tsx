@@ -52,7 +52,7 @@ export default function SourceFormatPage() {
 
       {/* Converter Tool — preselected source */}
       <section className="mt-8">
-        <HeroConverter initialSource={page.sourceFormat} />
+        <HeroConverter initialSource={page.sourceFormat} lockSource />
       </section>
 
       {/* What is this format? */}
@@ -84,12 +84,12 @@ export default function SourceFormatPage() {
 
       {page.targets.length > 0 && (
         <section className="mt-10">
-          <h2 className="text-xl font-extrabold text-foreground">Output format hubs</h2>
+          <h2 className="text-xl font-extrabold text-foreground">Quick pick output format</h2>
           <div className="mt-4 flex flex-wrap gap-2">
             {page.targets.map((t) => (
               <Link
                 key={t}
-                to={`/to-${t}/`}
+                to={sitePath(`${page.sourceFormat}-to-${t}`)}
                 className="rounded-lg border border-border bg-card px-3 py-2 text-xs font-medium uppercase text-foreground hover:border-primary"
               >
                 To {t}
