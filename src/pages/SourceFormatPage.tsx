@@ -20,8 +20,8 @@ export default function SourceFormatPage() {
     return [
       buildFAQSchema(seo.faqs),
       buildBreadcrumbSchema([
-        { name: 'Home', url: SITE_URL },
-        { name: seo.heading, url: `${SITE_URL}/${page.sourceFormat}` },
+        { name: 'Home', url: absoluteUrl() },
+        { name: seo.heading, url: absoluteUrl(page.sourceFormat) },
       ]),
     ];
   }, [seo, page]);

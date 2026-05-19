@@ -5,7 +5,8 @@ import { PRIORITY_CONVERTERS } from '@/lib/seo-content';
 import { Shield, Zap, Globe, ArrowRight, CheckCircle, Image, FileText, Music, Film, Type, Archive, TrendingUp } from 'lucide-react';
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@/components/ui/accordion';
 import { useDocumentHead } from '@/hooks/use-document-head';
-import { buildFAQSchema, buildWebAppSchema, buildWebSiteSchema, SITE_URL } from '@/lib/seo-jsonld';
+import { buildFAQSchema, buildWebAppSchema, buildWebSiteSchema } from '@/lib/seo-jsonld';
+import { absoluteUrl } from '@/lib/site-url';
 import { useMemo, ReactNode } from 'react';
 import { InternalLinkGrid } from '@/components/InternalLinkGrid';
 import { getSourceHubSections, getTargetHubSections } from '@/lib/site-navigation';
@@ -81,7 +82,7 @@ export default function Index() {
   useDocumentHead({
     title: 'FileConvertir — Free Online File Converter | Images, Docs, Audio, Video',
     description: 'Convert images, documents, audio, video, fonts & archives instantly in your browser. 100% private — your files never leave your device. No signup required.',
-    canonical: `${SITE_URL}/`,
+    canonical: absoluteUrl(),
     jsonLd,
   });
 
