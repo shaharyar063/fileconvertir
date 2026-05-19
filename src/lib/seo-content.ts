@@ -4,6 +4,10 @@
  */
 
 import { converterRoutes } from './converters';
+import { conversionMap } from './conversion-map';
+
+const META_DESC_MIN = 120;
+const META_DESC_MAX = 160;
 
 export interface ConverterSEO {
   title: string;
@@ -132,6 +136,51 @@ function name(ext: string): string {
 
 function desc(ext: string): string {
   return formatDescriptions[ext] || `${name(ext)} file format.`;
+}
+
+function targetsForSource(source: string): string[] {
+  return conversionMap.find((e) => e.source === source)?.targets ?? [];
+}
+
+function sourcesForTarget(target: string): string[] {
+  return conversionMap.filter((e) => e.targets.includes(target)).map((e) => e.source);
+}
+
+/** e.g. "JPG, PNG, WebP & more" for meta descriptions */
+function formatNameList(formats: string[], maxNames = 3): string {
+  const unique = [...new Set(formats)];
+  if (unique.length === 0) return 'many formats';
+  const shown = unique.slice(0, maxNames).map((f) => name(f));
+  if (unique.length <= maxNames) return shown.join(', ');
+  return `${shown.join(', ')} & more`;
+}
+
+function clampMetaDescription(text: string): string {
+  if (text.length <= META_DESC_MAX) return text;
+  const trimmed = text.slice(0, META_DESC_MAX - 3).replace(/\s+\S*$/, '');
+  return `${trimmed}...`;
+}
+
+function buildSourceHubMetaDescription(sourceFormat: string): string {
+  const s = name(sourceFormat);
+  const outputs = formatNameList(targetsForSource(sourceFormat));
+  const candidates = [
+    `Free online ${s} converter — convert ${s} to ${outputs} in your browser. No upload, no signup. 100% private, unlimited & free.`,
+    `Convert ${s} files online for free — ${s} to ${outputs} converter that runs in your browser. No upload, no signup, completely private.`,
+  ];
+  const fit = candidates.find((t) => t.length >= META_DESC_MIN && t.length <= META_DESC_MAX);
+  return fit ?? clampMetaDescription(candidates[0]);
+}
+
+function buildTargetHubMetaDescription(targetFormat: string): string {
+  const t = name(targetFormat);
+  const inputs = formatNameList(sourcesForTarget(targetFormat));
+  const candidates = [
+    `Free convert to ${t} online — turn ${inputs} into ${t} in your browser. No upload, no signup. 100% private, unlimited conversions.`,
+    `Convert files to ${t} format for free — supports ${inputs} and more. Runs in your browser. No upload, no signup.`,
+  ];
+  const fit = candidates.find((c) => c.length >= META_DESC_MIN && c.length <= META_DESC_MAX);
+  return fit ?? clampMetaDescription(candidates[0]);
 }
 
 /**
@@ -456,7 +505,7 @@ export function getFormatSEO(targetFormat: string): FormatSEO {
   const t = name(targetFormat);
   return {
     title: `Convert to ${t} — Free Online Converter | FileConvertir`,
-    metaDescription: `Convert files to ${t} format online for free. Supports multiple input formats. No upload, no signup — runs in your browser.`,
+    metaDescription: buildTargetHubMetaDescription(targetFormat),
     heading: `Convert to ${t}`,
     description: `Convert your files to ${t} format instantly. Upload any supported file and download the converted ${t} file in seconds.`,
     details: desc(targetFormat),
@@ -477,7 +526,7 @@ export function getSourceFormatSEO(sourceFormat: string): FormatSEO {
   const s = name(sourceFormat);
   return {
     title: `${s} File Converter — Free Online | FileConvertir`,
-    metaDescription: `Convert ${s} files to other formats instantly in your browser. No upload, no signup — 100% private.`,
+    metaDescription: buildSourceHubMetaDescription(sourceFormat),
     heading: `${s} File Converter`,
     description: `Convert your ${s} files to any supported format instantly. All processing happens in your browser — your files never leave your device.`,
     details: desc(sourceFormat),
