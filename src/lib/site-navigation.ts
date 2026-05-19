@@ -5,6 +5,7 @@
  */
 import { conversionMap } from './conversion-map';
 import { converterRoutes } from './converters';
+import { sitePath } from './site-url';
 const PRIORITY_SLUGS = new Set([
   'heic-to-jpg',
   'avif-to-jpg',
@@ -44,7 +45,7 @@ export function getSourceHubSections(): NavSection[] {
     sections.push({
       title: CATEGORY_LABELS[cat] ?? cat,
       links: sources.map((s) => ({
-        href: `/${s}`,
+        href: sitePath(s),
         label: s.toUpperCase(),
       })),
     });
@@ -67,7 +68,7 @@ export function getTargetHubSections(): NavSection[] {
   return [...byCategory.entries()].map(([cat, fmts]) => ({
     title: `To ${CATEGORY_LABELS[cat] ?? cat}`,
     links: fmts.map((t) => ({
-      href: `/to-${t}`,
+      href: sitePath(`to-${t}`),
       label: t.toUpperCase(),
     })),
   }));
@@ -81,7 +82,7 @@ export function getConverterSectionsByCategory(): NavSection[] {
     links: converterRoutes
       .filter((r) => r.category === cat)
       .map((r) => ({
-        href: `/${r.slug}`,
+        href: sitePath(r.slug),
         label: r.label,
       })),
   }));
@@ -104,24 +105,24 @@ export function getAllSitewideNavLinks(): NavLink[] {
     section.links.forEach(add);
   }
   for (const route of converterRoutes) {
-    add({ href: `/${route.slug}`, label: route.label });
+    add({ href: sitePath(route.slug), label: route.label });
   }
   return out;
 }
 
 export const POPULAR_LINKS: NavLink[] = [
-  { href: '/heic-to-jpg', label: 'HEIC to JPG' },
-  { href: '/webp-to-png', label: 'WebP to PNG' },
-  { href: '/png-to-jpg', label: 'PNG to JPG' },
-  { href: '/jpg-to-png', label: 'JPG to PNG' },
-  { href: '/mov-to-mp4', label: 'MOV to MP4' },
-  { href: '/m4a-to-mp3', label: 'M4A to MP3' },
-  { href: '/mp4-to-mp3', label: 'MP4 to MP3' },
-  { href: '/tiff-to-jpg', label: 'TIFF to JPG' },
-  { href: '/avif-to-jpg', label: 'AVIF to JPG' },
-  { href: '/docx-to-pdf', label: 'DOCX to PDF' },
-  { href: '/pdf-to-txt', label: 'PDF to TXT' },
-  { href: '/wav-to-mp3', label: 'WAV to MP3' },
+  { href: sitePath('heic-to-jpg'), label: 'HEIC to JPG' },
+  { href: sitePath('webp-to-png'), label: 'WebP to PNG' },
+  { href: sitePath('png-to-jpg'), label: 'PNG to JPG' },
+  { href: sitePath('jpg-to-png'), label: 'JPG to PNG' },
+  { href: sitePath('mov-to-mp4'), label: 'MOV to MP4' },
+  { href: sitePath('m4a-to-mp3'), label: 'M4A to MP3' },
+  { href: sitePath('mp4-to-mp3'), label: 'MP4 to MP3' },
+  { href: sitePath('tiff-to-jpg'), label: 'TIFF to JPG' },
+  { href: sitePath('avif-to-jpg'), label: 'AVIF to JPG' },
+  { href: sitePath('docx-to-pdf'), label: 'DOCX to PDF' },
+  { href: sitePath('pdf-to-txt'), label: 'PDF to TXT' },
+  { href: sitePath('wav-to-mp3'), label: 'WAV to MP3' },
 ];
 
 /** Flat list of internal links to inject into prerender <noscript> for a given path. */
@@ -140,12 +141,12 @@ export function getPrerenderInternalLinks(path: string): NavLink[] {
   const route = converterRoutes.find((r) => r.slug === slug);
   if (route) {
     links.push(
-      { href: `/${route.sourceFormat}`, label: `${route.sourceFormat.toUpperCase()} hub` },
-      { href: `/to-${route.targetFormat}`, label: `To ${route.targetFormat.toUpperCase()}` },
+      { href: sitePath(route.sourceFormat), label: `${route.sourceFormat.toUpperCase()} hub` },
+      { href: sitePath(`to-${route.targetFormat}`), label: `To ${route.targetFormat.toUpperCase()}` },
     );
     links.push(
       ...getRelatedConverters(route.sourceFormat, route.targetFormat, 8).map((r) => ({
-        href: `/${r.slug}`,
+        href: sitePath(r.slug),
         label: r.label,
       })),
     );
@@ -156,7 +157,7 @@ export function getPrerenderInternalLinks(path: string): NavLink[] {
   if (sourcePage) {
     links.push(
       ...sourcePage.targets.slice(0, 10).map((t) => ({
-        href: `/${slug}-to-${t}`,
+        href: sitePath(`${slug}-to-${t}`),
         label: `${slug.toUpperCase()} to ${t.toUpperCase()}`,
       })),
     );
@@ -170,7 +171,7 @@ export function getPrerenderInternalLinks(path: string): NavLink[] {
       .map((e) => e.source);
     links.push(
       ...sources.slice(0, 10).map((s) => ({
-        href: `/${s}-to-${target}`,
+        href: sitePath(`${s}-to-${target}`),
         label: `${s.toUpperCase()} to ${target.toUpperCase()}`,
       })),
     );

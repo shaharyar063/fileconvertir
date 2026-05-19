@@ -9,6 +9,7 @@ import { buildFAQSchema, buildWebAppSchema, buildWebSiteSchema, SITE_URL } from 
 import { useMemo, ReactNode } from 'react';
 import { InternalLinkGrid } from '@/components/InternalLinkGrid';
 import { getSourceHubSections, getTargetHubSections } from '@/lib/site-navigation';
+import { sitePath } from '@/lib/site-url';
 
 const popularConversions: { slug: string; label: string; tagline: string }[] = [
   { slug: 'heic-to-jpg', label: 'HEIC to JPG', tagline: 'Open iPhone photos on Windows' },
@@ -116,7 +117,7 @@ export default function Index() {
           {popularConversions.map(p => (
             <Link
               key={p.slug}
-              to={`/${p.slug}`}
+              to={sitePath(p.slug)}
               className="group rounded-xl border border-border bg-background p-4 transition-transform hover:-translate-y-0.5"
             >
               <div className="flex items-center justify-between">
@@ -205,7 +206,7 @@ export default function Index() {
                     .map((src) => (
                       <Link
                         key={src}
-                        to={`/${src}`}
+                        to={sitePath(src)}
                         className="rounded-md border border-border px-2 py-0.5 text-[10px] font-medium uppercase text-foreground hover:border-primary"
                       >
                         {src}
@@ -216,7 +217,7 @@ export default function Index() {
                   {topRoutes.map((r) => (
                     <Link
                       key={r.slug}
-                      to={`/${r.slug}`}
+                      to={sitePath(r.slug)}
                       className="flex w-full items-center justify-between rounded-lg px-3 py-2 text-left text-xs font-medium text-foreground transition-transform hover:translate-x-0.5 group"
                     >
                       <span>{r.label}</span>

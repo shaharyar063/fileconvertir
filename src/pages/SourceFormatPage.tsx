@@ -6,7 +6,8 @@ import { HeroConverter } from '@/components/HeroConverter';
 import { CheckCircle, ArrowRight } from 'lucide-react';
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@/components/ui/accordion';
 import { useDocumentHead } from '@/hooks/use-document-head';
-import { buildFAQSchema, buildBreadcrumbSchema, SITE_URL } from '@/lib/seo-jsonld';
+import { buildFAQSchema, buildBreadcrumbSchema, absoluteUrl } from '@/lib/seo-jsonld';
+import { sitePath } from '@/lib/site-url';
 
 export default function SourceFormatPage() {
   const { slug, format } = useParams<{ slug?: string; format?: string }>();
@@ -27,7 +28,7 @@ export default function SourceFormatPage() {
   useDocumentHead({
     title: seo?.title ?? 'FileConvertir',
     description: seo?.metaDescription ?? '',
-    canonical: page ? `${SITE_URL}/${page.sourceFormat}` : undefined,
+    canonical: page ? absoluteUrl(page.sourceFormat) : undefined,
     jsonLd,
   });
 
@@ -70,7 +71,7 @@ export default function SourceFormatPage() {
             {relatedRoutes.map(r => (
               <Link
                 key={r.slug}
-                to={`/${r.slug}`}
+                to={sitePath(r.slug)}
                 className="flex items-center justify-between rounded-xl border border-border bg-card px-3 py-3 text-sm font-medium text-foreground transition-colors hover:border-primary hover:text-primary"
               >
                 <span>{r.label}</span>
@@ -88,7 +89,7 @@ export default function SourceFormatPage() {
             {page.targets.map((t) => (
               <Link
                 key={t}
-                to={`/to-${t}`}
+                to={`/to-${t}/`}
                 className="rounded-lg border border-border bg-card px-3 py-2 text-xs font-medium uppercase text-foreground hover:border-primary"
               >
                 To {t}

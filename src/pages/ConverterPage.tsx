@@ -3,11 +3,12 @@ import { useMemo } from 'react';
 import { getConverterBySlug } from '@/lib/converters';
 import { getConverterSEO } from '@/lib/seo-content';
 import { getRelatedConverters } from '@/lib/site-navigation';
+import { sitePath } from '@/lib/site-url';
 import { HeroConverter } from '@/components/HeroConverter';
 import { CheckCircle, ArrowRight, Sparkles } from 'lucide-react';
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@/components/ui/accordion';
 import { useDocumentHead } from '@/hooks/use-document-head';
-import { buildFAQSchema, buildBreadcrumbSchema, buildHowToSchema, SITE_URL } from '@/lib/seo-jsonld';
+import { buildFAQSchema, buildBreadcrumbSchema, buildHowToSchema, absoluteUrl } from '@/lib/seo-jsonld';
 
 export default function ConverterPage() {
   const { slug } = useParams<{ slug: string }>();
@@ -21,8 +22,8 @@ export default function ConverterPage() {
     const schemas: object[] = [
       buildFAQSchema(seo.faqs),
       buildBreadcrumbSchema([
-        { name: 'Home', url: SITE_URL },
-        { name: seo.heading, url: `${SITE_URL}/${route.slug}` },
+        { name: 'Home', url: absoluteUrl() },
+        { name: seo.heading, url: absoluteUrl(route.slug) },
       ]),
     ];
     if (seo.howToSteps && seo.howToSteps.length > 0) {
@@ -33,7 +34,7 @@ export default function ConverterPage() {
   useDocumentHead({
     title: seo?.title ?? 'FileConvertir',
     description: seo?.metaDescription ?? '',
-    canonical: route ? `${SITE_URL}/${route.slug}` : undefined,
+    canonical: route ? absoluteUrl(route.slug) : undefined,
     jsonLd,
   });
 
@@ -45,11 +46,11 @@ export default function ConverterPage() {
       <nav className="mb-6 text-xs text-muted-foreground">
         <Link to="/" className="hover:text-primary">Home</Link>
         <span className="mx-2">/</span>
-        <Link to={`/${route.sourceFormat}`} className="hover:text-primary">
+        <Link to={`/${route.sourceFormat}/`} className="hover:text-primary">
           {route.sourceFormat.toUpperCase()}
         </Link>
         <span className="mx-2">/</span>
-        <Link to={`/to-${route.targetFormat}`} className="hover:text-primary">
+        <Link to={`/to-${route.targetFormat}/`} className="hover:text-primary">
           To {route.targetFormat.toUpperCase()}
         </Link>
         <span className="mx-2">/</span>
@@ -185,7 +186,7 @@ export default function ConverterPage() {
             {related.map(r => (
               <Link
                 key={r.slug}
-                to={`/${r.slug}`}
+                to={sitePath(r.slug)}
                 className="flex items-center justify-between rounded-xl border border-border bg-card px-3 py-3 text-sm font-medium text-foreground transition-colors hover:border-primary hover:text-primary"
               >
                 <span>{r.label}</span>

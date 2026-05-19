@@ -26,13 +26,13 @@ describe('prerender-meta', () => {
       path: 'png-to-jpg',
       title: 'PNG to JPG — Free',
       description: 'Convert PNG to JPG online.',
-      canonical: 'https://fileconvertir.com/png-to-jpg',
+      canonical: 'https://fileconvertir.com/png-to-jpg/',
       heading: 'Convert PNG to JPG',
     });
 
     expect(html).toContain('<title>PNG to JPG — Free</title>');
-    expect(html).toContain('href="https://fileconvertir.com/png-to-jpg"');
-    expect(html).not.toContain('href="https://fileconvertir.com/"');
+    expect(html).toContain('href="https://fileconvertir.com/png-to-jpg/"');
+    expect(html).not.toContain('href="https://fileconvertir.com/png-to-jpg"');
     expect(html).toContain('data-prerender="true"');
   });
 });

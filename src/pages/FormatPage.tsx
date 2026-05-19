@@ -6,7 +6,8 @@ import { HeroConverter } from '@/components/HeroConverter';
 import { ArrowRight, CheckCircle } from 'lucide-react';
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@/components/ui/accordion';
 import { useDocumentHead } from '@/hooks/use-document-head';
-import { buildFAQSchema, buildBreadcrumbSchema, SITE_URL } from '@/lib/seo-jsonld';
+import { buildFAQSchema, buildBreadcrumbSchema, absoluteUrl } from '@/lib/seo-jsonld';
+import { sitePath } from '@/lib/site-url';
 
 export default function FormatPage() {
   const { format } = useParams<{ format: string }>();
@@ -18,15 +19,15 @@ export default function FormatPage() {
     return [
       buildFAQSchema(seo.faqs),
       buildBreadcrumbSchema([
-        { name: 'Home', url: SITE_URL },
-        { name: seo.heading, url: `${SITE_URL}/to-${page.targetFormat}` },
+        { name: 'Home', url: absoluteUrl() },
+        { name: seo.heading, url: absoluteUrl(`to-${page.targetFormat}`) },
       ]),
     ];
   }, [seo, page]);
   useDocumentHead({
     title: seo?.title ?? 'FileConvertir',
     description: seo?.metaDescription ?? '',
-    canonical: page ? `${SITE_URL}/to-${page.targetFormat}` : undefined,
+    canonical: page ? absoluteUrl(`to-${page.targetFormat}`) : undefined,
     jsonLd,
   });
 
@@ -106,7 +107,7 @@ export default function FormatPage() {
             {relatedConverters.map(r => (
               <Link
                 key={r.slug}
-                to={`/${r.slug}`}
+                to={sitePath(r.slug)}
                 className="flex items-center justify-between rounded-xl border border-border bg-card px-3 py-3 text-sm font-medium text-foreground transition-colors hover:border-primary hover:text-primary"
               >
                 <span>{r.label}</span>

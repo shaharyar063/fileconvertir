@@ -11,10 +11,9 @@ import {
   buildHowToSchema,
 } from './seo-jsonld';
 import { getAllSitewideNavLinks, getPrerenderInternalLinks } from './site-navigation';
+import { SITE_URL, absoluteUrl } from './site-url';
 
-export const SITE_URL =
-  (typeof process !== 'undefined' && process.env.VITE_SITE_URL) ||
-  'https://fileconvertir.com';
+export { SITE_URL };
 
 export interface PrerenderPageMeta {
   /** URL path without leading slash, e.g. `png-to-jpg`. Empty string = homepage. */
@@ -43,8 +42,8 @@ export function getAllPrerenderPages(): PrerenderPageMeta[] {
     const schemas: object[] = [
       buildFAQSchema(seo.faqs),
       buildBreadcrumbSchema([
-        { name: 'Home', url: SITE_URL },
-        { name: seo.heading, url: `${SITE_URL}/${route.slug}` },
+        { name: 'Home', url: absoluteUrl() },
+        { name: seo.heading, url: absoluteUrl(route.slug) },
       ]),
     ];
     if (seo.howToSteps?.length) {
@@ -54,7 +53,7 @@ export function getAllPrerenderPages(): PrerenderPageMeta[] {
       path: route.slug,
       title: seo.title,
       description: seo.metaDescription,
-      canonical: `${SITE_URL}/${route.slug}`,
+      canonical: absoluteUrl(route.slug),
       heading: seo.heading,
       jsonLd: schemas,
     });
@@ -67,13 +66,13 @@ export function getAllPrerenderPages(): PrerenderPageMeta[] {
       path: source,
       title: seo.title,
       description: seo.metaDescription,
-      canonical: `${SITE_URL}/${source}`,
+      canonical: absoluteUrl(source),
       heading: seo.heading,
       jsonLd: [
         buildFAQSchema(seo.faqs),
         buildBreadcrumbSchema([
-          { name: 'Home', url: SITE_URL },
-          { name: seo.heading, url: `${SITE_URL}/${source}` },
+          { name: 'Home', url: absoluteUrl() },
+          { name: seo.heading, url: absoluteUrl(source) },
         ]),
       ],
     });
@@ -85,13 +84,13 @@ export function getAllPrerenderPages(): PrerenderPageMeta[] {
       path: page.slug,
       title: seo.title,
       description: seo.metaDescription,
-      canonical: `${SITE_URL}/${page.slug}`,
+      canonical: absoluteUrl(page.slug),
       heading: seo.heading,
       jsonLd: [
         buildFAQSchema(seo.faqs),
         buildBreadcrumbSchema([
-          { name: 'Home', url: SITE_URL },
-          { name: seo.heading, url: `${SITE_URL}/${page.slug}` },
+          { name: 'Home', url: absoluteUrl() },
+          { name: seo.heading, url: absoluteUrl(page.slug) },
         ]),
       ],
     });
