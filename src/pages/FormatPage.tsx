@@ -51,6 +51,9 @@ export default function FormatPage() {
           {seo.heading}
         </h1>
         <p className="mt-3 text-base text-muted-foreground leading-relaxed">{seo.description}</p>
+        {seo.longDescription && (
+          <p className="mt-4 text-sm text-foreground/90 leading-relaxed">{seo.longDescription}</p>
+        )}
         <div className="mt-3 flex flex-wrap gap-2">
           <span className="inline-block rounded-lg border border-primary/30 bg-primary/10 px-3 py-1 text-xs font-bold uppercase tracking-wide text-primary">
             Output: .{page.targetFormat}

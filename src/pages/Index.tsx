@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { HeroConverter } from '@/components/HeroConverter';
 import { converterRoutes } from '@/lib/converters';
-import { PRIORITY_CONVERTERS } from '@/lib/seo-content';
+import { PRIORITY_CONVERTERS, getHomepageSEO } from '@/lib/seo-content';
 import { Shield, Zap, Globe, ArrowRight, CheckCircle, Image, FileText, Music, Film, Type, Archive, TrendingUp } from 'lucide-react';
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@/components/ui/accordion';
 import { useDocumentHead } from '@/hooks/use-document-head';
@@ -41,13 +41,7 @@ const useCases = [
   'All conversions run locally — your files never leave your device',
 ];
 
-const faqs = [
-  { q: 'Is FileConvertir really free?', a: 'Yes, completely free with no limits. No signup, no account, no hidden fees. Just drop a file and convert.' },
-  { q: 'Are my files uploaded to a server?', a: 'No. All conversions run locally in your browser using WebAssembly and JavaScript. Your files never leave your device, ensuring complete privacy.' },
-  { q: 'What file formats are supported?', a: 'We support 200+ conversion types across images, documents, audio, video, fonts, and archives. Select a format from the converter above to see all available options.' },
-  { q: 'What\'s the maximum file size?', a: 'The maximum file size is 100MB. Since processing happens in your browser, larger files may take longer depending on your device.' },
-  { q: 'Can I convert multiple files at once?', a: 'Yes! You can batch convert up to 20 files at once. Select multiple files, choose your output format, and download them all individually or as a single ZIP archive.' },
-];
+const faqs = getHomepageSEO().faqs;
 
 /**
  * Full-bleed section band. `invert` flips the two brand colors locally
@@ -79,9 +73,10 @@ function Band({
 
 export default function Index() {
   const jsonLd = useMemo(() => [buildWebSiteSchema(), buildWebAppSchema(), buildFAQSchema(faqs)], []);
+  const homeSeo = getHomepageSEO();
   useDocumentHead({
-    title: 'FileConvertir — Free Online File Converter | Images, Docs, Audio, Video',
-    description: 'Convert images, documents, audio, video, fonts & archives instantly in your browser. 100% private — your files never leave your device. No signup required.',
+    title: homeSeo.title,
+    description: homeSeo.metaDescription,
     canonical: absoluteUrl(),
     jsonLd,
   });

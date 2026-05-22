@@ -50,6 +50,12 @@ export default function SourceFormatPage() {
         <p className="mt-3 text-base text-muted-foreground leading-relaxed">{seo.description}</p>
       </header>
 
+      {seo.longDescription && (
+        <section className="mt-8 rounded-xl border border-border bg-card/40 p-5 md:p-6">
+          <p className="text-sm md:text-base text-foreground/90 leading-relaxed">{seo.longDescription}</p>
+        </section>
+      )}
+
       {/* Converter Tool — preselected source */}
       <section className="mt-8">
         <HeroConverter initialSource={page.sourceFormat} lockSource />

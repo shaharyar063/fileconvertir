@@ -3,6 +3,7 @@ import { conversionMap } from './conversion-map';
 import {
   getConverterSEO,
   getFormatSEO,
+  getHomepageSEO,
   getSourceFormatSEO,
 } from './seo-content';
 import {
@@ -12,8 +13,6 @@ import {
 } from './seo-jsonld';
 import { getAllSitewideNavLinks, getPrerenderInternalLinks } from './site-navigation';
 import { SITE_URL, absoluteUrl, canonicalSlug } from './site-url';
-
-const HOME_TITLE = 'FileConvertir — Free Online File Converter';
 
 export { SITE_URL };
 
@@ -28,14 +27,14 @@ export interface PrerenderPageMeta {
 }
 
 export function getAllPrerenderPages(): PrerenderPageMeta[] {
+  const home = getHomepageSEO();
   const pages: PrerenderPageMeta[] = [
     {
       path: '',
-      title: HOME_TITLE,
-      description:
-        'Convert images, documents, audio, video, fonts & archives instantly in your browser. 100% private — your files never leave your device. No signup required.',
+      title: home.title,
+      description: home.metaDescription,
       canonical: `${SITE_URL}/`,
-      heading: 'Free Online File Converter',
+      heading: home.heading,
     },
   ];
 
