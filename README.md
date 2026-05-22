@@ -58,4 +58,4 @@ plugins/
 
 ## Deployment
 
-Cloudflare Pages: build command `npm run build`, output directory `dist`. Optional env: `VITE_SITE_URL=https://fileconvertir.com`.
+Cloudflare Pages: build command `npm run build`, output directory `dist`. The build copies FFmpeg.wasm into `public/ffmpeg/` automatically (`prebuild`). Optional env: `VITE_SITE_URL=https://fileconvertir.com`, `VITE_FFMPEG_BASE_URL=/ffmpeg`.

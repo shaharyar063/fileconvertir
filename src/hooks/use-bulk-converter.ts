@@ -5,6 +5,7 @@ import {
   BulkFileItem, formatFileSize,
 } from '@/lib/converter-types';
 import { registry } from '@/lib/converter-registry';
+import { fileMatchesClaimedExtension } from '@/lib/file-sniff';
 
 let nextId = 0;
 
@@ -15,7 +16,7 @@ export function useBulkConverter(fixedTargetFormat?: string) {
   const [error, setError] = useState<string | null>(null);
   const abortRef = useRef(false);
 
-  const addFiles = useCallback((newFiles: File[]) => {
+  const addFiles = useCallback(async (newFiles: File[]) => {
     setError(null);
 
     const items: BulkFileItem[] = [];
@@ -42,6 +43,11 @@ export function useBulkConverter(fixedTargetFormat?: string) {
       }
 
       const info = createFileInfo(file);
+      if (!(await fileMatchesClaimedExtension(file, info.extension))) {
+        localError = `${file.name} does not match a valid .${info.extension} file and was skipped.`;
+        setError(localError);
+        continue;
+      }
       const formats = registry.getTargetFormats(info.extension);
       if (formats.length === 0) continue;
 

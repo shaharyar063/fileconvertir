@@ -3,6 +3,7 @@ import { getTargetsForSource } from '@/lib/conversion-map';
 import { textToDocx } from '@/lib/build-docx';
 import { extractPdfText } from '@/lib/pdf-text';
 import { ArchiveFormat, buildSingleFileArchive } from '@/lib/build-archive';
+import { escapeHtml, safeHttpUrl, sanitizeExportedHtml } from '@/lib/escape-html';
 
 const DOC_SOURCES = ['pdf', 'docx', 'odt', 'txt', 'rtf', 'html', 'md', 'csv'];
 
@@ -34,36 +35,36 @@ async function rtfToText(file: File): Promise<string> {
 }
 
 function mdToHtml(md: string): string {
-  // Basic markdown → HTML conversion
+  const e = escapeHtml;
   const html = md
-    // Code blocks
-    .replace(/```(\w*)\n([\s\S]*?)```/g, '<pre><code class="$1">$2</code></pre>')
-    .replace(/`([^`]+)`/g, '<code>$1</code>')
-    // Headers
-    .replace(/^######\s+(.+)$/gm, '<h6>$1</h6>')
-    .replace(/^#####\s+(.+)$/gm, '<h5>$1</h5>')
-    .replace(/^####\s+(.+)$/gm, '<h4>$1</h4>')
-    .replace(/^###\s+(.+)$/gm, '<h3>$1</h3>')
-    .replace(/^##\s+(.+)$/gm, '<h2>$1</h2>')
-    .replace(/^#\s+(.+)$/gm, '<h1>$1</h1>')
-    // Bold & italic
-    .replace(/\*\*\*(.+?)\*\*\*/g, '<strong><em>$1</em></strong>')
-    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-    .replace(/\*(.+?)\*/g, '<em>$1</em>')
-    // Links & images
-    .replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1" />')
-    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>')
-    // Blockquotes
-    .replace(/^>\s+(.+)$/gm, '<blockquote>$1</blockquote>')
-    // Horizontal rules
+    .replace(/```(\w*)\n([\s\S]*?)```/g, (_, lang, code) =>
+      `<pre><code class="${e(lang)}">${e(code)}</code></pre>`)
+    .replace(/`([^`]+)`/g, (_, code) => `<code>${e(code)}</code>`)
+    .replace(/^######\s+(.+)$/gm, (_, t) => `<h6>${e(t)}</h6>`)
+    .replace(/^#####\s+(.+)$/gm, (_, t) => `<h5>${e(t)}</h5>`)
+    .replace(/^####\s+(.+)$/gm, (_, t) => `<h4>${e(t)}</h4>`)
+    .replace(/^###\s+(.+)$/gm, (_, t) => `<h3>${e(t)}</h3>`)
+    .replace(/^##\s+(.+)$/gm, (_, t) => `<h2>${e(t)}</h2>`)
+    .replace(/^#\s+(.+)$/gm, (_, t) => `<h1>${e(t)}</h1>`)
+    .replace(/\*\*\*(.+?)\*\*\*/g, (_, t) => `<strong><em>${e(t)}</em></strong>`)
+    .replace(/\*\*(.+?)\*\*/g, (_, t) => `<strong>${e(t)}</strong>`)
+    .replace(/\*(.+?)\*/g, (_, t) => `<em>${e(t)}</em>`)
+    .replace(
+      /!\[([^\]]*)\]\(([^)]+)\)/g,
+      (_, alt, url) => `<img src="${safeHttpUrl(url)}" alt="${e(alt)}" />`,
+    )
+    .replace(
+      /\[([^\]]+)\]\(([^)]+)\)/g,
+      (_, label, url) => `<a href="${safeHttpUrl(url)}">${e(label)}</a>`,
+    )
+    .replace(/^>\s+(.+)$/gm, (_, t) => `<blockquote>${e(t)}</blockquote>`)
     .replace(/^---+$/gm, '<hr />')
-    // Unordered lists
-    .replace(/^[-*]\s+(.+)$/gm, '<li>$1</li>')
-    // Line breaks → paragraphs
+    .replace(/^[-*]\s+(.+)$/gm, (_, t) => `<li>${e(t)}</li>`)
     .replace(/\n\n/g, '</p><p>')
     .replace(/\n/g, '<br />');
 
-  return `<!DOCTYPE html><html><head><meta charset="utf-8"><title>Document</title></head><body><p>${html}</p></body></html>`;
+  const doc = `<!DOCTYPE html><html><head><meta charset="utf-8"><title>Document</title></head><body><p>${html}</p></body></html>`;
+  return sanitizeExportedHtml(doc);
 }
 
 function mdToText(md: string): string {

@@ -16,6 +16,7 @@ node_modules
 bun.lockb
 dist
 dist-ssr
+public/ffmpeg
 *.local
 
 # Editor directories and files

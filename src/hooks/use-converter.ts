@@ -1,6 +1,7 @@
 import { useState, useCallback } from 'react';
 import { FileInfo, ConversionStatus, ConversionResult, createFileInfo, MAX_FILE_SIZE } from '@/lib/converter-types';
 import { registry } from '@/lib/converter-registry';
+import { fileMatchesClaimedExtension, mismatchExtensionMessage } from '@/lib/file-sniff';
 
 export function useConverter(fixedTargetFormat?: string) {
   const [fileInfo, setFileInfo] = useState<FileInfo | null>(null);
@@ -10,7 +11,7 @@ export function useConverter(fixedTargetFormat?: string) {
   const [result, setResult] = useState<ConversionResult | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  const handleFile = useCallback((file: File) => {
+  const handleFile = useCallback(async (file: File) => {
     setResult(null);
     setError(null);
     setProgress(0);
@@ -22,6 +23,11 @@ export function useConverter(fixedTargetFormat?: string) {
     }
 
     const info = createFileInfo(file);
+
+    if (!(await fileMatchesClaimedExtension(file, info.extension))) {
+      setError(mismatchExtensionMessage(info.extension));
+      return;
+    }
 
     if (fixedTargetFormat) {
       setTargetFormat(fixedTargetFormat);

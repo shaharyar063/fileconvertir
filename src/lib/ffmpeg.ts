@@ -31,7 +31,7 @@ export async function getFFmpeg(onProgress?: (p: number) => void): Promise<FFmpe
 
   const baseURL =
     (import.meta.env.VITE_FFMPEG_BASE_URL as string | undefined)?.replace(/\/$/, '') ||
-    'https://unpkg.com/@ffmpeg/core@0.12.10/dist/esm';
+    (import.meta.env.PROD ? '/ffmpeg' : 'https://unpkg.com/@ffmpeg/core@0.12.10/dist/esm');
 
   const loadPromise = ffmpeg.load({
     coreURL: `${baseURL}/ffmpeg-core.js`,

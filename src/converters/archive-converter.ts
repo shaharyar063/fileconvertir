@@ -1,6 +1,7 @@
 import { ConverterPlugin, ConversionResult, ConversionOption } from '@/lib/converter-types';
 import { getTargetsForSource } from '@/lib/conversion-map';
 import JSZip from 'jszip';
+import { safeArchiveEntryName } from '@/lib/safe-archive-path';
 
 const ARCHIVE_SOURCES = ['zip', 'tar', 'gz'];
 
@@ -38,10 +39,13 @@ function parseTar(buffer: ArrayBuffer): { name: string; data: Uint8Array }[] {
     offset += 512; // Skip header
 
     if (size > 0 && (typeFlag === 0 || typeFlag === 48)) { // Regular file
-      files.push({
-        name,
-        data: view.slice(offset, offset + size),
-      });
+      const safeName = safeArchiveEntryName(name);
+      if (safeName) {
+        files.push({
+          name: safeName,
+          data: view.slice(offset, offset + size),
+        });
+      }
     }
 
     // Advance past data blocks (512-byte aligned)
@@ -174,8 +178,10 @@ export const archiveConverter: ConverterPlugin = {
       const zip = await JSZip.loadAsync(buffer);
       const entries = Object.entries(zip.files).filter(([, f]) => !f.dir);
       for (const [name, zipFile] of entries) {
+        const safeName = safeArchiveEntryName(name);
+        if (!safeName) continue;
         const data = await zipFile.async('uint8array');
-        files.push({ name, data });
+        files.push({ name: safeName, data });
       }
     } else if (ext === 'tar') {
       files = parseTar(buffer);
@@ -189,7 +195,8 @@ export const archiveConverter: ConverterPlugin = {
         files = parseTar(decompressed);
       } else {
         // Single file
-        const innerName = file.name.replace(/\.gz$/i, '') || 'file';
+        const innerName =
+          safeArchiveEntryName(file.name.replace(/\.gz$/i, '') || 'file') || 'file';
         files = [{ name: innerName, data: u8 }];
       }
     }
