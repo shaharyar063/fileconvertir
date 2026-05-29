@@ -16,4 +16,4 @@ QuickConvert is a browser-based file converter (React + Vite + TypeScript). All 
 - The Vite dev server sets `Cross-Origin-Opener-Policy` and `Cross-Origin-Embedder-Policy` headers (in `vite.config.ts`) for SharedArrayBuffer support required by FFmpeg.wasm.
 - ESLint shows 7 warnings (all from auto-generated shadcn/ui components). These are harmless `react-refresh/only-export-components` warnings. `npm run lint` exits 0.
 - The `bun.lockb` file does not exist; the project uses `npm` (lockfile: `package-lock.json`).
-- Audio/video conversions load FFmpeg.wasm from `unpkg.com` CDN at runtime, requiring internet access.
+- Audio/video conversions load FFmpeg.wasm from a pinned `unpkg.com` URL at runtime (not bundled in `dist/` — `ffmpeg-core.wasm` exceeds Cloudflare Pages' 25 MiB per-file limit). Requires internet access. Self-host: `FFMPEG_SELF_HOST=1 npm run copy-ffmpeg` and `VITE_FFMPEG_BASE_URL=/ffmpeg`.

@@ -1,5 +1,6 @@
 import { FFmpeg } from '@ffmpeg/ffmpeg';
 import { fetchFile } from '@ffmpeg/util';
+import { getFfmpegCoreBaseUrl } from '@/lib/ffmpeg-core-url';
 
 let ffmpeg: FFmpeg | null = null;
 let loadFailed = false;
@@ -29,9 +30,7 @@ export async function getFFmpeg(onProgress?: (p: number) => void): Promise<FFmpe
     currentOnProgress?.(Math.round(20 + progress * 70));
   });
 
-  const baseURL =
-    (import.meta.env.VITE_FFMPEG_BASE_URL as string | undefined)?.replace(/\/$/, '') ||
-    (import.meta.env.PROD ? '/ffmpeg' : 'https://unpkg.com/@ffmpeg/core@0.12.10/dist/esm');
+  const baseURL = getFfmpegCoreBaseUrl();
 
   const loadPromise = ffmpeg.load({
     coreURL: `${baseURL}/ffmpeg-core.js`,
