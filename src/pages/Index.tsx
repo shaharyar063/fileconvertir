@@ -2,23 +2,23 @@ import { Link } from 'react-router-dom';
 import { HeroConverter } from '@/components/HeroConverter';
 import { converterRoutes } from '@/lib/converters';
 import { PRIORITY_CONVERTERS, getHomepageSEO } from '@/lib/seo-content';
-import { Shield, Zap, Globe, ArrowRight, CheckCircle, Image, FileText, Music, Film, Type, Archive, TrendingUp } from 'lucide-react';
+import { Shield, Zap, Globe, ArrowRight, CheckCircle, Image, FileText, Music, Film, Type, Archive, TrendingUp, Flame } from 'lucide-react';
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@/components/ui/accordion';
 import { useDocumentHead } from '@/hooks/use-document-head';
 import { buildFAQSchema, buildWebAppSchema, buildWebSiteSchema } from '@/lib/seo-jsonld';
 import { absoluteUrl } from '@/lib/site-url';
 import { useMemo, ReactNode } from 'react';
 import { InternalLinkGrid } from '@/components/InternalLinkGrid';
-import { getSourceHubSections, getTargetHubSections } from '@/lib/site-navigation';
+import { getSourceHubSections, getTargetHubSections, BOOSTED_LINKS } from '@/lib/site-navigation';
 import { sitePath } from '@/lib/site-url';
 
 const popularConversions: { slug: string; label: string; tagline: string }[] = [
-  { slug: 'heic-to-jpg', label: 'HEIC to JPG', tagline: 'Open iPhone photos on Windows' },
-  { slug: 'm4a-to-mp3',  label: 'M4A to MP3',  tagline: 'Apple audio for any device' },
-  { slug: 'mov-to-mp4',  label: 'MOV to MP4',  tagline: 'Fix QuickTime compatibility' },
-  { slug: 'webp-to-png', label: 'WebP to PNG', tagline: 'Preserve transparency' },
-  { slug: 'tiff-to-jpg', label: 'TIFF to JPG', tagline: 'Shrink huge scans for email' },
-  { slug: 'avif-to-jpg', label: 'AVIF to JPG', tagline: 'Fix AVIF compatibility' },
+  { slug: 'heic-to-jpg',  label: 'HEIC to JPG',  tagline: 'Open iPhone photos on Windows' },
+  { slug: 'webp-to-jpg',  label: 'WebP to JPG',  tagline: 'Insert web images into Office' },
+  { slug: 'mp4-to-mp3',   label: 'MP4 to MP3',   tagline: 'Extract audio from any video' },
+  { slug: 'mkv-to-mp4',   label: 'MKV to MP4',   tagline: 'Fix Plex & iPhone playback' },
+  { slug: 'docx-to-pdf',  label: 'DOCX to PDF',  tagline: 'Lock formatting for sharing' },
+  { slug: 'pdf-to-txt',   label: 'PDF to Text',  tagline: 'Extract text for AI & editing' },
 ];
 // Reference PRIORITY_CONVERTERS so the link list stays in sync with the priority list
 void PRIORITY_CONVERTERS;
@@ -121,6 +121,30 @@ export default function Index() {
                 <ArrowRight className="h-3.5 w-3.5 text-foreground transition-transform group-hover:translate-x-0.5" />
               </div>
               <p className="mt-1 text-xs text-foreground/80">{p.tagline}</p>
+            </Link>
+          ))}
+        </div>
+      </Band>
+
+      {/* TRENDING — light band */}
+      <Band ariaLabel="Trending file conversions">
+        <div className="flex items-center gap-2">
+          <Flame className="h-4 w-4 text-foreground" />
+          <h2 className="text-2xl md:text-3xl font-extrabold tracking-tight text-foreground">
+            More Conversions
+          </h2>
+        </div>
+        <p className="mt-3 text-sm text-foreground/80">
+          Every conversion runs locally in your browser — no upload, no account needed.
+        </p>
+        <div className="mt-6 flex flex-wrap gap-2">
+          {BOOSTED_LINKS.map(link => (
+            <Link
+              key={link.href}
+              to={link.href}
+              className="rounded-lg border border-border bg-background px-3 py-1.5 text-xs font-semibold text-foreground transition-colors hover:border-primary hover:text-primary"
+            >
+              {link.label}
             </Link>
           ))}
         </div>

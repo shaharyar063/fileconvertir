@@ -1,6 +1,7 @@
 import type { ConverterContentOverride } from '../types';
 import { pick } from '../slug-hash';
 import { name } from '../format-names';
+import { getCategoryForFormat } from '../category';
 import { buildTierAContent } from './tier-a-builder';
 
 export function parseConverterSlug(slug: string): { source: string; target: string } {
@@ -14,6 +15,7 @@ export function buildTierSEnhanced(source: string, target: string): ConverterCon
   const slug = `${source}-to-${target}`;
   const s = name(source);
   const t = name(target);
+  const cat = getCategoryForFormat(source);
   const base = buildTierAContent(source, target);
 
   return {
@@ -22,39 +24,57 @@ export function buildTierSEnhanced(source: string, target: string): ConverterCon
     howToSteps: [
       {
         name: pick(slug, ['Select your files', 'Add your files', 'Choose files to convert']),
-        text: `Click the drop zone or browse to add .${source} files. You can process up to 20 files per batch.`,
+        text: pick(slug, [
+          `Click the drop zone or use "Select Files" to add your .${source} files. Drag and drop works too — up to 20 files per batch.`,
+          `Drop your .${source} file(s) directly onto the converter or click to browse. Batch mode supports up to 20 files at once.`,
+          `Select one or more .${source} files from your device. The converter accepts batches of up to 20 files simultaneously.`,
+        ]),
       },
       {
         name: `${t} output is preset`,
-        text: `This page already targets ${t}. Conversion begins once valid ${s} files are added.`,
+        text: pick(slug, [
+          `This page is dedicated to ${s} → ${t}. The output format is already selected — conversion begins the moment files are loaded.`,
+          `No format selection needed. This converter is pre-configured for ${t} output, so it starts as soon as ${s} files are added.`,
+        ]),
       },
       {
-        name: 'Processing stays local',
+        name: pick(slug, ['Processing stays local', 'In-browser conversion', 'Files stay on your device']),
         text: pick(slug, [
-          `Your browser decodes ${s} and writes ${t} output on your device — no server upload.`,
-          `Conversion runs locally; check DevTools Network if you want to verify nothing is sent upstream.`,
+          `Your browser decodes ${s} and writes ${t} output on your device — nothing is sent to any server. Open DevTools → Network to verify zero upload traffic.`,
+          `Conversion runs locally using ${engineLabel(cat)} — no cloud, no upload queue, no privacy risk. Files never leave your machine.`,
+          `${t} files are created directly on your device. There is no upload step and no server-side processing.`,
         ]),
       },
       {
         name: 'Download results',
-        text: `Save each ${t} file or download a ZIP when batch converting.`,
+        text: pick(slug, [
+          `Click Download to save each ${t} file, or grab the full batch as a single ZIP archive.`,
+          `Individual ${t} files are available as soon as each one finishes. For batches, a ZIP download button appears when all conversions complete.`,
+        ]),
       },
     ],
     whyChooseUs: [
       {
-        title: 'Private by design',
-        text: `Unlike cloud converters, FileConvertir keeps ${s} files on your machine during ${s} → ${t} conversion.`,
+        title: pick(slug, ['Private by design', 'Zero-upload privacy', 'Files never leave your device']),
+        text: `Cloud converters upload your ${s} files to their servers — FileConvertir processes them locally in your browser. ${privacyContext(cat)} Nothing is logged or stored.`,
       },
       {
-        title: 'No account required',
-        text: 'Free, unlimited use with no signup, watermark, or daily quota.',
+        title: 'No account, no daily limits',
+        text: `Use the converter as many times as you need, convert as many files as you want. No signup, no watermark on results, no daily quota.`,
       },
       {
-        title: pick(slug, ['Works across devices', 'Fast for one-off tasks', 'No install']),
+        title: pick(slug, ['Works on every platform', 'Cross-platform, no install', 'Desktop and mobile support']),
         text: pick(slug, [
-          'Use Chrome, Edge, Firefox, or Safari on desktop and mobile — no app store download.',
-          'Ideal when you need a single conversion without installing desktop software.',
-          'Open the page, convert, and leave — nothing to uninstall afterward.',
+          `Works on Windows, macOS, Linux, Android, and iOS. Anywhere you have Chrome, Firefox, Edge, or Safari — no app to install.`,
+          `No desktop software required. The converter runs in your browser, so it works on any device and operating system.`,
+          `Access on desktop for fast processing of large files, or on mobile for quick conversions on the go.`,
+        ]),
+      },
+      {
+        title: pick(slug, [`${s} to ${t} in seconds`, 'No upload wait', 'Instant local processing']),
+        text: pick(slug, [
+          `Skip the upload queue. Conversion starts immediately because ${engineLabel(cat)} processes files right on your device.`,
+          `Browser-based processing means zero upload time. ${s} files convert to ${t} without leaving your device.`,
         ]),
       },
     ],
@@ -62,8 +82,32 @@ export function buildTierSEnhanced(source: string, target: string): ConverterCon
       ...base.faqs,
       {
         q: `Does ${s} to ${t} work on mobile?`,
-        a: `Yes in modern mobile browsers. Very large files may be slower on phones; desktop is faster for big video or audio.`,
+        a: `Yes — works in Safari on iPhone and Chrome on Android. Very large ${cat === 'video' || cat === 'audio' ? 'audio/video' : ''} files may take longer on phones; a desktop or laptop is faster for big batches.`,
+      },
+      {
+        q: `Is there a file size limit?`,
+        a: `Up to 100MB per file, with a maximum of 20 files per batch (500MB total per batch). For larger files, a desktop tool like FFmpeg or HandBrake is recommended.`,
       },
     ],
   };
+}
+
+function engineLabel(cat: string): string {
+  if (cat === 'audio' || cat === 'video') return 'FFmpeg.wasm';
+  if (cat === 'image') return 'the browser\'s native image decoder';
+  if (cat === 'document') return 'in-browser document libraries';
+  if (cat === 'font') return 'opentype.js';
+  return 'local browser APIs';
+}
+
+function privacyContext(cat: string): string {
+  const m: Record<string, string> = {
+    image: 'Ideal for sensitive photos, IDs, and documents you don\'t want on a server.',
+    document: 'Especially important for contracts, CVs, and confidential business documents.',
+    audio: 'Your recordings, voice memos, and music files stay on your device.',
+    video: 'Personal videos and screen recordings are never transmitted to any server.',
+    font: 'Custom and proprietary fonts are processed without any upload.',
+    archive: 'Files packaged for sharing are assembled locally without cloud exposure.',
+  };
+  return m[cat] ?? 'Your files are never uploaded or stored.';
 }

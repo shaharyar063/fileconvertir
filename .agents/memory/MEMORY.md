@@ -1,0 +1,2 @@
+- [SEO content architecture](seo-content-arch.md) — how Tier S/A/B content flows from priority.ts → tier-s-enhance → tier-a-builder → registry
+- [Boosted SEO pages](boosted-seo-pages.md) — the 26 hand-crafted priority pages and their strategic rationale
