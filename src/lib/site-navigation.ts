@@ -167,6 +167,25 @@ export const POPULAR_LINKS: NavLink[] = [
 ];
 
 /**
+ * Curated format hub links for the footer — one or two key formats per
+ * category. Keeps the footer to ~12 links instead of 36+ hub pages.
+ */
+export const FOOTER_FORMAT_LINKS: NavLink[] = [
+  { href: sitePath('heic'),   label: 'HEIC' },
+  { href: sitePath('webp'),   label: 'WebP' },
+  { href: sitePath('avif'),   label: 'AVIF' },
+  { href: sitePath('png'),    label: 'PNG'  },
+  { href: sitePath('pdf'),    label: 'PDF'  },
+  { href: sitePath('docx'),   label: 'DOCX' },
+  { href: sitePath('mp4'),    label: 'MP4'  },
+  { href: sitePath('mov'),    label: 'MOV'  },
+  { href: sitePath('mp3'),    label: 'MP3'  },
+  { href: sitePath('wav'),    label: 'WAV'  },
+  { href: sitePath('ttf'),    label: 'TTF'  },
+  { href: sitePath('zip'),    label: 'ZIP'  },
+];
+
+/**
  * Boosted links — used on the homepage "Trending" section.
  * These are the highest-opportunity pages that need inbound link authority.
  */

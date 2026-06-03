@@ -15,7 +15,7 @@ export default function ConverterPage() {
   const route = slug ? getConverterBySlug(slug) : undefined;
   const seo = route ? getConverterSEO(route.sourceFormat, route.targetFormat) : undefined;
   const related = route
-    ? getRelatedConverters(route.sourceFormat, route.targetFormat, 12)
+    ? getRelatedConverters(route.sourceFormat, route.targetFormat, 6)
     : [];
   const jsonLd = useMemo(() => {
     if (!seo || !route) return undefined;

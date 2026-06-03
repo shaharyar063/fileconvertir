@@ -264,6 +264,7 @@ export default function Index() {
             className="mt-4"
             sections={getSourceHubSections()}
             columns="grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5"
+            maxPerSection={5}
           />
         </div>
         <div className="mt-10">
@@ -272,6 +273,7 @@ export default function Index() {
             className="mt-4"
             sections={getTargetHubSections()}
             columns="grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5"
+            maxPerSection={5}
           />
         </div>
       </Band>

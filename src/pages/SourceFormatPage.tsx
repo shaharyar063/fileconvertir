@@ -88,23 +88,6 @@ export default function SourceFormatPage() {
         </section>
       )}
 
-      {page.targets.length > 0 && (
-        <section className="mt-10">
-          <h2 className="text-xl font-extrabold text-foreground">Quick pick output format</h2>
-          <div className="mt-4 flex flex-wrap gap-2">
-            {page.targets.map((t) => (
-              <Link
-                key={t}
-                to={sitePath(`${page.sourceFormat}-to-${t}`)}
-                className="rounded-lg border border-border bg-card px-3 py-2 text-xs font-medium uppercase text-foreground hover:border-primary"
-              >
-                To {t}
-              </Link>
-            ))}
-          </div>
-        </section>
-      )}
-
       {/* Use Cases */}
       <section className="mt-10">
         <h2 className="text-xl font-extrabold text-foreground">Use Cases</h2>
