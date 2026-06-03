@@ -3,7 +3,7 @@ interface Env {
   INDEXNOW_AUTH: string;
 }
 
-const INDEXNOW_API = 'https://api.indexnow.org/IndexNow';
+const INDEXNOW_API = 'https://www.bing.com/indexnow';
 const BATCH_SIZE = 500;
 
 export async function onRequestGet(
