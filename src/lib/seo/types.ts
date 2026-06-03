@@ -15,6 +15,12 @@ export interface WhyChooseItem {
   text: string;
 }
 
+/** A blog-style article section rendered as an <h2> + body paragraphs. */
+export interface ArticleSection {
+  heading: string;
+  paragraphs: string[];
+}
+
 /** Per-page override; registry fills sourceInfo/targetInfo from format catalog. */
 export interface ConverterContentOverride {
   title: string;
@@ -26,6 +32,7 @@ export interface ConverterContentOverride {
   longDescription?: string;
   howToSteps?: HowToStep[];
   whyChooseUs?: WhyChooseItem[];
+  article?: ArticleSection[];
   isPriority?: boolean;
 }
 

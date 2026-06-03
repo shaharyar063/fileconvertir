@@ -126,6 +126,24 @@ export default function ConverterPage() {
         </section>
       )}
 
+      {/* In-depth article — blog-style long-form content (priority pages) */}
+      {seo.article && seo.article.length > 0 && (
+        <div className="mt-12 space-y-10">
+          {seo.article.map((sec, i) => (
+            <section key={i}>
+              <h2 className="text-xl font-extrabold text-foreground">{sec.heading}</h2>
+              <div className="mt-3 space-y-4">
+                {sec.paragraphs.map((p, j) => (
+                  <p key={j} className="text-sm text-muted-foreground leading-relaxed md:text-[15px]">
+                    {p}
+                  </p>
+                ))}
+              </div>
+            </section>
+          ))}
+        </div>
+      )}
+
       {/* Format Info */}
       <section className="mt-12 grid gap-6 md:grid-cols-2">
         <div className="rounded-xl border border-border bg-card p-5">
