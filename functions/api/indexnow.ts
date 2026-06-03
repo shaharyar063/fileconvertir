@@ -6,7 +6,19 @@ interface Env {
 const INDEXNOW_API = 'https://api.indexnow.org/IndexNow';
 const BATCH_SIZE = 500;
 
+export async function onRequestGet(
+  context: EventContext<Env, string, Record<string, unknown>>
+): Promise<Response> {
+  return handleRequest(context);
+}
+
 export async function onRequestPost(
+  context: EventContext<Env, string, Record<string, unknown>>
+): Promise<Response> {
+  return handleRequest(context);
+}
+
+async function handleRequest(
   context: EventContext<Env, string, Record<string, unknown>>
 ): Promise<Response> {
   const { request, env } = context;
