@@ -34,11 +34,6 @@ const formats: FormatEntry[] = conversionMap
   .filter((e) => e.source !== 'jpeg')
   .map((e) => ({ source: e.source, targets: e.targets, category: e.category }));
 
-const grouped = CATEGORY_ORDER.map((cat) => ({
-  cat,
-  label: CATEGORY_LABELS[cat],
-  formats: formats.filter((f) => f.category === cat),
-})).filter((g) => g.formats.length > 0);
 
 export function FormatBrowser() {
   const [selected, setSelected] = useState<string | null>(null);
@@ -50,38 +45,29 @@ export function FormatBrowser() {
   }
 
   return (
-    <div className="space-y-6">
-      {grouped.map(({ cat, label, formats: catFormats }) => (
-        <div key={cat}>
-          {/* Category label */}
-          <p className="mb-2 text-[11px] font-bold uppercase tracking-widest text-muted-foreground">
-            {label}
-          </p>
-
-          {/* Horizontally scrollable format chips */}
-          <div className="flex gap-2 overflow-x-auto pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-            {catFormats.map(({ source }) => {
-              const isSelected = selected === source;
-              return (
-                <button
-                  key={source}
-                  onClick={() => toggle(source)}
-                  className={`group relative shrink-0 rounded-xl border px-4 py-2.5 text-sm font-bold uppercase tracking-wide transition-all duration-150
-                    ${isSelected
-                      ? 'border-primary bg-primary text-primary-foreground shadow-sm'
-                      : 'border-border bg-card text-foreground hover:border-primary hover:text-primary'
-                    }`}
-                >
-                  .{source}
-                  {isSelected && (
-                    <span className="absolute -bottom-[9px] left-1/2 -translate-x-1/2 border-4 border-transparent border-t-primary" />
-                  )}
-                </button>
-              );
-            })}
-          </div>
-        </div>
-      ))}
+    <div className="space-y-4">
+      {/* Single horizontally scrollable row of all formats */}
+      <div className="flex gap-2 overflow-x-auto pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        {formats.map(({ source }) => {
+          const isSelected = selected === source;
+          return (
+            <button
+              key={source}
+              onClick={() => toggle(source)}
+              className={`group relative shrink-0 rounded-xl border px-4 py-2.5 text-sm font-bold uppercase tracking-wide transition-all duration-150
+                ${isSelected
+                  ? 'border-primary bg-primary text-primary-foreground shadow-sm'
+                  : 'border-border bg-card text-foreground hover:border-primary hover:text-primary'
+                }`}
+            >
+              .{source}
+              {isSelected && (
+                <span className="absolute -bottom-[9px] left-1/2 -translate-x-1/2 border-4 border-transparent border-t-primary" />
+              )}
+            </button>
+          );
+        })}
+      </div>
 
       {/* Expandable converter panel */}
       {selectedEntry && (
