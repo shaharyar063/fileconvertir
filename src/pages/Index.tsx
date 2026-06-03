@@ -8,8 +8,8 @@ import { useDocumentHead } from '@/hooks/use-document-head';
 import { buildFAQSchema, buildWebAppSchema, buildWebSiteSchema } from '@/lib/seo-jsonld';
 import { absoluteUrl } from '@/lib/site-url';
 import { useMemo, ReactNode } from 'react';
-import { InternalLinkGrid } from '@/components/InternalLinkGrid';
-import { getSourceHubSections, getTargetHubSections, BOOSTED_LINKS } from '@/lib/site-navigation';
+import { FormatBrowser } from '@/components/FormatBrowser';
+import { BOOSTED_LINKS } from '@/lib/site-navigation';
 import { sitePath } from '@/lib/site-url';
 
 const popularConversions: { slug: string; label: string; tagline: string }[] = [
@@ -256,25 +256,10 @@ export default function Index() {
           Browse All Formats
         </h2>
         <p className="mt-3 text-sm text-foreground/80">
-          Pick an input format hub or a target output format to see every supported conversion.
+          Tap any format to see every available conversion for it.
         </p>
         <div className="mt-8">
-          <h3 className="text-sm font-bold text-foreground">By input format</h3>
-          <InternalLinkGrid
-            className="mt-4"
-            sections={getSourceHubSections()}
-            columns="grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5"
-            maxPerSection={5}
-          />
-        </div>
-        <div className="mt-10">
-          <h3 className="text-sm font-bold text-foreground">By output format</h3>
-          <InternalLinkGrid
-            className="mt-4"
-            sections={getTargetHubSections()}
-            columns="grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5"
-            maxPerSection={5}
-          />
+          <FormatBrowser />
         </div>
       </Band>
 
