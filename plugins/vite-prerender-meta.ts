@@ -1,4 +1,4 @@
-import { mkdirSync, readFileSync, writeFileSync } from 'fs';
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs';
 import { dirname, join } from 'path';
 import type { Plugin } from 'vite';
 import { getAllPrerenderPages, injectPageMeta } from '../src/lib/prerender-meta';
@@ -25,6 +25,7 @@ export function prerenderMetaPlugin(): Plugin {
     },
     closeBundle() {
       const indexPath = join(outDir, 'index.html');
+      if (!existsSync(indexPath)) return;
       const template = readFileSync(indexPath, 'utf-8');
       const pages = getAllPrerenderPages();
       let written = 0;
