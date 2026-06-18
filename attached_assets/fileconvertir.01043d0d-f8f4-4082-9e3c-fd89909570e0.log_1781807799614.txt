@@ -1,0 +1,39 @@
+2026-06-18T08:06:58.549711Z	Cloning repository...
+2026-06-18T08:06:59.624012Z	From https://github.com/shaharyar063/fileconvertir
+2026-06-18T08:06:59.624404Z	 * branch            7d4424f178598de35287d2bad75c99571c63aeec -> FETCH_HEAD
+2026-06-18T08:06:59.6245Z	
+2026-06-18T08:06:59.666344Z	HEAD is now at 7d4424f Fix build errors by ensuring a stable Node.js version
+2026-06-18T08:06:59.666856Z	
+2026-06-18T08:06:59.715194Z	
+2026-06-18T08:06:59.715619Z	Using v2 root directory strategy
+2026-06-18T08:06:59.732453Z	Success: Finished cloning repository files
+2026-06-18T08:07:01.965156Z	Checking for configuration in a Wrangler configuration file (BETA)
+2026-06-18T08:07:01.965815Z	
+2026-06-18T08:07:02.139014Z	No Wrangler configuration file found. Continuing.
+2026-06-18T08:07:02.37746Z	Detected the following tools from environment: nodejs@20.20.0, npm@10.9.2
+2026-06-18T08:07:02.377862Z	Installing nodejs 20.20.0
+2026-06-18T08:07:03.60525Z	Trying to update node-build... ok
+2026-06-18T08:07:03.687351Z	To follow progress, use 'tail -f /tmp/node-build.20260618080703.799.log' or pass --verbose
+2026-06-18T08:07:03.741963Z	Downloading node-v20.20.0-linux-x64.tar.gz...
+2026-06-18T08:07:03.911999Z	-> https://nodejs.org/dist/v20.20.0/node-v20.20.0-linux-x64.tar.gz
+2026-06-18T08:07:06.289758Z	
+2026-06-18T08:07:06.290074Z	WARNING: node-v20.20.0-linux-x64 is past its end of life and is now unsupported.
+2026-06-18T08:07:06.290167Z	It no longer receives bug fixes or security updates.
+2026-06-18T08:07:06.29023Z	
+2026-06-18T08:07:06.290299Z	Installing node-v20.20.0-linux-x64...
+2026-06-18T08:07:06.903496Z	Installed node-v20.20.0-linux-x64 to /opt/buildhome/.asdf/installs/nodejs/20.20.0
+2026-06-18T08:07:06.904203Z	
+2026-06-18T08:07:07.774314Z	Installing project dependencies: npm clean-install --progress=false
+2026-06-18T08:08:20.145293Z	npm error Exit handler never called!
+2026-06-18T08:08:20.147168Z	npm error This is an error with npm itself. Please report this error at:
+2026-06-18T08:08:20.147316Z	npm error   <https://github.com/npm/cli/issues>
+2026-06-18T08:08:20.1474Z	npm error A complete log of this run can be found in: /opt/buildhome/.npm/_logs/2026-06-18T08_07_08_062Z-debug-0.log
+2026-06-18T08:08:20.179231Z	Executing user command: npm run build
+2026-06-18T08:08:20.469044Z	
+2026-06-18T08:08:20.46995Z	> vite_react_shadcn_ts@0.0.0 build
+2026-06-18T08:08:20.470091Z	> vite build
+2026-06-18T08:08:20.470172Z	
+2026-06-18T08:08:20.473764Z	sh: 1: vite: not found
+2026-06-18T08:08:20.482741Z	Failed: Error while executing user command. Exited with error code: 127
+2026-06-18T08:08:20.488562Z	Failed: build command exited with code: 1
+2026-06-18T08:08:21.83439Z	Failed: error occurred while running build command

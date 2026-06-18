@@ -1,0 +1,6 @@
+name = "fileconvertir"
+pages_build_output_dir = "dist"
+compatibility_date = "2025-01-01"
+
+[build]
+command = "npm install --no-audit --no-fund && npm run build"
