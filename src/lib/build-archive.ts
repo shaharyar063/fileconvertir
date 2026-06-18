@@ -64,6 +64,9 @@ export function buildTar(files: { name: string; data: Uint8Array }[]): Uint8Arra
 
 /** Gzip a Uint8Array using the browser CompressionStream API. */
 export async function gzip(data: Uint8Array): Promise<Uint8Array> {
+  if (typeof CompressionStream === 'undefined') {
+    throw new Error('Your browser does not support GZ compression. Please use a modern browser (Chrome 80+, Firefox 113+, Safari 16.4+).');
+  }
   const stream = new Blob([data])
     .stream()
     .pipeThrough(new CompressionStream('gzip'));

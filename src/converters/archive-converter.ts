@@ -124,10 +124,18 @@ function buildTar(files: { name: string; data: Uint8Array }[]): ArrayBuffer {
   return result.buffer;
 }
 
+/** Check if Compression Streams API is available in this browser. */
+function supportsCompressionStreams(): boolean {
+  return typeof CompressionStream !== 'undefined' && typeof DecompressionStream !== 'undefined';
+}
+
 /**
  * Decompress gzip data using DecompressionStream API.
  */
 async function decompressGzip(data: ArrayBuffer): Promise<ArrayBuffer> {
+  if (!supportsCompressionStreams()) {
+    throw new Error('Your browser does not support GZ decompression. Please use a modern browser (Chrome 80+, Firefox 113+, Safari 16.4+).');
+  }
   try {
     const stream = new Blob([data]).stream().pipeThrough(new DecompressionStream('gzip'));
     const reader = stream.getReader();
@@ -211,7 +219,11 @@ export const archiveConverter: ConverterPlugin = {
     if (targetFormat === 'zip') {
       const zip = new JSZip();
       for (const f of files) {
-        zip.file(f.name, f.data);
+        // Copy into a fresh Uint8Array so JSZip's same-realm `instanceof Uint8Array`
+        // check passes reliably across browser, jsdom and Node test runners.
+        const copy = new Uint8Array(f.data.byteLength);
+        copy.set(f.data);
+        zip.file(f.name, copy);
       }
       const blob = await zip.generateAsync({ type: 'blob', compression: 'DEFLATE' });
       onProgress?.(100);
@@ -233,6 +245,9 @@ export const archiveConverter: ConverterPlugin = {
     }
 
     if (targetFormat === 'gz') {
+      if (!supportsCompressionStreams()) {
+        throw new Error('Your browser does not support GZ compression. Please use a modern browser (Chrome 80+, Firefox 113+, Safari 16.4+).');
+      }
       const tarBuffer = buildTar(files);
       const stream = new Blob([tarBuffer]).stream().pipeThrough(new CompressionStream('gzip'));
       const reader = stream.getReader();

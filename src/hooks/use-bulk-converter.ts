@@ -124,7 +124,10 @@ export function useBulkConverter(fixedTargetFormat?: string) {
       }
     }
 
-    setStatus('done');
+    // Only set done if we weren't aborted (e.g. by reset())
+    if (!abortRef.current) {
+      setStatus('done');
+    }
   }, [files, targetFormat]);
 
   const downloadFile = useCallback((item: BulkFileItem) => {
