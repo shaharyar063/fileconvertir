@@ -1,1 +1,45 @@
-/*    /index.html   200
+# ── jpeg → jpg canonical redirects (301) ──────────────────────────────────
+# jpeg is an alias for jpg. Both trailing-slash and non-trailing-slash forms
+# are redirected so neither the flat file nor the directory file is served
+# directly with a mismatched canonical.
+# _redirects rules take priority over static files in Cloudflare Pages.
+
+/jpeg           /jpg/           301
+/jpeg/          /jpg/           301
+/jpeg-to-png    /jpg-to-png/    301
+/jpeg-to-png/   /jpg-to-png/    301
+/jpeg-to-webp   /jpg-to-webp/   301
+/jpeg-to-webp/  /jpg-to-webp/   301
+/jpeg-to-gif    /jpg-to-gif/    301
+/jpeg-to-gif/   /jpg-to-gif/    301
+/jpeg-to-bmp    /jpg-to-bmp/    301
+/jpeg-to-bmp/   /jpg-to-bmp/    301
+/jpeg-to-avif   /jpg-to-avif/   301
+/jpeg-to-avif/  /jpg-to-avif/   301
+/jpeg-to-tiff   /jpg-to-tiff/   301
+/jpeg-to-tiff/  /jpg-to-tiff/   301
+/jpeg-to-ico    /jpg-to-ico/    301
+/jpeg-to-ico/   /jpg-to-ico/    301
+/jpeg-to-svg    /jpg-to-svg/    301
+/jpeg-to-svg/   /jpg-to-svg/    301
+/jpeg-to-pdf    /jpg-to-pdf/    301
+/jpeg-to-pdf/   /jpg-to-pdf/    301
+/jpeg-to-zip    /jpg-to-zip/    301
+/jpeg-to-zip/   /jpg-to-zip/    301
+/jpeg-to-tar    /jpg-to-tar/    301
+/jpeg-to-tar/   /jpg-to-tar/    301
+/jpeg-to-gz     /jpg-to-gz/     301
+/jpeg-to-gz/    /jpg-to-gz/     301
+
+# ── SPA catch-all REMOVED ──────────────────────────────────────────────────
+# Previously: /*  /index.html  200
+#
+# This was causing ALL unknown URLs to return HTTP 200 instead of 404,
+# making it impossible for search engines to detect missing pages.
+#
+# It is no longer needed because the prerender plugin now emits BOTH:
+#   dist/<slug>/index.html  →  serves /<slug>/  (200, canonical trailing-slash)
+#   dist/<slug>.html        →  serves /<slug>   (200, no redirect needed)
+#
+# Valid routes all have prerendered files and work at 200 without this rule.
+# Unknown routes now correctly return 404 and serve public/404.html.

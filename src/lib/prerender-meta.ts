@@ -174,7 +174,7 @@ export function injectPageMeta(html: string, page: PrerenderPageMeta): string {
   </noscript>`;
 
   if (!out.includes('data-prerender="true"')) {
-    out = out.replace('<body>', `<body>\n    ${noscript}`);
+    out = out.replace(/(<body[^>]*>)/, `$1\n    ${noscript}`);
   }
 
   if (page.jsonLd?.length) {
