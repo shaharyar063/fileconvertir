@@ -1,0 +1,21 @@
+2026-06-18T18:50:22.029435Z	Cloning repository...
+2026-06-18T18:50:23.592008Z	From https://github.com/shaharyar063/fileconvertir
+2026-06-18T18:50:23.592382Z	 * branch            228d3fcb7d2d645ec09b8550904d730391e70509 -> FETCH_HEAD
+2026-06-18T18:50:23.592469Z	
+2026-06-18T18:50:23.630354Z	HEAD is now at 228d3fc Fix build process by using npm install instead of npm ci
+2026-06-18T18:50:23.630711Z	
+2026-06-18T18:50:23.727904Z	
+2026-06-18T18:50:23.728358Z	Using v2 root directory strategy
+2026-06-18T18:50:23.741607Z	Success: Finished cloning repository files
+2026-06-18T18:50:25.272363Z	Checking for configuration in a Wrangler configuration file (BETA)
+2026-06-18T18:50:25.272908Z	
+2026-06-18T18:50:25.273028Z	Found wrangler.toml file. Reading build configuration...
+2026-06-18T18:50:25.315276Z	
+2026-06-18T18:50:25.394294Z	[31m✘ [41;31m[[41;97mERROR[41;31m][0m [1mRunning configuration file validation for Pages:[0m
+2026-06-18T18:50:25.394812Z	
+2026-06-18T18:50:25.395126Z	    - Configuration file for Pages projects does not support "build"
+2026-06-18T18:50:25.39531Z	
+2026-06-18T18:50:25.395409Z	
+2026-06-18T18:50:25.427922Z	🪵  Logs were written to "/root/.config/.wrangler/logs/wrangler-2026-06-18_18-50-25_110.log"
+2026-06-18T18:50:25.523258Z	Failed: unable to read the Wrangler configuration file with code: 1
+2026-06-18T18:50:26.283455Z	Failed: an internal error occurred. If this continues, contact support: https://cfl.re/3WgEyrH
