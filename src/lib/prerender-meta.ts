@@ -1,5 +1,4 @@
 import { converterRoutes, formatPages } from './converters';
-import { conversionMap } from './conversion-map';
 import {
   getConverterSEO,
   getFormatSEO,
@@ -12,7 +11,6 @@ import {
   buildHowToSchema,
 } from './seo-jsonld';
 import { getAllSitewideNavLinks, getPrerenderInternalLinks } from './site-navigation';
-import { isThinConverter } from './seo/registry';
 import { SITE_URL, absoluteUrl, canonicalSlug } from './site-url';
 
 export { SITE_URL };
@@ -106,7 +104,6 @@ export function getAllPrerenderPages(): PrerenderPageMeta[] {
       canonical: absoluteUrl(route.slug),
       heading: seo.heading,
       jsonLd: schemas,
-      noindex: isThinConverter(route.slug),
       bodyHtml: buildBodyHtml({
         heading: seo.heading,
         description: seo.description,
@@ -124,7 +121,7 @@ export function getAllPrerenderPages(): PrerenderPageMeta[] {
     });
   }
 
-  const sources = new Set(conversionMap.map((e) => e.source));
+  const sources = new Set(converterRoutes.map((r) => r.sourceFormat));
   for (const source of sources) {
     const seo = getSourceFormatSEO(source);
     pages.push({

@@ -3,8 +3,7 @@
  * Used by footer, homepage hub sections, and prerender noscript blocks
  * so every sitemap URL receives at least one crawlable <a href> inlink.
  */
-import { conversionMap } from './conversion-map';
-import { converterRoutes } from './converters';
+import { converterRoutes, formatPages } from './converters';
 import { sitePath } from './site-url';
 
 /**
@@ -66,10 +65,13 @@ const CATEGORY_LABELS: Record<string, string> = {
 export function getSourceHubSections(): NavSection[] {
   const sections: NavSection[] = [];
   for (const cat of ['image', 'document', 'audio', 'video', 'font', 'archive'] as const) {
-    const sources = conversionMap
-      .filter((e) => e.category === cat)
-      .map((e) => e.source)
-      .sort();
+    const sources = [
+      ...new Set(
+        converterRoutes
+          .filter((r) => r.category.toLowerCase() === cat)
+          .map((r) => r.sourceFormat),
+      ),
+    ].sort();
     sections.push({
       title: CATEGORY_LABELS[cat] ?? cat,
       links: sources.map((s) => ({
@@ -83,12 +85,11 @@ export function getSourceHubSections(): NavSection[] {
 
 /** All target-format hub pages (/to-jpg, /to-pdf, …). */
 export function getTargetHubSections(): NavSection[] {
-  const targets = new Set<string>();
-  conversionMap.forEach((e) => e.targets.forEach((t) => targets.add(t)));
+  const targets = new Set(formatPages.map((p) => p.targetFormat));
   const byCategory = new Map<string, string[]>();
   for (const target of [...targets].sort()) {
     const cat =
-      conversionMap.find((e) => e.targets.includes(target))?.category ?? 'other';
+      converterRoutes.find((r) => r.targetFormat === target)?.category.toLowerCase() ?? 'other';
     const list = byCategory.get(cat) ?? [];
     list.push(target);
     byCategory.set(cat, list);
@@ -229,12 +230,12 @@ export function getPrerenderInternalLinks(path: string): NavLink[] {
     return links;
   }
 
-  const sourcePage = conversionMap.find((e) => e.source === slug);
-  if (sourcePage) {
+  const sourceRoutes = converterRoutes.filter((r) => r.sourceFormat === slug);
+  if (sourceRoutes.length > 0) {
     links.push(
-      ...sourcePage.targets.slice(0, 10).map((t) => ({
-        href: sitePath(`${slug}-to-${t}`),
-        label: `${slug.toUpperCase()} to ${t.toUpperCase()}`,
+      ...sourceRoutes.slice(0, 10).map((r) => ({
+        href: sitePath(r.slug),
+        label: `${slug.toUpperCase()} to ${r.targetFormat.toUpperCase()}`,
       })),
     );
     return links;
@@ -242,13 +243,11 @@ export function getPrerenderInternalLinks(path: string): NavLink[] {
 
   if (slug.startsWith('to-')) {
     const target = slug.slice(3);
-    const sources = conversionMap
-      .filter((e) => e.targets.includes(target))
-      .map((e) => e.source);
+    const targetRoutes = converterRoutes.filter((r) => r.targetFormat === target);
     links.push(
-      ...sources.slice(0, 10).map((s) => ({
-        href: sitePath(`${s}-to-${target}`),
-        label: `${s.toUpperCase()} to ${target.toUpperCase()}`,
+      ...targetRoutes.slice(0, 10).map((r) => ({
+        href: sitePath(r.slug),
+        label: `${r.sourceFormat.toUpperCase()} to ${target.toUpperCase()}`,
       })),
     );
     return links;

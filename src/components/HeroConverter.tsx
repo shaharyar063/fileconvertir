@@ -9,6 +9,7 @@ import {
   isValidConversion,
 } from '@/lib/format-categories';
 import { sitePath } from '@/lib/site-url';
+import { getSourceFormatPage, isPublishedPair } from '@/lib/converters';
 import { useBulkConverter } from '@/hooks/use-bulk-converter';
 import { createFileInfo, formatFileSize, MAX_BATCH_FILES, BulkFileItem } from '@/lib/converter-types';
 import {
@@ -82,9 +83,10 @@ export function HeroConverter({
         setBulkTarget('');
       }
     }
+    // Only navigate to pages that exist; every other pair still converts here.
     if (tgt && validTargets.includes(tgt)) {
-      navigate(sitePath(`${fmt}-to-${tgt}`));
-    } else {
+      if (isPublishedPair(fmt, tgt)) navigate(sitePath(`${fmt}-to-${tgt}`));
+    } else if (getSourceFormatPage(fmt)) {
       navigate(sitePath(fmt));
     }
   }, [targetFmt, initialTarget, lockTarget, navigate, setBulkTarget]);
@@ -104,7 +106,7 @@ export function HeroConverter({
       setSourceFormat(initialSource);
     }
 
-    navigate(sitePath(`${src}-to-${fmt}`));
+    if (isPublishedPair(src, fmt)) navigate(sitePath(`${src}-to-${fmt}`));
   }, [sourceFormat, initialSource, lockSource, navigate, setBulkTarget]);
 
   const handleFilesSelected = useCallback((selectedFiles: FileList | File[]) => {

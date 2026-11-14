@@ -12,8 +12,6 @@
     "preview": "vite preview",
     "test": "vitest run",
     "test:watch": "vitest",
-    "seo:tiers": "tsx scripts/seo-generate-tiers.mjs",
-    "seo:audit": "tsx scripts/seo-content-audit.mjs",
     "indexnow:submit": "node scripts/submit-indexnow.mjs"
   },
   "dependencies": {

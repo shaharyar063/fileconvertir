@@ -1,7 +1,6 @@
 import { Plugin } from 'vite';
-import { conversionMap } from '../src/lib/conversion-map';
-import { isThinConverter } from '../src/lib/seo/registry';
-import { absoluteUrl, isSitemapExcludedPath } from '../src/lib/site-url';
+import { converterRoutes, formatPages } from '../src/lib/converters';
+import { absoluteUrl } from '../src/lib/site-url';
 
 export function sitemapPlugin(): Plugin {
   return {
@@ -14,31 +13,24 @@ export function sitemapPlugin(): Plugin {
         `  <url><loc>${absoluteUrl()}</loc><lastmod>${now}</lastmod><priority>1.0</priority><changefreq>weekly</changefreq></url>`,
       );
 
-      conversionMap.forEach((entry) => {
-        entry.targets.forEach((target) => {
-          const slug = `${entry.source}-to-${target}`;
-          if (isSitemapExcludedPath(slug) || isThinConverter(slug)) return;
-          urls.push(
-            `  <url><loc>${absoluteUrl(slug)}</loc><lastmod>${now}</lastmod><priority>0.8</priority><changefreq>monthly</changefreq></url>`,
-          );
-        });
-      });
+      for (const route of converterRoutes) {
+        urls.push(
+          `  <url><loc>${absoluteUrl(route.slug)}</loc><lastmod>${now}</lastmod><priority>0.8</priority><changefreq>monthly</changefreq></url>`,
+        );
+      }
 
-      const sources = new Set(conversionMap.map((e) => e.source));
-      sources.forEach((source) => {
-        if (isSitemapExcludedPath(source)) return;
+      const sources = new Set(converterRoutes.map((r) => r.sourceFormat));
+      for (const source of sources) {
         urls.push(
           `  <url><loc>${absoluteUrl(source)}</loc><lastmod>${now}</lastmod><priority>0.7</priority><changefreq>monthly</changefreq></url>`,
         );
-      });
+      }
 
-      const targets = new Set<string>();
-      conversionMap.forEach((e) => e.targets.forEach((t) => targets.add(t)));
-      targets.forEach((target) => {
+      for (const page of formatPages) {
         urls.push(
-          `  <url><loc>${absoluteUrl(`to-${target}`)}</loc><lastmod>${now}</lastmod><priority>0.7</priority><changefreq>monthly</changefreq></url>`,
+          `  <url><loc>${absoluteUrl(page.slug)}</loc><lastmod>${now}</lastmod><priority>0.7</priority><changefreq>monthly</changefreq></url>`,
         );
-      });
+      }
 
       const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">

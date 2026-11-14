@@ -1,56 +1,23 @@
 import { converterRoutes } from '../converters';
-import type { ContentTier } from './types';
 import type { ConverterSEO, FormatSEO, HomepageSEO } from './types';
 import { mergeConverterSEO } from './merge';
 import { getTierSContent } from './converters/tier-s';
-import { buildTierAContent } from './builders/tier-a-builder';
-import { buildTierBContent } from './builders/tier-b-builder';
 import { buildSourceHubSEO, buildTargetHubSEO } from './builders/hub-builder';
 import { HOMEPAGE_SEO } from './homepage';
-import tiersData from './tiers.json';
 import { TIER_S_SLUGS, PRIORITY_CONVERTERS } from './constants';
-
-const tiers = tiersData as Record<string, ContentTier>;
 
 function resolveSource(source: string): string {
   return source === 'jpeg' ? 'jpg' : source;
 }
 
-function getTier(slug: string, source: string): ContentTier {
-  if (source === 'jpeg') return 'skip';
-  return tiers[slug] ?? 'B';
-}
-
-/**
- * Tier B pages are generated from shared templates with ~150-300 words each.
- * Google files these under "Crawled - currently not indexed", so they are kept
- * out of the sitemap and marked noindex,follow until they get unique content.
- * To re-enable one, promote it to tier "A" or "S" in tiers.json.
- */
-export function isThinConverter(slug: string): boolean {
-  const clean = slug.replace(/^\/+|\/+$/g, '');
-  if (clean.startsWith('jpeg-to-')) return false; // redirected to jpg-to-*
-  if ((TIER_S_SLUGS as readonly string[]).includes(clean)) return false;
-  return (tiers[clean] ?? 'B') === 'B';
-}
-
+/** Content for a converter page. Only hand-written pages exist. */
 export function getConverterSEO(source: string, target: string): ConverterSEO {
   const src = resolveSource(source);
-  const slug = `${source}-to-${target}`;
-  const canonicalSlug = `${src}-to-${target}`;
-
-  const tierS = getTierSContent(canonicalSlug);
-  if (tierS) return mergeConverterSEO(src, target, tierS);
-
-  const tier = getTier(slug, source);
-  if (tier === 'skip') {
-    return mergeConverterSEO(src, target, buildTierBContent(src, target));
+  const slug = `${src}-to-${target}`;
+  const content = getTierSContent(slug);
+  if (!content) {
+    throw new Error(`No hand-written content for ${slug}`);
   }
-  const content =
-    tier === 'B'
-      ? buildTierBContent(src, target)
-      : buildTierAContent(src, target);
-
   return mergeConverterSEO(src, target, content);
 }
 

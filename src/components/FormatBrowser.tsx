@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
-import { conversionMap } from '@/lib/conversion-map';
+import { converterRoutes } from '@/lib/converters';
 import { sitePath } from '@/lib/site-url';
 
 const CATEGORY_ORDER = ['image', 'document', 'audio', 'video', 'font', 'archive'] as const;
@@ -21,10 +21,19 @@ interface FormatEntry {
   category: string;
 }
 
-const formats: FormatEntry[] = conversionMap
-  .filter((e) => e.source !== 'jpeg')
-  .map((e) => ({ source: e.source, targets: e.targets, category: e.category }));
-
+const formats: FormatEntry[] = (() => {
+  const bySource = new Map<string, FormatEntry>();
+  for (const r of converterRoutes) {
+    const entry = bySource.get(r.sourceFormat) ?? {
+      source: r.sourceFormat,
+      targets: [],
+      category: r.category.toLowerCase(),
+    };
+    entry.targets.push(r.targetFormat);
+    bySource.set(r.sourceFormat, entry);
+  }
+  return [...bySource.values()];
+})();
 
 export function FormatBrowser() {
   const [selected, setSelected] = useState<string | null>(null);

@@ -2,7 +2,6 @@ import { useParams, Navigate, Link } from 'react-router-dom';
 import { useMemo } from 'react';
 import { getConverterBySlug } from '@/lib/converters';
 import { getConverterSEO } from '@/lib/seo-content';
-import { isThinConverter } from '@/lib/seo/registry';
 import { getRelatedConverters } from '@/lib/site-navigation';
 import { sitePath } from '@/lib/site-url';
 import { HeroConverter } from '@/components/HeroConverter';
@@ -37,7 +36,6 @@ export default function ConverterPage() {
     description: seo?.metaDescription ?? '',
     canonical: route ? absoluteUrl(route.slug) : undefined,
     jsonLd,
-    noindex: route ? isThinConverter(route.slug) : undefined,
   });
 
   if (!route || !seo) return <Navigate to="/" replace />;

@@ -1,7 +1,6 @@
 import { TIER_S_SLUGS } from '../../constants';
 import type { ConverterContentOverride, ArticleSection } from '../../types';
 import { PRIORITY_S_PAGES } from './priority';
-import { buildTierSEnhanced, parseConverterSlug } from '../../builders/tier-s-enhance';
 import { IMAGE_S_ARTICLES } from './image-articles';
 import { IMAGE_S_NEW } from './image-new';
 import { AUDIO_S_ARTICLES, AUDIO_S_NEW } from './audio-content';
@@ -22,6 +21,11 @@ const ARTICLES: Record<string, ArticleSection[]> = {
   ...DOCUMENT_S_ARTICLES,
 };
 
+/** Slugs that have hand-written content. Only these get their own page. */
+export const HAND_WRITTEN_SLUGS: string[] = (TIER_S_SLUGS as readonly string[]).filter(
+  (slug) => slug in PRIORITY_S_PAGES || slug in NEW_PAGES,
+);
+
 export function getTierSContent(slug: string): ConverterContentOverride | undefined {
   if (!(TIER_S_SLUGS as readonly string[]).includes(slug)) return undefined;
 
@@ -30,8 +34,5 @@ export function getTierSContent(slug: string): ConverterContentOverride | undefi
     return base.article ? base : { ...base, article: ARTICLES[slug] };
   }
 
-  const { source, target } = parseConverterSlug(slug);
-  if (!source || !target) return undefined;
-  const enhanced = buildTierSEnhanced(source, target);
-  return ARTICLES[slug] ? { ...enhanced, article: ARTICLES[slug] } : enhanced;
+  return undefined;
 }

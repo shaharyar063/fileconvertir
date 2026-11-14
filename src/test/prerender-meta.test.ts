@@ -1,3 +1,4 @@
+import { absoluteUrl } from '@/lib/site-url';
 import { describe, expect, it } from 'vitest';
 import { escapeHtml, getAllPrerenderPages, injectPageMeta } from '@/lib/prerender-meta';
 
@@ -36,8 +37,15 @@ describe('prerender-meta', () => {
     expect(html).toContain('data-prerender="true"');
   });
 
-  it('canonicalizes jpeg-to-* routes to jpg-to-*', () => {
-    const page = getAllPrerenderPages().find((p) => p.path === 'jpeg-to-png');
-    expect(page?.canonical).toBe('https://fileconvertir.com/jpg-to-png/');
+  it('does not prerender jpeg duplicates (they redirect to jpg-to-*)', () => {
+    const paths = getAllPrerenderPages().map((p) => p.path);
+    expect(paths.some((p) => p === 'jpeg' || p.startsWith('jpeg-to-'))).toBe(false);
+    expect(absoluteUrl('jpeg-to-png')).toBe('https://fileconvertir.com/jpg-to-png/');
+  });
+
+  it('only publishes pages that have hand-written content', () => {
+    const pairs = getAllPrerenderPages().filter((p) => /-to-/.test(p.path));
+    expect(pairs.length).toBeGreaterThan(20);
+    for (const p of pairs) expect(p.bodyHtml, p.path).toContain('<h2>');
   });
 });

@@ -1,5 +1,6 @@
 import type { FormatSEO } from '../types';
-import { conversionMap, getSourcesForTarget } from '../../conversion-map';
+import { conversionMap } from '../../conversion-map';
+import { converterRoutes } from '../../converters';
 import { name, desc, formatNameList } from '../format-names';
 import { pick } from '../slug-hash';
 import { fitMeta } from '../meta-utils';
@@ -9,7 +10,7 @@ export function buildSourceHubSEO(sourceFormat: string): FormatSEO {
   const slug = sourceFormat;
   const s = name(sourceFormat);
   const entry = conversionMap.find((e) => e.source === sourceFormat);
-  const targets = entry?.targets ?? [];
+  const targets = converterRoutes.filter((r) => r.sourceFormat === sourceFormat).map((r) => r.targetFormat);
   const outputs = formatNameList(targets);
   const cat = entry?.category ?? 'other';
 
@@ -44,7 +45,7 @@ export function buildSourceHubSEO(sourceFormat: string): FormatSEO {
 export function buildTargetHubSEO(targetFormat: string): FormatSEO {
   const slug = `to-${targetFormat}`;
   const t = name(targetFormat);
-  const inputs = getSourcesForTarget(targetFormat);
+  const inputs = converterRoutes.filter((r) => r.targetFormat === targetFormat).map((r) => r.sourceFormat);
   const inputList = formatNameList(inputs);
 
   const title = pick(slug, [

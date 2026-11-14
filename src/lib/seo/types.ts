@@ -1,5 +1,3 @@
-export type ContentTier = 'S' | 'A' | 'B' | 'skip';
-
 export interface FaqItem {
   q: string;
   a: string;

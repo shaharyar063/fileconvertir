@@ -8,26 +8,8 @@
 /jpeg/          /jpg/           301
 /jpeg-to-png    /jpg-to-png/    301
 /jpeg-to-png/   /jpg-to-png/    301
-/jpeg-to-webp   /jpg-to-webp/   301
-/jpeg-to-webp/  /jpg-to-webp/   301
-/jpeg-to-gif    /jpg-to-gif/    301
-/jpeg-to-gif/   /jpg-to-gif/    301
-/jpeg-to-bmp    /jpg-to-bmp/    301
-/jpeg-to-bmp/   /jpg-to-bmp/    301
-/jpeg-to-tiff   /jpg-to-tiff/   301
-/jpeg-to-tiff/  /jpg-to-tiff/   301
-/jpeg-to-ico    /jpg-to-ico/    301
-/jpeg-to-ico/   /jpg-to-ico/    301
-/jpeg-to-svg    /jpg-to-svg/    301
-/jpeg-to-svg/   /jpg-to-svg/    301
 /jpeg-to-pdf    /jpg-to-pdf/    301
 /jpeg-to-pdf/   /jpg-to-pdf/    301
-/jpeg-to-zip    /jpg-to-zip/    301
-/jpeg-to-zip/   /jpg-to-zip/    301
-/jpeg-to-tar    /jpg-to-tar/    301
-/jpeg-to-tar/   /jpg-to-tar/    301
-/jpeg-to-gz     /jpg-to-gz/     301
-/jpeg-to-gz/    /jpg-to-gz/     301
 
 # ── SPA catch-all REMOVED ──────────────────────────────────────────────────
 # Previously: /*  /index.html  200
