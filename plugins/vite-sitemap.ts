@@ -1,5 +1,6 @@
 import { Plugin } from 'vite';
 import { conversionMap } from '../src/lib/conversion-map';
+import { isThinConverter } from '../src/lib/seo/registry';
 import { absoluteUrl, isSitemapExcludedPath } from '../src/lib/site-url';
 
 export function sitemapPlugin(): Plugin {
@@ -16,7 +17,7 @@ export function sitemapPlugin(): Plugin {
       conversionMap.forEach((entry) => {
         entry.targets.forEach((target) => {
           const slug = `${entry.source}-to-${target}`;
-          if (isSitemapExcludedPath(slug)) return;
+          if (isSitemapExcludedPath(slug) || isThinConverter(slug)) return;
           urls.push(
             `  <url><loc>${absoluteUrl(slug)}</loc><lastmod>${now}</lastmod><priority>0.8</priority><changefreq>monthly</changefreq></url>`,
           );

@@ -21,6 +21,19 @@ function getTier(slug: string, source: string): ContentTier {
   return tiers[slug] ?? 'B';
 }
 
+/**
+ * Tier B pages are generated from shared templates with ~150-300 words each.
+ * Google files these under "Crawled - currently not indexed", so they are kept
+ * out of the sitemap and marked noindex,follow until they get unique content.
+ * To re-enable one, promote it to tier "A" or "S" in tiers.json.
+ */
+export function isThinConverter(slug: string): boolean {
+  const clean = slug.replace(/^\/+|\/+$/g, '');
+  if (clean.startsWith('jpeg-to-')) return false; // redirected to jpg-to-*
+  if ((TIER_S_SLUGS as readonly string[]).includes(clean)) return false;
+  return (tiers[clean] ?? 'B') === 'B';
+}
+
 export function getConverterSEO(source: string, target: string): ConverterSEO {
   const src = resolveSource(source);
   const slug = `${source}-to-${target}`;
