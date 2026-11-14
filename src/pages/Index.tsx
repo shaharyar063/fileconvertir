@@ -45,7 +45,6 @@ const faqs = getHomepageSEO().faqs;
 
 /** Full-bleed section band separated by a hairline border. */
 function Band({
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   invert = false,
   children,
   id,

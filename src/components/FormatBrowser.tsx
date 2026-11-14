@@ -15,15 +15,6 @@ const CATEGORY_LABELS: Record<string, string> = {
   archive: 'Archives',
 };
 
-const CATEGORY_COLORS: Record<string, string> = {
-  image:    'bg-violet-100 text-violet-700 dark:bg-violet-900/40 dark:text-violet-300',
-  document: 'bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300',
-  audio:    'bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-300',
-  video:    'bg-orange-100 text-orange-700 dark:bg-orange-900/40 dark:text-orange-300',
-  font:     'bg-pink-100 text-pink-700 dark:bg-pink-900/40 dark:text-pink-300',
-  archive:  'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/40 dark:text-yellow-300',
-};
-
 interface FormatEntry {
   source: string;
   targets: string[];
@@ -46,24 +37,21 @@ export function FormatBrowser() {
 
   return (
     <div className="space-y-4">
-      {/* Single horizontally scrollable row of all formats */}
-      <div className="flex gap-2 overflow-x-auto pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+      {/* All formats, wrapping so nothing is clipped on small screens */}
+      <div className="flex flex-wrap gap-2">
         {formats.map(({ source }) => {
           const isSelected = selected === source;
           return (
             <button
               key={source}
               onClick={() => toggle(source)}
-              className={`group relative shrink-0 rounded-xl border px-4 py-2.5 text-sm font-bold uppercase tracking-wide transition-all duration-150
+              className={`group relative rounded-xl border px-4 py-2.5 text-sm font-bold uppercase tracking-wide transition-all duration-150
                 ${isSelected
                   ? 'border-primary bg-primary text-primary-foreground shadow-sm'
                   : 'border-border bg-card text-foreground hover:border-primary hover:text-primary'
                 }`}
             >
               .{source}
-              {isSelected && (
-                <span className="absolute -bottom-[9px] left-1/2 -translate-x-1/2 border-4 border-transparent border-t-primary" />
-              )}
             </button>
           );
         })}
@@ -79,7 +67,7 @@ export function FormatBrowser() {
           <div className="mb-4 flex items-center justify-between">
             <div>
               <span
-                className={`inline-block rounded-full px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wide ${CATEGORY_COLORS[selectedEntry.category]}`}
+                className={`inline-block rounded-full border border-border bg-secondary px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-muted-foreground`}
               >
                 {CATEGORY_LABELS[selectedEntry.category]}
               </span>

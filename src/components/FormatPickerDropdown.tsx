@@ -31,8 +31,17 @@ export function FormatPickerDropdown({
         setOpen(false);
       }
     }
-    if (open) document.addEventListener('mousedown', handleClick);
-    return () => document.removeEventListener('mousedown', handleClick);
+    function handleKey(e: KeyboardEvent) {
+      if (e.key === 'Escape') setOpen(false);
+    }
+    if (open) {
+      document.addEventListener('mousedown', handleClick);
+      document.addEventListener('keydown', handleKey);
+    }
+    return () => {
+      document.removeEventListener('mousedown', handleClick);
+      document.removeEventListener('keydown', handleKey);
+    };
   }, [open]);
 
   useEffect(() => {
@@ -58,6 +67,7 @@ export function FormatPickerDropdown({
           <button
             key={cat.key}
             type="button"
+            aria-pressed={activeCategory === cat.key}
             onClick={() => setActiveCategory(cat.key)}
             className={cn(
               'flex w-full items-center gap-2 px-3 py-2.5 text-left text-xs font-medium transition-colors',
@@ -105,8 +115,11 @@ export function FormatPickerDropdown({
       <button
         type="button"
         onClick={() => setOpen(!open)}
+        aria-haspopup="listbox"
+        aria-expanded={open}
+        aria-label={`${label}: ${value ? value.toUpperCase() : placeholder}`}
         className={cn(
-          'flex h-14 w-full items-center justify-between rounded-xl border bg-card px-4 text-left transition-colors',
+          'flex h-14 w-full items-center justify-between gap-2 rounded-xl border bg-card px-3 text-left transition-colors sm:px-4',
           open ? 'border-primary' : 'border-border hover:border-muted-foreground',
         )}
       >
