@@ -71,8 +71,8 @@ export function buildTargetHubSEO(targetFormat: string): FormatSEO {
     ]),
     details: desc(targetFormat),
     longDescription,
-    useCases: hubTargetUseCases(slug, t, inputList, targetFormat),
-    faqs: hubTargetFaqs(slug, t, inputList, targetFormat),
+    useCases: hubTargetUseCases(slug, t, inputList),
+    faqs: hubTargetFaqs(slug, t, inputList),
   };
 }
 
@@ -225,7 +225,7 @@ function formatCommonConversion(cat: string, targets: string[], outputs: string)
   return common[cat] ?? `the first target: ${outputs.split(',')[0]?.trim() ?? ''}`;
 }
 
-function hubTargetUseCases(slug: string, t: string, inputs: string, targetFormat: string): string[] {
+function hubTargetUseCases(slug: string, t: string, inputs: string): string[] {
   return [
     `You were asked for a ${t} file but only have ${inputs.split(',')[0]?.trim() ?? 'another format'}`,
     `Standardize project deliverables to ${t} format for consistent sharing across your team`,
@@ -241,7 +241,6 @@ function hubTargetFaqs(
   slug: string,
   t: string,
   inputs: string,
-  targetFormat: string,
 ): { q: string; a: string }[] {
   return [
     {

@@ -21,41 +21,45 @@ Convert images, documents, audio, video, fonts, and archives — 100% in the bro
 ## Local Development
 
 ```sh
-# Install dependencies
-npm install
-
-# Start dev server
-npm run dev
+pnpm install
+pnpm dev        # Vite dev server on http://localhost:5000
+pnpm test       # Vitest
+pnpm build      # production build + prerender + sitemap
 ```
 
 ## Project Structure
 
 ```
 src/
-  components/       # UI components (SiteHeader, DropZone, HeroConverter, etc.)
+  components/       # SiteHeader, SiteFooter, HeroConverter, FormatPickerDropdown, FormatBrowser, ...
   converters/       # Per-category conversion logic (image, audio, video, document, font, archive)
-  hooks/            # Custom React hooks (useConverter, useDocumentHead, etc.)
-  lib/              # Converter registry, SEO helpers, conversion map
-  pages/            # Route views (Index, ConverterPage, FormatPage, SlugRouter, etc.)
+  hooks/            # useBulkConverter, useDocumentHead, useTheme
+  lib/              # Converter registry, conversion map, SEO helpers, FFmpeg wrapper
+  pages/            # Index, ConverterPage, SourceFormatPage, FormatPage, SlugRouter, NotFound
 public/
-  favicon.svg       # FileConvertir brand icon (SVG)
-  favicon.ico       # Legacy fallback favicon
-  sitemap.xml       # Pre-generated sitemap (347 URLs) for Google Search Console
-  robots.txt        # Crawler instructions
-  _headers          # COOP/COEP for FFmpeg (Cloudflare Pages)
-  _redirects        # SPA fallback
+  _headers          # COOP/COEP for FFmpeg + security headers (Cloudflare Pages)
+  _redirects        # jpeg -> jpg redirects
 plugins/
-  vite-sitemap.ts   # Build-time sitemap generator
-  vite-prerender-meta.ts  # Per-route HTML with canonical/title
+  vite-sitemap.ts         # Build-time sitemap generator
+  vite-prerender-meta.ts  # Per-route static HTML (meta tags + crawlable content)
+docs/
+  seo-content-workflow.md # How to add a page
 ```
+
+## Pages and the conversion map
+
+`src/lib/conversion-map.ts` lists everything the tool can convert. Only pairs
+with hand-written content in `src/lib/seo/converters/tier-s/` get their own
+page (and sitemap entry); every other pair still converts from the homepage
+tool. See `docs/seo-content-workflow.md`.
 
 ## SEO
 
-- 347-URL sitemap covering 278 converter pairs, 37 source pages, 31 target pages
+- Sitemap, canonical URLs and per-page meta are generated at build time
+- Page content is prerendered into the static HTML for crawlers
+- JSON-LD structured data on converter and format pages
 - Submit `https://fileconvertir.com/sitemap.xml` to Google Search Console
-- JSON-LD structured data on all converter and format pages
-- Hand-crafted meta descriptions for the highest-traffic keywords (PNG↔JPG, MP4→MP3, etc.)
 
 ## Deployment
 
-Cloudflare Pages: build command `npm run build`, output directory `dist`. FFmpeg.wasm (~31 MiB) is loaded from a pinned unpkg URL in production (Cloudflare Pages rejects static files over 25 MiB). Optional env: `VITE_SITE_URL=https://fileconvertir.com`. To self-host instead: `FFMPEG_SELF_HOST=1 npm run copy-ffmpeg` then set `VITE_FFMPEG_BASE_URL=/ffmpeg` at build time (only on hosts that allow large assets).
+Cloudflare Pages: build command `pnpm build`, output directory `dist`. FFmpeg.wasm (~31 MiB) is loaded from a pinned unpkg URL in production (Cloudflare Pages rejects static files over 25 MiB). Optional env: `VITE_SITE_URL=https://fileconvertir.com`. To self-host instead: `FFMPEG_SELF_HOST=1 pnpm copy-ffmpeg` then set `VITE_FFMPEG_BASE_URL=/ffmpeg` at build time (only on hosts that allow large assets).

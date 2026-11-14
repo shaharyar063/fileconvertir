@@ -1,7 +1,5 @@
 export const META_DESC_MIN = 120;
 export const META_DESC_MAX = 160;
-export const TITLE_IDEAL_MAX = 60;
-
 export const PRIORITY_CONVERTERS = [
   'avif-to-jpg',
   'm4a-to-mp3',

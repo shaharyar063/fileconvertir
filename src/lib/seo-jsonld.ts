@@ -82,18 +82,3 @@ export function buildHowToSchema(name: string, steps: { name: string; text: stri
   };
 }
 
-export function buildSoftwareAppSchema(name: string, description: string) {
-  return {
-    '@context': 'https://schema.org',
-    '@type': 'SoftwareApplication',
-    name,
-    description,
-    applicationCategory: 'UtilitiesApplication',
-    operatingSystem: 'Any',
-    offers: {
-      '@type': 'Offer',
-      price: '0',
-      priceCurrency: 'USD',
-    },
-  };
-}

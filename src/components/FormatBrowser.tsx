@@ -4,7 +4,6 @@ import { ArrowRight } from 'lucide-react';
 import { converterRoutes } from '@/lib/converters';
 import { sitePath } from '@/lib/site-url';
 
-const CATEGORY_ORDER = ['image', 'document', 'audio', 'video', 'font', 'archive'] as const;
 
 const CATEGORY_LABELS: Record<string, string> = {
   image: 'Images',

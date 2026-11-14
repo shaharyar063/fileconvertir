@@ -129,24 +129,10 @@
 }
 
 @layer utilities {
-  .glow-primary,
-  .glow-orange {
-    box-shadow: none;
-  }
-
   .card-hover {
     @apply transition-transform duration-200 ease-out;
   }
   .card-hover:hover {
     transform: translateY(-2px);
   }
-
-  .brand-text {
-    color: hsl(var(--foreground));
-  }
 }
-
-/*
- * `.section-invert` used to flip the page to a full black band. The design is
- * now a single clean surface, so it is a no-op kept for existing markup.
- */

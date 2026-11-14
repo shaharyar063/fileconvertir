@@ -109,18 +109,3 @@ export function getTargetsForSource(source: string): string[] {
   return getConversionEntry(source)?.targets ?? [];
 }
 
-export function getSourcesForTarget(target: string): string[] {
-  return conversionMap
-    .filter(e => e.targets.includes(target.toLowerCase()))
-    .map(e => e.source);
-}
-
-export function getAllTargetFormats(): string[] {
-  const set = new Set<string>();
-  conversionMap.forEach(e => e.targets.forEach(t => set.add(t)));
-  return [...set];
-}
-
-export function getAllSourceFormats(): string[] {
-  return [...new Set(conversionMap.map(e => e.source))];
-}

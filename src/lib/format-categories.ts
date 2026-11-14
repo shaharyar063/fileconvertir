@@ -50,18 +50,6 @@ export const formatCategories: FormatCategory[] = [
   },
 ];
 
-/** Get all source formats that exist in the conversion map */
-export function getAllSources(): string[] {
-  return [...new Set(conversionMap.map(e => e.source))];
-}
-
-/** Get all target formats that exist in the conversion map */
-export function getAllTargets(): string[] {
-  const set = new Set<string>();
-  conversionMap.forEach(e => e.targets.forEach(t => set.add(t)));
-  return [...set];
-}
-
 function findSourceEntry(source: string) {
   const key = source.toLowerCase();
   return (

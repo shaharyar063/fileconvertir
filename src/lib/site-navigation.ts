@@ -103,20 +103,6 @@ export function getTargetHubSections(): NavSection[] {
   }));
 }
 
-/** Converter routes grouped by category for homepage / footer. */
-export function getConverterSectionsByCategory(): NavSection[] {
-  const cats = ['Image', 'Document', 'Audio', 'Video', 'Font', 'Archive'] as const;
-  return cats.map((cat) => ({
-    title: CATEGORY_LABELS[cat.toLowerCase()] ?? cat,
-    links: converterRoutes
-      .filter((r) => r.category === cat)
-      .map((r) => ({
-        href: sitePath(r.slug),
-        label: r.label,
-      })),
-  }));
-}
-
 /** Every indexable internal URL — for prerender footer / crawlable inlinks. */
 export function getAllSitewideNavLinks(): NavLink[] {
   const seen = new Set<string>();

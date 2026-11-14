@@ -1,4 +1,3 @@
-import { converterRoutes } from '../converters';
 import type { ConverterSEO, FormatSEO, HomepageSEO } from './types';
 import { mergeConverterSEO } from './merge';
 import { getTierSContent } from './converters/tier-s';
@@ -35,20 +34,5 @@ export function getHomepageSEO(): HomepageSEO {
 
 export { PRIORITY_CONVERTERS, TIER_S_SLUGS };
 
-export function isPriorityConverter(slug: string): boolean {
-  return (PRIORITY_CONVERTERS as readonly string[]).includes(slug) || (TIER_S_SLUGS as readonly string[]).includes(slug);
-}
-
 export { getRelatedConverters } from '../site-navigation';
 
-export function getCategoryStats() {
-  const cats: Record<string, number> = {};
-  converterRoutes.forEach((r) => {
-    cats[r.category] = (cats[r.category] || 0) + 1;
-  });
-  return cats;
-}
-
-export function getTotalConversions(): number {
-  return converterRoutes.length;
-}

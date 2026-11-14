@@ -45,13 +45,11 @@ const faqs = getHomepageSEO().faqs;
 
 /** Full-bleed section band separated by a hairline border. */
 function Band({
-  invert = false,
   children,
   id,
   ariaLabel,
   className = '',
 }: {
-  invert?: boolean;
   children: ReactNode;
   id?: string;
   ariaLabel?: string;
@@ -96,7 +94,7 @@ export default function Index() {
       </Band>
 
       {/* MOST POPULAR — dark band */}
-      <Band invert ariaLabel="Most popular conversions">
+      <Band ariaLabel="Most popular conversions">
         <div className="flex items-center gap-2">
           <TrendingUp className="h-4 w-4 text-foreground" />
           <h2 className="text-2xl md:text-3xl font-extrabold tracking-tight text-foreground">
@@ -175,7 +173,7 @@ export default function Index() {
       </Band>
 
       {/* WHY — dark band */}
-      <Band invert>
+      <Band>
         <h2 className="text-2xl md:text-3xl font-extrabold tracking-tight text-foreground">
           Why Use FileConvertir?
         </h2>
@@ -261,7 +259,7 @@ export default function Index() {
       </Band>
 
       {/* FAQ — dark band */}
-      <Band invert ariaLabel="Frequently asked questions">
+      <Band ariaLabel="Frequently asked questions">
         <h2 className="text-2xl md:text-3xl font-extrabold tracking-tight text-foreground">
           Frequently Asked Questions
         </h2>
