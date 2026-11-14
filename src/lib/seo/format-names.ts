@@ -1,6 +1,6 @@
 const formatNames: Record<string, string> = {
   jpg: 'JPEG', jpeg: 'JPEG', png: 'PNG', webp: 'WebP', gif: 'GIF', bmp: 'BMP',
-  tiff: 'TIFF', svg: 'SVG', heic: 'HEIC', heif: 'HEIF', ico: 'ICO', avif: 'AVIF',
+  tiff: 'TIFF', svg: 'SVG', ico: 'ICO', avif: 'AVIF',
   eps: 'EPS', psd: 'PSD', tga: 'TGA',
   pdf: 'PDF', docx: 'DOCX', doc: 'DOC', txt: 'TXT', csv: 'CSV',
   rtf: 'RTF', html: 'HTML', md: 'Markdown', odt: 'ODT',
@@ -23,7 +23,6 @@ const formatDescriptions: Record<string, string> = {
   bmp: 'BMP (Bitmap) is an uncompressed image format used in Windows environments.',
   tiff: 'TIFF is a flexible, high-quality image format commonly used in publishing and photography.',
   svg: 'SVG is a vector image format based on XML, ideal for logos, icons, and scalable graphics.',
-  heic: 'HEIC is Apple\'s high-efficiency image format that offers better compression than JPEG.',
   ico: 'ICO is the standard icon format used for favicons and Windows application icons.',
   avif: 'AVIF is a next-gen image format based on AV1 codec, offering excellent compression and quality.',
   eps: 'EPS (Encapsulated PostScript) is a vector format used in professional printing.',
@@ -50,7 +49,6 @@ const formatDescriptions: Record<string, string> = {
   woff: 'WOFF (Web Open Font Format) is optimized for web delivery with built-in compression.',
   woff2: 'WOFF2 offers even better compression than WOFF for faster web font loading.',
   eot: 'EOT (Embedded OpenType) is a legacy web font format primarily used by older versions of Internet Explorer.',
-  heif: 'HEIF (High Efficiency Image File Format) stores images with better compression than JPEG, used on Apple devices.',
   xlsx: 'XLSX is the modern Microsoft Excel spreadsheet format based on Open XML, supporting formulas and charts.',
   xls: 'XLS is the legacy Microsoft Excel spreadsheet format, still widely used for compatibility.',
   ods: 'ODS (OpenDocument Spreadsheet) is an open-standard spreadsheet format used by LibreOffice and OpenOffice.',

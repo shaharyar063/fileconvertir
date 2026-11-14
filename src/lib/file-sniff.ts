@@ -55,7 +55,7 @@ const TEXT_EXTENSIONS = new Set([
   'txt', 'csv', 'md', 'html', 'htm', 'rtf', 'xml', 'json',
 ]);
 
-const SKIP_SNIFF = new Set(['svg', 'heic', 'heif', 'avif', 'ico', 'eps', 'psd', 'tga', 'tar']);
+const SKIP_SNIFF = new Set(['svg', 'avif', 'ico', 'eps', 'psd', 'tga', 'tar']);
 
 function matchesSignature(view: Uint8Array, sig: { offset: number; bytes: number[] }): boolean {
   if (view.length < sig.offset + sig.bytes.length) return false;

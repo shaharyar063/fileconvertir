@@ -6,44 +6,6 @@ export const PRIORITY_S_PAGES: Record<string, ConverterContentOverride> = {
      EXISTING PRIORITY PAGES (kept intact)
   ───────────────────────────────────────────────────────────────────────── */
 
-  'heic-to-jpg': {
-    title: 'HEIC to JPG Converter — Free, No Upload | FileConvertir',
-    metaDescription: 'Convert HEIC to JPG free, online, with no upload. Works on Windows, Mac & Android. Open iPhone HEIC photos as JPG instantly — 100% private, no signup.',
-    heading: 'HEIC to JPG Converter',
-    description: 'Convert HEIC photos from your iPhone or iPad to JPG instantly — without uploading a single file to any server. Works on Windows, Mac, Android and Linux right in your browser.',
-    longDescription: 'HEIC (High-Efficiency Image Container) is the default photo format on iPhones since iOS 11, but it isn\'t natively supported by Windows, most Android phones, Photoshop, or many websites and email clients. The fastest fix is to convert HEIC to JPG. FileConvertir does this entirely in your browser using WebAssembly — your photos never leave your device, there\'s no upload wait, no signup, and no file count or size limit beyond what your browser can handle. You can drop a single HEIC file or batch convert dozens of iPhone photos at once.',
-    howToSteps: [
-      { name: 'Drop your HEIC files', text: 'Drag and drop one or more .heic or .heif files into the converter above, or click "Select Files" to browse. You can upload up to 20 files at once.' },
-      { name: 'JPG is already selected', text: 'The output format is preset to JPG. You don\'t have to configure anything — conversion starts the moment your files are added.' },
-      { name: 'Conversion runs in your browser', text: 'Each HEIC file is decoded and re-encoded as JPG using your device\'s CPU. No file is ever uploaded to any server.' },
-      { name: 'Download your JPGs', text: 'Click "Download" to save each converted JPG, or grab them all as a single ZIP archive.' },
-    ],
-    whyChooseUs: [
-      { title: 'No upload — true privacy', text: 'Convertio, CloudConvert and most other tools upload your photos to their servers. FileConvertir does 100% of the work in your browser. Your photos never touch a server.' },
-      { title: 'No signup, no limits', text: 'Convert as many HEIC files as you want, as often as you want. No account, no daily quota, no watermark, no paywall.' },
-      { title: 'Works on every OS', text: 'Windows 10/11, macOS, Linux, Android, ChromeOS — anywhere you have a modern browser. No software install required.' },
-      { title: 'Batch convert iPhone photo dumps', text: 'Convert your entire iPhone photo export at once instead of one at a time.' },
-    ],
-    faqs: [
-      { q: 'How do I convert HEIC to JPG on Windows for free?', a: 'Open FileConvertir.com in any browser (Chrome, Edge, Firefox), drop your HEIC files into the converter, and download the converted JPGs. No software install, no Microsoft Store HEIF Image Extension purchase needed.' },
-      { q: 'How do I convert HEIC to JPG on Mac without losing quality?', a: 'Drop your HEIC files into FileConvertir. Conversion uses your browser\'s native image decoder which preserves the full source resolution. The JPG is saved at quality 92, which is visually indistinguishable from the original.' },
-      { q: 'Are my iPhone photos uploaded to your server?', a: 'No. Every byte stays on your device. The conversion runs locally in your browser using WebAssembly — there is no upload, no server-side storage, and nothing is logged. You can verify this by opening DevTools → Network and watching that no file transfer happens during conversion.' },
-      { q: 'Why are my iPhone photos saved as HEIC instead of JPG?', a: 'Apple switched the default to HEIC in iOS 11 because the format is roughly 50% smaller than JPG at the same quality. The downside: HEIC isn\'t supported by Windows, most older apps, and many websites. Converting to JPG fixes that.' },
-      { q: 'Can I batch convert HEIC photos to JPG?', a: 'Yes. You can drop up to 20 HEIC files at once. They all get converted in parallel and you can download them individually or as a single ZIP file.' },
-      { q: 'Does the converter work offline?', a: 'After the page has loaded once, conversions work even if you go offline. The conversion logic runs entirely in your browser — no internet connection is needed once the page is loaded.' },
-      { q: 'Will the JPG file size be larger than the HEIC original?', a: 'Yes, usually about 1.5–2× larger. That\'s the trade-off for HEIC\'s superior compression. If file size matters, consider converting to WebP instead — it\'s smaller than JPG with similar quality.' },
-      { q: 'What\'s the maximum HEIC file size I can convert?', a: 'Up to 100MB per file. Modern iPhones produce HEIC files of 1–4MB each, so this is plenty for normal use.' },
-      { q: 'Will EXIF metadata (date, location) be preserved?', a: 'Basic image data is preserved, but some EXIF metadata may be stripped during conversion for privacy. If you need full metadata preservation for professional workflows, use a desktop tool.' },
-      { q: 'Is FileConvertir really free?', a: 'Yes — completely free, forever, with no limits. No signup, no email required, no ads inside the converter, no paid tier.' },
-    ],
-    useCases: [
-      'Open iPhone photos on Windows without installing the HEIF Image Extension',
-      'Share HEIC photos with Android users or via email clients that reject .heic files',
-      'Upload iPhone photos to websites, social platforms, and CMSs that only accept JPG',
-      'Batch convert an entire iCloud photo export from HEIC to JPG in one session',
-    ],
-  },
-
   'avif-to-jpg': {
     title: 'AVIF to JPG Converter — Free, No Upload | FileConvertir',
     metaDescription: 'Convert AVIF to JPG free online — no upload, no signup, 100% private. Fix AVIF compatibility instantly in your browser. Works on Windows, Mac, Android.',
@@ -145,40 +107,6 @@ export const PRIORITY_S_PAGES: Record<string, ConverterContentOverride> = {
       'Upload MOV videos to social media platforms, presentation tools, and CMSs that require MP4',
       'Share QuickTime recordings with colleagues who use non-Apple devices',
       'Fix MOV files rejected by video editors, messaging apps, and media players',
-    ],
-  },
-
-  'tiff-to-jpg': {
-    title: 'TIFF to JPG Converter — Free, No Upload | FileConvertir',
-    metaDescription: 'Convert TIFF to JPG free online — no upload, 100% private. Shrink huge TIFF files for email & web. Browser-based, no signup, no quality limits.',
-    heading: 'TIFF to JPG Converter',
-    description: 'Convert TIFF (and TIF) images to JPG instantly in your browser. Perfect for shrinking huge scanned documents, photographer proofs, and print-quality TIFFs into web/email-friendly JPGs.',
-    longDescription: 'TIFF is the standard format for high-quality scanning, professional photography, and print production. The downside: TIFF files are massive (often 50–500MB) and most websites, email clients, social platforms, and messaging apps reject them. Converting to JPG can reduce file size by 90–95% while keeping near-identical visual quality. FileConvertir converts TIFF to JPG entirely in your browser — no upload, no waiting on a slow server, no privacy worries about your scanned documents.',
-    howToSteps: [
-      { name: 'Drop your TIFF files', text: 'Drag and drop your .tiff or .tif files into the converter, or click "Select Files". You can batch up to 20 files at a time.' },
-      { name: 'JPG is preselected', text: 'No settings to change — the output is already set to JPG.' },
-      { name: 'Local in-browser conversion', text: 'Each TIFF is decoded and re-encoded as JPG locally using your browser. Nothing is uploaded.' },
-      { name: 'Download your JPGs', text: 'Save individually or download the whole batch as a ZIP.' },
-    ],
-    whyChooseUs: [
-      { title: 'Handles huge TIFFs without uploading', text: 'A 200MB TIFF takes minutes to upload on most connections. FileConvertir skips that entirely — conversion starts immediately on your device.' },
-      { title: 'Private — perfect for scanned documents', text: 'Sensitive scans (contracts, IDs, medical records) never leave your device. No server-side storage, no logging.' },
-      { title: 'Massive file-size reduction', text: 'Typical TIFF → JPG saves 90–95% file size with no visible quality loss for most images.' },
-    ],
-    faqs: [
-      { q: 'Why are my scanned documents in TIFF format?', a: 'Scanners default to TIFF because it\'s lossless and supports multi-page documents. The downside is huge file sizes that can\'t be emailed or uploaded easily.' },
-      { q: 'Will I lose quality converting TIFF to JPG?', a: 'JPG is lossy, but at quality 92 (our default) the difference is invisible to the human eye for almost all photos and documents. The trade-off is dramatically smaller file size.' },
-      { q: 'Are my files uploaded to your server?', a: 'No. Everything runs in your browser. Especially important for sensitive scanned documents like IDs or contracts — they never leave your device.' },
-      { q: 'Can I convert multi-page TIFF files?', a: 'Currently the converter handles the first page of multi-page TIFFs. For multi-page documents, consider converting the TIFF to PDF instead.' },
-      { q: 'How much smaller will the JPG be?', a: 'Typically 90–95% smaller. A 100MB TIFF often becomes a 5–10MB JPG with no visible difference.' },
-      { q: 'What\'s the max TIFF file size?', a: '100MB per file. For larger TIFFs (e.g., 600 DPI archive scans), use a desktop tool.' },
-      { q: 'Will TIFF metadata be preserved?', a: 'Basic image data is preserved. Some TIFF-specific metadata (like custom tags from professional scanners) may be stripped during conversion.' },
-    ],
-    useCases: [
-      'Shrink large scanner TIFF exports to email-friendly JPG without losing visible quality',
-      'Convert photographer RAW-to-TIFF exports for web publishing and social sharing',
-      'Reduce massive print-production TIFFs for preview sharing with clients',
-      'Batch convert archival TIFF scans to JPG for web gallery display',
     ],
   },
 
@@ -395,45 +323,6 @@ export const PRIORITY_S_PAGES: Record<string, ConverterContentOverride> = {
       'Turn scanned receipts or invoices into a PDF expense report for accounting',
     ],
   },
-
-  'heic-to-pdf': {
-    title: 'HEIC to PDF Converter — iPhone Photos to PDF Free | FileConvertir',
-    metaDescription: 'Convert HEIC to PDF free online — no upload, no signup. Turn iPhone photos into PDF documents instantly. Multiple HEIC files → one PDF. 100% private, browser-based.',
-    heading: 'HEIC to PDF Converter',
-    description: 'Convert iPhone HEIC photos to PDF instantly in your browser. Bundle multiple HEIC images into a single PDF document for easy sharing, printing, or submission — without uploading your photos.',
-    longDescription: 'iPhone photos arrive as HEIC files, but forms, portals, and email recipients almost always require PDF. Whether you\'re submitting insurance photos, attaching proof of address, creating a photo portfolio, or sending product images to a client, HEIC-to-PDF is a common workflow. FileConvertir handles this in two steps invisibly: it decodes the HEIC using WebAssembly, then assembles the result into a PDF using jsPDF — all locally in your browser. Your photos never touch a server, which matters when the images contain sensitive personal documents.',
-    howToSteps: [
-      { name: 'Drop your HEIC files', text: 'Drag your .heic or .heif photos into the converter, or tap "Select Files" to pick from your camera roll. Up to 20 photos per batch.' },
-      { name: 'Select PDF as output', text: 'Choose PDF from the output format dropdown. All HEIC files will be combined into one PDF.' },
-      { name: 'Browser converts locally', text: 'Each HEIC is decoded in-browser and assembled into a PDF. Nothing is uploaded — your photos stay on your device.' },
-      { name: 'Download the PDF', text: 'Save the finished PDF document. Multiple iPhone photos become one shareable, printable PDF.' },
-    ],
-    whyChooseUs: [
-      { title: 'iPhone photos → PDF in one step', text: 'No need to first convert HEIC to JPG, then to PDF. Drop HEIC files directly and get a PDF immediately.' },
-      { title: 'Private — never uploaded', text: 'Phone photos often contain private locations, documents, or personal content. FileConvertir never uploads them — all processing is in-browser.' },
-      { title: 'Combine multiple iPhone photos into one PDF', text: 'Drop 10 HEIC photos at once and get a single 10-page PDF — ideal for insurance claims, legal submissions, or client packages.' },
-    ],
-    faqs: [
-      { q: 'How do I turn my iPhone photos into a PDF without a computer?', a: 'Open FileConvertir.com in Safari on your iPhone, tap "Select Files," choose your HEIC photos from your camera roll, select PDF as output, and tap Download. The entire conversion happens on your iPhone.' },
-      { q: 'Can I combine multiple iPhone HEIC photos into one PDF?', a: 'Yes. Drop multiple HEIC files at once — each becomes one page in a single PDF document. You can combine up to 20 photos per conversion.' },
-      { q: 'Are my iPhone photos uploaded to the internet?', a: 'No. The conversion runs entirely in your browser using WebAssembly (for HEIC decoding) and jsPDF (for PDF assembly). Your photos never leave your device.' },
-      { q: 'Will the photo quality be preserved in the PDF?', a: 'Yes. Each HEIC is decoded to its full resolution and embedded in the PDF at that resolution. No quality is lost beyond what\'s inherent in the HEIC encoding itself.' },
-      { q: 'Why use PDF instead of just sharing HEIC files?', a: 'Many email clients, portals, and apps don\'t accept HEIC. PDF is universally supported — every device and operating system can open a PDF. It\'s also more professional for document submissions.' },
-      { q: 'What if I have HEIF files instead of HEIC?', a: 'HEIC and HEIF are essentially the same format (HEIF is the container, HEIC is the Apple-branded variant). Both .heic and .heif files are supported.' },
-      { q: 'Can I convert a single HEIC photo to PDF?', a: 'Yes — you can convert a single file or multiple files. One HEIC becomes a single-page PDF; multiple HEICs become a multi-page PDF.' },
-      { q: 'Does this work on Android?', a: 'Android devices don\'t natively create HEIC files, but if you received HEIC photos from an iPhone user, you can open FileConvertir in Chrome on Android to convert them.' },
-    ],
-    useCases: [
-      'Submit iPhone photos as PDF for insurance claims, rental applications, or legal documents',
-      'Convert HEIC passport or ID photos to PDF for visa or government form submissions',
-      'Bundle multiple iPhone shots of a property or product into a single PDF document',
-      'Send iPhone photos to recipients whose email or portal only accepts PDF attachments',
-    ],
-  },
-
-  /* ─────────────────────────────────────────────────────────────────────────
-     NEW PRIORITY PAGES — AUDIO CONVERSIONS
-  ───────────────────────────────────────────────────────────────────────── */
 
   'mp4-to-mp3': {
     title: 'MP4 to MP3 Converter — Extract Audio Free | FileConvertir',

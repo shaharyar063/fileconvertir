@@ -1,7 +1,6 @@
 import { ConverterPlugin, ConversionResult, ConversionOption } from '@/lib/converter-types';
 import { getTargetsForSource } from '@/lib/conversion-map';
 
-// heic/heif/tiff are intentionally not supported as inputs: most browsers cannot decode them.
 const IMAGE_FORMATS = ['jpg', 'jpeg', 'png', 'webp', 'gif', 'bmp', 'avif', 'ico', 'eps', 'svg', 'psd', 'tga'];
 import { ArchiveFormat, buildSingleFileArchive } from '@/lib/build-archive';
 
@@ -20,14 +19,9 @@ function getMimeType(format: string): string {
     psd: 'image/vnd.adobe.photoshop',
     tga: 'image/x-tga',
     avif: 'image/avif',
-    heic: 'image/heic',
-    heif: 'image/heif',
   };
   return map[format] || 'image/png';
 }
-
-/** Formats most browsers cannot decode natively (Safari can decode HEIC/TIFF). */
-const BROWSER_DECODE_LIMITED = new Set(['heic', 'heif', 'tiff', 'tif']);
 
 async function loadImage(file: File): Promise<HTMLImageElement> {
   return new Promise((resolve, reject) => {
@@ -36,14 +30,7 @@ async function loadImage(file: File): Promise<HTMLImageElement> {
     img.onload = () => resolve(img);
     img.onerror = () => {
       URL.revokeObjectURL(url);
-      const ext = file.name.split('.').pop()?.toLowerCase() ?? '';
-      reject(
-        new Error(
-          BROWSER_DECODE_LIMITED.has(ext)
-            ? `Your browser cannot open .${ext} images (Safari can). Try Safari, or convert the file on a device that supports it first.`
-            : 'Failed to load image. Format may not be supported by your browser.',
-        ),
-      );
+      reject(new Error('Failed to load image. Format may not be supported by your browser.'));
     };
     img.src = url;
   });

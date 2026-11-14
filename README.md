@@ -54,7 +54,7 @@ plugins/
 - 347-URL sitemap covering 278 converter pairs, 37 source pages, 31 target pages
 - Submit `https://fileconvertir.com/sitemap.xml` to Google Search Console
 - JSON-LD structured data on all converter and format pages
-- Hand-crafted meta descriptions for the highest-traffic keywords (HEIC→JPG, PNG↔JPG, MP4→MP3, etc.)
+- Hand-crafted meta descriptions for the highest-traffic keywords (PNG↔JPG, MP4→MP3, etc.)
 
 ## Deployment
 
