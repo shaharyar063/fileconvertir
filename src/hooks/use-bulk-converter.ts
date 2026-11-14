@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef } from 'react';
+import { useState, useCallback, useRef, useEffect } from 'react';
 import {
   FileInfo, ConversionResult, ConversionStatus,
   createFileInfo, MAX_FILE_SIZE, MAX_BATCH_FILES, MAX_BATCH_SIZE,
@@ -35,8 +35,7 @@ export function useBulkConverter(fixedTargetFormat?: string) {
         setError(localError);
         continue;
       }
-      totalSize += file.size;
-      if (totalSize > MAX_BATCH_SIZE) {
+      if (totalSize + file.size > MAX_BATCH_SIZE) {
         localError = `Total batch size exceeds ${formatFileSize(MAX_BATCH_SIZE)}. Some files were skipped.`;
         setError(localError);
         break;
@@ -51,6 +50,7 @@ export function useBulkConverter(fixedTargetFormat?: string) {
       const formats = registry.getTargetFormats(info.extension);
       if (formats.length === 0) continue;
 
+      totalSize += file.size; // count only files that were actually accepted
       items.push({
         id: `file-${++nextId}`,
         info,
@@ -139,7 +139,8 @@ export function useBulkConverter(fixedTargetFormat?: string) {
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
-    URL.revokeObjectURL(url);
+    // Revoking immediately can cancel the download in Safari/Firefox.
+    setTimeout(() => URL.revokeObjectURL(url), 10_000);
   }, []);
 
   const downloadAllAsZip = useCallback(async () => {
@@ -174,7 +175,7 @@ export function useBulkConverter(fixedTargetFormat?: string) {
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
-    URL.revokeObjectURL(url);
+    setTimeout(() => URL.revokeObjectURL(url), 10_000);
   }, [files, downloadFile]);
 
   const reset = useCallback(() => {
@@ -184,6 +185,12 @@ export function useBulkConverter(fixedTargetFormat?: string) {
     setStatus('idle');
     setError(null);
   }, [fixedTargetFormat]);
+
+  // A finished batch with no files left (e.g. every failed file removed) must
+  // not leave the UI stuck in "done" with no way to convert again.
+  useEffect(() => {
+    if (files.length === 0 && status === 'done') setStatus('idle');
+  }, [files.length, status]);
 
   const doneCount = files.filter(f => f.status === 'done').length;
   const errorCount = files.filter(f => f.status === 'error').length;

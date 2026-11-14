@@ -13,13 +13,46 @@ const MIME: Record<ArchiveFormat, string> = {
  * Used as a shared client-side TAR builder so every converter can
  * emit a real .tar (and .tar.gz) instead of a ZIP renamed to .tar.
  */
+/** Truncate to at most `maxBytes` UTF-8 bytes without splitting a character. */
+export function truncateUtf8(value: string, maxBytes: number): Uint8Array {
+  const encoder = new TextEncoder();
+  let bytes = 0;
+  let out = '';
+  for (const ch of value) {
+    const len = encoder.encode(ch).length;
+    if (bytes + len > maxBytes) break;
+    bytes += len;
+    out += ch;
+  }
+  return encoder.encode(out);
+}
+
+/** Give colliding names a " (n)" suffix so no entry silently overwrites another. */
+export function dedupeFileNames<T extends { name: string }>(files: T[]): T[] {
+  const used = new Set<string>();
+  return files.map((f) => {
+    let name = f.name;
+    let n = 1;
+    while (used.has(name)) {
+      const dot = f.name.lastIndexOf('.');
+      name =
+        dot > 0
+          ? `${f.name.slice(0, dot)} (${n})${f.name.slice(dot)}`
+          : `${f.name} (${n})`;
+      n++;
+    }
+    used.add(name);
+    return name === f.name ? f : { ...f, name };
+  });
+}
+
 export function buildTar(files: { name: string; data: Uint8Array }[]): Uint8Array {
   const encoder = new TextEncoder();
   const blocks: Uint8Array[] = [];
 
   for (const file of files) {
     const header = new Uint8Array(512);
-    header.set(encoder.encode(file.name.slice(0, 99)), 0);
+    header.set(truncateUtf8(file.name, 99), 0);
     header.set(encoder.encode('0000644\0'), 100);
     header.set(encoder.encode('0000000\0'), 108);
     header.set(encoder.encode('0000000\0'), 116);

@@ -10,8 +10,9 @@ import { buildFAQSchema, buildBreadcrumbSchema, absoluteUrl } from '@/lib/seo-js
 import { sitePath } from '@/lib/site-url';
 
 export default function FormatPage() {
-  const { format } = useParams<{ format: string }>();
-  const page = format ? getFormatPageBySlug(`to-${format}`) : undefined;
+  const { slug, format } = useParams<{ slug?: string; format?: string }>();
+  const hubSlug = slug ?? (format ? `to-${format}` : undefined);
+  const page = hubSlug ? getFormatPageBySlug(hubSlug) : undefined;
   const seo = page ? getFormatSEO(page.targetFormat) : undefined;
 
   const jsonLd = useMemo(() => {
