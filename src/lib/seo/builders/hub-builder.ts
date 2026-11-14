@@ -268,7 +268,7 @@ function hubTargetFaqs(
     },
     {
       q: `How do I pick the right converter for ${t}?`,
-      a: `Match your source file\'s extension to the list on this page. Each converter is optimized for that specific input-to-${t} path and opens with ${t} preselected as the output.`,
+      a: `Match your source file's extension to the list on this page. Each converter is optimized for that specific input-to-${t} path and opens with ${t} preselected as the output.`,
     },
   ];
 }

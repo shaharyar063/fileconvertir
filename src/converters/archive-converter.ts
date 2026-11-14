@@ -2,6 +2,7 @@ import { ConverterPlugin, ConversionResult, ConversionOption } from '@/lib/conve
 import { getTargetsForSource } from '@/lib/conversion-map';
 import JSZip from 'jszip';
 import { safeArchiveEntryName } from '@/lib/safe-archive-path';
+import { buildTar, dedupeFileNames } from '@/lib/build-archive';
 
 const ARCHIVE_SOURCES = ['zip', 'tar', 'gz'];
 
@@ -53,75 +54,6 @@ function parseTar(buffer: ArrayBuffer): { name: string; data: Uint8Array }[] {
   }
 
   return files;
-}
-
-/**
- * Build a TAR archive from files.
- */
-function buildTar(files: { name: string; data: Uint8Array }[]): ArrayBuffer {
-  const blocks: Uint8Array[] = [];
-
-  for (const file of files) {
-    // Header block (512 bytes)
-    const header = new Uint8Array(512);
-
-    // File name
-    const nameBytes = new TextEncoder().encode(file.name.slice(0, 99));
-    header.set(nameBytes, 0);
-
-    // File mode: 0644
-    const mode = new TextEncoder().encode('0000644\0');
-    header.set(mode, 100);
-
-    // UID/GID: 0
-    const zero = new TextEncoder().encode('0000000\0');
-    header.set(zero, 108); // uid
-    header.set(zero, 116); // gid
-
-    // File size (octal, 11 chars + null)
-    const sizeOctal = file.data.length.toString(8).padStart(11, '0') + '\0';
-    header.set(new TextEncoder().encode(sizeOctal), 124);
-
-    // Modification time
-    const mtime = Math.floor(Date.now() / 1000).toString(8).padStart(11, '0') + '\0';
-    header.set(new TextEncoder().encode(mtime), 136);
-
-    // Type flag: '0' (regular file)
-    header[156] = 48; // '0'
-
-    // USTAR indicator
-    header.set(new TextEncoder().encode('ustar\0'), 257);
-    header.set(new TextEncoder().encode('00'), 263);
-
-    // Compute checksum
-    // First fill checksum field with spaces
-    for (let i = 148; i < 156; i++) header[i] = 0x20;
-    let checksum = 0;
-    for (let i = 0; i < 512; i++) checksum += header[i];
-    const checksumStr = checksum.toString(8).padStart(6, '0') + '\0 ';
-    header.set(new TextEncoder().encode(checksumStr), 148);
-
-    blocks.push(header);
-
-    // Data blocks
-    const dataBlocks = Math.ceil(file.data.length / 512);
-    const paddedData = new Uint8Array(dataBlocks * 512);
-    paddedData.set(file.data, 0);
-    blocks.push(paddedData);
-  }
-
-  // Two empty end-of-archive blocks
-  blocks.push(new Uint8Array(1024));
-
-  const totalSize = blocks.reduce((s, b) => s + b.length, 0);
-  const result = new Uint8Array(totalSize);
-  let offset = 0;
-  for (const block of blocks) {
-    result.set(block, offset);
-    offset += block.length;
-  }
-
-  return result.buffer;
 }
 
 /** Check if Compression Streams API is available in this browser. */
@@ -215,6 +147,10 @@ export const archiveConverter: ConverterPlugin = {
       throw new Error('Archive appears to be empty or could not be read.');
     }
 
+    // Folder structure is flattened, so identical names from different folders
+    // must not overwrite each other.
+    files = dedupeFileNames(files);
+
     // Build target archive
     if (targetFormat === 'zip') {
       const zip = new JSZip();
@@ -235,10 +171,10 @@ export const archiveConverter: ConverterPlugin = {
     }
 
     if (targetFormat === 'tar') {
-      const tarBuffer = buildTar(files);
+      const tarBytes = buildTar(files);
       onProgress?.(100);
       return {
-        blob: new Blob([tarBuffer], { type: 'application/x-tar' }),
+        blob: new Blob([tarBytes as BlobPart], { type: 'application/x-tar' }),
         filename: `${baseName}.tar`,
         mimeType: 'application/x-tar',
       };
@@ -249,7 +185,7 @@ export const archiveConverter: ConverterPlugin = {
         throw new Error('Your browser does not support GZ compression. Please use a modern browser (Chrome 80+, Firefox 113+, Safari 16.4+).');
       }
       const tarBuffer = buildTar(files);
-      const stream = new Blob([tarBuffer]).stream().pipeThrough(new CompressionStream('gzip'));
+      const stream = new Blob([tarBuffer as BlobPart]).stream().pipeThrough(new CompressionStream('gzip'));
       const reader = stream.getReader();
       const chunks: Uint8Array[] = [];
       let done = false;

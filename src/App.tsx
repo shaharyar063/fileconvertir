@@ -6,7 +6,6 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Layout } from "./components/Layout";
 import Index from "./pages/Index";
 import SlugRouter from "./pages/SlugRouter";
-import FormatPage from "./pages/FormatPage";
 import NotFound from "./pages/NotFound";
 import { ThemeProvider } from "./hooks/use-theme";
 import { TrailingSlashRedirect } from "./components/TrailingSlashRedirect";
@@ -23,8 +22,6 @@ const App = () => (
         <Routes>
           <Route element={<Layout />}>
             <Route path="/" element={<Index />} />
-            <Route path="/to-:format/" element={<FormatPage />} />
-            <Route path="/to-:format" element={<TrailingSlashRedirect prefix="to-" />} />
             <Route path="/:slug/" element={<SlugRouter />} />
             <Route path="/:slug" element={<TrailingSlashRedirect />} />
           </Route>

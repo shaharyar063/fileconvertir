@@ -12,7 +12,7 @@ const baseHtml = `<!doctype html>
 <meta name="twitter:title" content="Home" />
 <meta name="twitter:description" content="Home desc" />
 <script type="application/ld+json">[]</script>
-</head><body><motion.div id="root"></div></body></html>`;
+</head><body><div id="root"></div></body></html>`;
 
 describe('prerender-meta', () => {
   it('escapes HTML entities in meta text', () => {

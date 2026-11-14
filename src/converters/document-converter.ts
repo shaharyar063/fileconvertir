@@ -22,6 +22,7 @@ async function htmlToText(file: File): Promise<string> {
   const html = await file.text();
   const parser = new DOMParser();
   const doc = parser.parseFromString(html, 'text/html');
+  doc.querySelectorAll('script, style, noscript, template').forEach((el) => el.remove());
   return doc.body.textContent || '';
 }
 
@@ -101,7 +102,19 @@ async function odtToText(file: File): Promise<string> {
   const zip = await JSZip.loadAsync(await file.arrayBuffer());
   const contentXml = await zip.file('content.xml')?.async('text');
   if (!contentXml) throw new Error('Invalid ODT file: content.xml not found');
-  return contentXml.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+  // Keep paragraph/line structure, then strip tags and decode XML entities.
+  return contentXml
+    .replace(/<\/text:(p|h)>/g, '\n\n')
+    .replace(/<text:(line-break|tab)\s*\/>/g, (_m, t) => (t === 'tab' ? '\t' : '\n'))
+    .replace(/<text:s(?:\s+text:c="(\d+)")?\s*\/>/g, (_m, c) => ' '.repeat(Number(c) || 1))
+    .replace(/<[^>]+>/g, '')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"')
+    .replace(/&apos;/g, "'")
+    .replace(/&amp;/g, '&')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim();
 }
 
 async function extractText(file: File, ext: string): Promise<string> {
@@ -162,7 +175,7 @@ export const documentConverter: ConverterPlugin = {
     }
 
     if (targetFormat === 'html') {
-      const html = `<!DOCTYPE html><html><head><meta charset="utf-8"><title>${baseName}</title></head><body><pre>${text}</pre></body></html>`;
+      const html = `<!DOCTYPE html><html><head><meta charset="utf-8"><title>${escapeHtml(baseName)}</title></head><body><pre>${escapeHtml(text)}</pre></body></html>`;
       onProgress?.(100);
       return {
         blob: new Blob([html], { type: 'text/html' }),

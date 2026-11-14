@@ -1,7 +1,12 @@
 import JSZip from 'jszip';
 
+// Characters that are illegal in XML 1.0 make Word report the file as corrupt.
+// eslint-disable-next-line no-control-regex
+const INVALID_XML_CHARS = /[\u0000-\u0008\u000B\u000C\u000E-\u001F\uFFFE\uFFFF]/g;
+
 function escapeXml(text: string): string {
   return text
+    .replace(INVALID_XML_CHARS, '')
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;')
@@ -11,9 +16,13 @@ function escapeXml(text: string): string {
 
 /** Build a minimal DOCX (OOXML ZIP) as raw bytes. */
 export async function buildDocxBytes(plainText: string): Promise<Uint8Array> {
-  const paragraphs = plainText.split(/\n\n|\r\n\r\n/).map((p) => {
-    const escaped = escapeXml(p);
-    return `<w:p><w:r><w:t xml:space="preserve">${escaped}</w:t></w:r></w:p>`;
+  const paragraphs = plainText.split(/\r?\n\r?\n/).map((p) => {
+    // Single line breaks inside a paragraph become real Word line breaks.
+    const runs = p
+      .split(/\r?\n/)
+      .map((line) => `<w:t xml:space="preserve">${escapeXml(line)}</w:t>`)
+      .join('<w:br/>');
+    return `<w:p><w:r>${runs}</w:r></w:p>`;
   });
 
   if (paragraphs.length === 0) {

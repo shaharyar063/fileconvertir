@@ -1,50 +1,10 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
-  <defs>
-    <radialGradient id="glow" cx="50%" cy="40%" r="55%">
-      <stop offset="0%" stop-color="#6366F1" stop-opacity="0.12"/>
-      <stop offset="100%" stop-color="#0D0F1E" stop-opacity="0"/>
-    </radialGradient>
-  </defs>
-  <!-- Background -->
-  <rect width="1200" height="630" fill="#0D0F1E"/>
-  <rect width="1200" height="630" fill="url(#glow)"/>
-
-  <!-- Logo icon box -->
-  <rect x="526" y="148" width="88" height="88" rx="20" fill="#6366F1"/>
-  <!-- Arrow right (white) -->
-  <line x1="544" y1="177" x2="580" y2="177" stroke="white" stroke-width="5.5" stroke-linecap="round"/>
-  <polyline points="569,167 582,177 569,187" fill="none" stroke="white" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"/>
-  <!-- Arrow left (cyan) -->
-  <line x1="596" y1="197" x2="560" y2="197" stroke="#a5f3fc" stroke-width="5.5" stroke-linecap="round"/>
-  <polyline points="571,187 558,197 571,207" fill="none" stroke="#a5f3fc" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"/>
-
-  <!-- Brand name -->
-  <text x="630" y="208" font-family="Inter, -apple-system, sans-serif" font-size="54" font-weight="800" fill="#EEF0F8" text-anchor="middle" letter-spacing="-1">
-    File<tspan fill="#818CF8">Convertir</tspan>
-  </text>
-
-  <!-- Tagline -->
-  <text x="600" y="276" font-family="Inter, -apple-system, sans-serif" font-size="24" font-weight="400" fill="#6B7280" text-anchor="middle">
-    Free Online File Converter — 100% Private, No Uploads
-  </text>
-
-  <!-- Format pill strip -->
-  <rect x="170" y="322" width="860" height="48" rx="24" fill="#13162A"/>
-  <text x="270" y="353" font-family="Inter, sans-serif" font-size="15" font-weight="600" fill="#818CF8">Images</text>
-  <text x="395" y="353" font-family="Inter, sans-serif" font-size="15" font-weight="600" fill="#818CF8">Documents</text>
-  <text x="545" y="353" font-family="Inter, sans-serif" font-size="15" font-weight="600" fill="#818CF8">Audio</text>
-  <text x="660" y="353" font-family="Inter, sans-serif" font-size="15" font-weight="600" fill="#818CF8">Video</text>
-  <text x="760" y="353" font-family="Inter, sans-serif" font-size="15" font-weight="600" fill="#818CF8">Fonts</text>
-  <text x="860" y="353" font-family="Inter, sans-serif" font-size="15" font-weight="600" fill="#818CF8">Archives</text>
-  <!-- Separator dots -->
-  <circle cx="368" cy="346" r="3" fill="#1E2240"/>
-  <circle cx="518" cy="346" r="3" fill="#1E2240"/>
-  <circle cx="632" cy="346" r="3" fill="#1E2240"/>
-  <circle cx="732" cy="346" r="3" fill="#1E2240"/>
-  <circle cx="832" cy="346" r="3" fill="#1E2240"/>
-
-  <!-- Domain -->
-  <text x="600" y="440" font-family="Inter, -apple-system, sans-serif" font-size="18" font-weight="500" fill="#374060" text-anchor="middle">
-    fileconvertir.com
-  </text>
+  <rect width="1200" height="630" fill="#FFFFFF"/>
+  <rect x="80" y="80" width="96" height="96" rx="22" fill="#0A0A0A"/>
+  <path d="M148 112 L124 127 L124 119.5 L100 119.5 L100 104.5 L124 104.5 L124 97 Z" fill="#FFFFFF"/>
+  <path d="M108 144 L132 129 L132 136.5 L156 136.5 L156 151.5 L132 151.5 L132 159 Z" fill="#FFFFFF"/>
+  <text x="200" y="145" font-family="Inter, Arial, sans-serif" font-size="44" font-weight="800" fill="#0A0A0A">FileConvertir</text>
+  <text x="80" y="330" font-family="Inter, Arial, sans-serif" font-size="84" font-weight="800" fill="#0A0A0A">Free Online</text>
+  <text x="80" y="425" font-family="Inter, Arial, sans-serif" font-size="84" font-weight="800" fill="#0A0A0A">File Converter</text>
+  <text x="80" y="505" font-family="Inter, Arial, sans-serif" font-size="32" fill="#666666">100% private. Files never leave your device. No signup.</text>
 </svg>

@@ -13,9 +13,13 @@ const SIGNATURES: Record<string, { offset: number; bytes: number[] }[]> = {
   zip: [{ offset: 0, bytes: [0x50, 0x4b, 0x03, 0x04] }],
   mp3: [
     { offset: 0, bytes: [0x49, 0x44, 0x33] },
+    // MPEG audio frame sync: MPEG-1/2/2.5 Layer III, with and without CRC
     { offset: 0, bytes: [0xff, 0xfb] },
+    { offset: 0, bytes: [0xff, 0xfa] },
     { offset: 0, bytes: [0xff, 0xf3] },
     { offset: 0, bytes: [0xff, 0xf2] },
+    { offset: 0, bytes: [0xff, 0xe3] },
+    { offset: 0, bytes: [0xff, 0xe2] },
   ],
   wav: [{ offset: 0, bytes: [0x52, 0x49, 0x46, 0x46] }],
   ogg: [{ offset: 0, bytes: [0x4f, 0x67, 0x67, 0x53] }],
@@ -23,14 +27,25 @@ const SIGNATURES: Record<string, { offset: number; bytes: number[] }[]> = {
   mp4: [
     { offset: 4, bytes: [0x66, 0x74, 0x79, 0x70] },
   ],
-  mov: [{ offset: 4, bytes: [0x66, 0x74, 0x79, 0x70] }],
+  // Older QuickTime files start with moov/mdat/wide/free atoms instead of ftyp
+  mov: [
+    { offset: 4, bytes: [0x66, 0x74, 0x79, 0x70] }, // ftyp
+    { offset: 4, bytes: [0x6d, 0x6f, 0x6f, 0x76] }, // moov
+    { offset: 4, bytes: [0x6d, 0x64, 0x61, 0x74] }, // mdat
+    { offset: 4, bytes: [0x77, 0x69, 0x64, 0x65] }, // wide
+    { offset: 4, bytes: [0x66, 0x72, 0x65, 0x65] }, // free
+  ],
   mkv: [{ offset: 0, bytes: [0x1a, 0x45, 0xdf, 0xa3] }],
   avi: [{ offset: 0, bytes: [0x52, 0x49, 0x46, 0x46] }],
   webm: [{ offset: 0, bytes: [0x1a, 0x45, 0xdf, 0xa3] }],
   gz: [{ offset: 0, bytes: [0x1f, 0x8b] }],
   docx: [{ offset: 0, bytes: [0x50, 0x4b, 0x03, 0x04] }],
   odt: [{ offset: 0, bytes: [0x50, 0x4b, 0x03, 0x04] }],
-  ttf: [{ offset: 0, bytes: [0x00, 0x01, 0x00, 0x00] }],
+  ttf: [
+    { offset: 0, bytes: [0x00, 0x01, 0x00, 0x00] },
+    { offset: 0, bytes: [0x74, 0x72, 0x75, 0x65] }, // 'true' (Apple TrueType)
+    { offset: 0, bytes: [0x74, 0x74, 0x63, 0x66] }, // 'ttcf' collection
+  ],
   otf: [{ offset: 0, bytes: [0x4f, 0x54, 0x54, 0x4f] }],
   woff: [{ offset: 0, bytes: [0x77, 0x4f, 0x46, 0x46] }],
   woff2: [{ offset: 0, bytes: [0x77, 0x4f, 0x46, 0x32] }],
@@ -40,7 +55,7 @@ const TEXT_EXTENSIONS = new Set([
   'txt', 'csv', 'md', 'html', 'htm', 'rtf', 'xml', 'json',
 ]);
 
-const SKIP_SNIFF = new Set(['svg', 'heic', 'heif', 'avif', 'ico', 'eps', 'psd', 'tga', 'tar']);
+const SKIP_SNIFF = new Set(['svg', 'avif', 'ico', 'eps', 'psd', 'tga', 'tar']);
 
 function matchesSignature(view: Uint8Array, sig: { offset: number; bytes: number[] }): boolean {
   if (view.length < sig.offset + sig.bytes.length) return false;

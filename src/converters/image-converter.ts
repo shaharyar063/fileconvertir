@@ -1,9 +1,7 @@
 import { ConverterPlugin, ConversionResult, ConversionOption } from '@/lib/converter-types';
 import { getTargetsForSource } from '@/lib/conversion-map';
 
-// heic/heif: natively rendered by modern browsers (iOS Safari, Chrome on macOS/Windows 11+)
-// tiff: supported via canvas in all modern browsers
-const IMAGE_FORMATS = ['jpg', 'jpeg', 'png', 'webp', 'gif', 'bmp', 'avif', 'tiff', 'heic', 'heif', 'ico', 'eps', 'svg', 'psd', 'tga'];
+const IMAGE_FORMATS = ['jpg', 'jpeg', 'png', 'webp', 'gif', 'bmp', 'avif', 'ico', 'eps', 'svg', 'psd', 'tga'];
 import { ArchiveFormat, buildSingleFileArchive } from '@/lib/build-archive';
 
 function getMimeType(format: string): string {
@@ -21,8 +19,6 @@ function getMimeType(format: string): string {
     psd: 'image/vnd.adobe.photoshop',
     tga: 'image/x-tga',
     avif: 'image/avif',
-    heic: 'image/heic',
-    heif: 'image/heif',
   };
   return map[format] || 'image/png';
 }
@@ -38,6 +34,20 @@ async function loadImage(file: File): Promise<HTMLImageElement> {
     };
     img.src = url;
   });
+}
+
+/**
+ * canvas.toBlob silently falls back to PNG when the browser cannot encode the
+ * requested type (e.g. AVIF everywhere, WebP in Safari). Surface that as an
+ * error instead of returning a PNG with the wrong extension.
+ */
+function assertEncoded(blob: Blob, mimeType: string, label: string): Blob {
+  if (blob.type && blob.type !== mimeType) {
+    throw new Error(
+      `Your browser cannot encode ${label} images. Try the latest Chrome or Firefox, or pick another target format.`,
+    );
+  }
+  return blob;
 }
 
 // ── Binary builders ──────────────────────────────────────
@@ -184,6 +194,7 @@ function buildGif(imageData: ImageData, w: number, h: number): Blob {
           if (dist < bestDist) { bestDist = dist; best = j; }
         }
         idx = best;
+        colorMap.set(key, idx); // cache so repeated colours skip the 256-entry scan
       }
     }
     indexed[i] = idx;
@@ -309,15 +320,18 @@ export const imageConverter: ConverterPlugin = {
     onProgress?.(40);
 
     const canvas = document.createElement('canvas');
-    canvas.width = img.naturalWidth;
-    canvas.height = img.naturalHeight;
+    // SVGs with only a viewBox report 0x0 in some browsers; fall back to 512px.
+    canvas.width = img.naturalWidth || 512;
+    canvas.height = img.naturalHeight || 512;
     const ctx = canvas.getContext('2d')!;
 
-    if (['jpg', 'jpeg', 'bmp', 'ico'].includes(targetFormat)) {
+    // Formats without an alpha channel get a white background (transparent pixels
+    // would otherwise turn black).
+    if (['jpg', 'jpeg', 'bmp', 'gif', 'tiff'].includes(targetFormat)) {
       ctx.fillStyle = '#ffffff';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
     }
-    ctx.drawImage(img, 0, 0);
+    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
     onProgress?.(70);
 
     const baseName = file.name.replace(/\.[^/.]+$/, '');
@@ -326,13 +340,15 @@ export const imageConverter: ConverterPlugin = {
 
     // ICO
     if (targetFormat === 'ico') {
-      const size = Math.min(256, w, h);
+      const size = Math.min(256, Math.max(w, h));
       const icoCanvas = document.createElement('canvas');
       icoCanvas.width = size; icoCanvas.height = size;
       const icoCtx = icoCanvas.getContext('2d')!;
-      icoCtx.fillStyle = '#ffffff';
-      icoCtx.fillRect(0, 0, size, size);
-      icoCtx.drawImage(img, 0, 0, size, size);
+      // Fit inside the square (keep aspect ratio) and keep transparency.
+      const scale = Math.min(size / w, size / h);
+      const dw = Math.round(w * scale);
+      const dh = Math.round(h * scale);
+      icoCtx.drawImage(img, Math.round((size - dw) / 2), Math.round((size - dh) / 2), dw, dh);
       const pngBlob = await new Promise<Blob>((res, rej) => icoCanvas.toBlob(b => b ? res(b) : rej(new Error('ICO failed')), 'image/png'));
       const pngBuf = await pngBlob.arrayBuffer();
       URL.revokeObjectURL(img.src);
@@ -411,10 +427,11 @@ export const imageConverter: ConverterPlugin = {
     // Canvas-native formats: jpg, jpeg, png, webp, avif
     const mimeType = getMimeType(targetFormat);
     const quality = targetFormat === 'png' ? undefined : 0.92;
-    const blob = await new Promise<Blob>((res, rej) => {
+    const rawBlob = await new Promise<Blob>((res, rej) => {
       canvas.toBlob(b => b ? res(b) : rej(new Error('Conversion failed')), mimeType, quality);
     });
     URL.revokeObjectURL(img.src);
+    const blob = assertEncoded(rawBlob, mimeType, targetFormat.toUpperCase());
     onProgress?.(100);
     const ext = targetFormat === 'jpeg' ? 'jpg' : targetFormat;
     return { blob, filename: `${baseName}.${ext}`, mimeType };

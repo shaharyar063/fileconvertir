@@ -1,4 +1,4 @@
-# AGENTS.md nxnxhjjfhffh
+# AGENTS.md
 
 ## Cursor Cloud specific instructions
 

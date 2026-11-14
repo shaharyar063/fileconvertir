@@ -180,7 +180,6 @@ function formatPurpose(cat: string, fmt: string): string {
     png: 'PNG is lossless with transparency support for graphics',
     webp: 'WebP offers superior compression for web images',
     avif: 'AVIF provides next-generation compression for web delivery',
-    heic: 'HEIC is Apple\'s efficient default photo format',
     tiff: 'TIFF preserves maximum image quality for printing and archiving',
     svg: 'SVG scales infinitely as a vector format',
     pdf: 'PDF preserves formatting universally for document sharing',

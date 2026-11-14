@@ -115,10 +115,11 @@ export function HeroConverter({
     addFiles(arr);
 
     const info = createFileInfo(arr[0]);
-    if (!sourceFormat) setSourceFormat(info.extension);
-
     const ext = info.extension;
     const validTargets = getValidTargets(ext);
+    // Keep the "Convert" picker in step with the file actually chosen
+    // (previously it stayed on e.g. PNG while converting an MP3).
+    if (validTargets.length > 0 && sourceFormat !== ext) setSourceFormat(ext);
     if (!targetFmt || !validTargets.includes(targetFmt)) {
       if (validTargets.length > 0) {
         setTargetFmt(validTargets[0]);
@@ -302,20 +303,24 @@ export function HeroConverter({
         )}
 
         {/* Done: download buttons */}
-        {allDone && (
+        {isDone && (
           <div className="mt-4 space-y-3">
-            <div className="flex items-center gap-2 text-xs font-bold text-success">
-              <CheckCircle2 className="h-4 w-4" />
+            <div className={`flex items-center gap-2 text-xs font-bold ${allDone ? 'text-success' : 'text-destructive'}`}>
+              {allDone ? <CheckCircle2 className="h-4 w-4" /> : <AlertCircle className="h-4 w-4" />}
               {doneCount} converted{errorCount > 0 ? ` · ${errorCount} failed` : ''}
             </div>
             <div className="flex gap-3">
+              {allDone && (
               <button
                 onClick={downloadAllAsZip}
                 className="flex h-12 flex-1 items-center justify-center gap-2 rounded-xl bg-primary text-sm font-bold text-primary-foreground transition-all hover:brightness-110 active:scale-[0.98]"
               >
                 <PackageOpen className="h-4 w-4" />
-                {doneCount > 1 ? 'Download All (.zip)' : `Download ${files[0]?.result?.filename ?? ''}`}
+                {doneCount > 1
+                  ? 'Download All (.zip)'
+                  : `Download ${files.find(f => f.status === 'done')?.result?.filename ?? ''}`}
               </button>
+              )}
               <button
                 onClick={handleReset}
                 className="flex h-12 items-center gap-2 rounded-xl border border-border px-5 text-sm font-semibold text-foreground transition-colors hover:bg-secondary"

@@ -1,53 +1,6 @@
 import type { ArticleSection } from '../../types';
 
 export const IMAGE_S_ARTICLES: Record<string, ArticleSection[]> = {
-  'heic-to-jpg': [
-    {
-      heading: 'Why your iPhone photos won\'t open on Windows or Android',
-      paragraphs: [
-        'You AirDrop a photo to a friend with an Android phone, or copy your camera roll onto a Windows laptop, and suddenly the files have a .heic extension that nothing wants to open. This is the single most common reason people convert HEIC to JPG, and it isn\'t your fault — it\'s a compatibility gap baked into how Apple ships its cameras.',
-        'Since iOS 11, iPhones save photos as HEIC by default because the format stores the same picture in roughly half the space of a JPG. The trade-off is reach: Windows 10 needs a paid HEIF extension from the Microsoft Store, most Android gallery apps ignore HEIC entirely, and plenty of websites, applicant tracking systems, and email clients silently reject the upload. JPG, by contrast, has been universally readable since the 1990s.',
-        'Converting to JPG trades a little disk space for the guarantee that the photo opens everywhere — in a browser, in Word, on a Samsung phone, on a hotel print kiosk, or attached to an insurance claim. That universality is exactly why JPG remains the safe default for sharing.',
-      ],
-    },
-    {
-      heading: 'What HEIC actually is (and what HEIF means)',
-      paragraphs: [
-        'HEIC is a container — High Efficiency Image Container — that wraps image data compressed with the HEVC (H.265) codec. HEIF is the broader standard; HEIC is Apple\'s specific flavour of it. Inside a single .heic file there can be more than just one picture: Live Photos, depth maps, burst sequences, and editing metadata all ride along.',
-        'That richness is part of why other platforms struggle with HEIC. A simple JPG decoder expects one image and nothing else. When a HEIC file carries auxiliary data, a non-Apple program either has to understand the whole container or give up. Converting to JPG flattens everything down to the single visible photo, which is usually exactly what you want when you\'re sharing or printing.',
-      ],
-    },
-    {
-      heading: 'Will converting to JPG lose quality?',
-      paragraphs: [
-        'Both HEIC and JPG are lossy formats, so re-encoding does involve a generation of compression. In practice the loss is invisible for normal viewing. FileConvertir decodes the HEIC at full resolution and re-encodes JPG at quality 92, a level that preserves fine detail, skin tones, and gradients without obvious artefacts.',
-        'The one honest caveat is that you are converting lossy to lossy, so this isn\'t something to repeat over and over on the same image — each pass discards a little more data. Convert once from the HEIC original and keep that JPG, rather than converting, editing, re-saving, and converting again in a loop.',
-        'If you need a pixel-perfect, edit-friendly copy, PNG is the lossless alternative — but for photos destined for email, web, or print, JPG\'s file size and compatibility make it the better pick almost every time.',
-      ],
-    },
-    {
-      heading: 'What happens to EXIF, dates, and location data',
-      paragraphs: [
-        'HEIC files carry EXIF metadata: the date the photo was taken, camera settings, and often GPS coordinates. When you convert, basic image information carries through, but FileConvertir strips some metadata during conversion as a privacy safeguard — you generally don\'t want your home\'s GPS coordinates embedded in a photo you post publicly.',
-        'If you specifically need full EXIF preserved — for a professional archive, a legal timeline, or geotagged travel photos — a desktop tool with explicit metadata controls is the better choice. For everyday sharing, stripped metadata is a feature, not a bug.',
-      ],
-    },
-    {
-      heading: 'Converting an entire camera roll at once',
-      paragraphs: [
-        'Nobody wants to convert 300 vacation photos one tap at a time. Drop a whole batch — up to 20 files per pass — and FileConvertir processes them in parallel right in your browser, then offers every result as a single ZIP download. For a full export, run a few batches back to back.',
-        'On a modern laptop this is fast because the work uses your own CPU and your browser\'s native image decoder rather than waiting in an upload queue on someone else\'s server. The first conversion may take a beat while the decoder spins up; after that it\'s near-instant per image.',
-      ],
-    },
-    {
-      heading: 'Why doing this in your browser keeps photos private',
-      paragraphs: [
-        'Most "free HEIC to JPG" sites upload your photos to their servers, convert them there, and send them back. That means your family pictures, ID scans, or whiteboard snapshots briefly live on a stranger\'s infrastructure. FileConvertir never does this — every byte stays on your device, and you can confirm it by opening your browser\'s DevTools Network tab and watching that no file ever leaves.',
-        'For personal photos this matters. The safest file is the one that was never transmitted. In-browser conversion gives you the convenience of a web tool with the privacy of desktop software, and it works the same on Windows, macOS, Android, ChromeOS, and Linux.',
-      ],
-    },
-  ],
-
   'webp-to-png': [
     {
       heading: 'When you actually need PNG instead of WebP',
@@ -314,60 +267,6 @@ export const IMAGE_S_ARTICLES: Record<string, ArticleSection[]> = {
     },
   ],
 
-  'tiff-to-jpg': [
-    {
-      heading: 'Why scans and print files come as TIFF',
-      paragraphs: [
-        'TIFF is the workhorse of scanning, publishing, and archival. Flatbed scanners, document management systems, fax archives, and print shops all lean on it because it can store images losslessly at high bit depth with no compression artefacts. The downside is that those qualities make TIFF files enormous and awkward to share.',
-        'Converting TIFF to JPG is what you do when a high-fidelity source needs to become something you can actually email, post, or display on the web. You\'re deliberately trading archival perfection for a compact, universally viewable file — the right call once the image is leaving the print or archive pipeline.',
-      ],
-    },
-    {
-      heading: 'The dramatic file-size shrink',
-      paragraphs: [
-        'This is where TIFF-to-JPG earns its keep. An uncompressed TIFF can easily be 20–100MB, while the equivalent JPG might be one or two megabytes — often a 90% or greater reduction. A scanned brochure that won\'t fit in an email attachment becomes trivial to send.',
-        'That shrink comes from JPG\'s lossy compression, which discards information the eye barely notices. For photographs and most colour scans the visual difference at high quality is negligible, while the size savings are transformative.',
-      ],
-    },
-    {
-      heading: 'When JPG is the wrong choice',
-      paragraphs: [
-        'Be honest about the content. If your TIFF is a black-and-white document scan, a line drawing, or anything with sharp text, JPG\'s compression can introduce fuzzy halos around the edges of letters. For crisp text or graphics, PNG (or keeping TIFF) preserves the edges better.',
-        'JPG shines for photographic and continuous-tone scans — artwork reproductions, colour photos, magazine pages. Match the target to the content rather than reaching for JPG reflexively, and you\'ll avoid disappointing results on text-heavy scans.',
-      ],
-    },
-    {
-      heading: 'The multi-page TIFF caveat',
-      paragraphs: [
-        'Here\'s something many people don\'t realise: TIFF can hold multiple pages in a single file, the way a PDF does. Scanners often produce multi-page TIFFs for multi-sheet documents. JPG, by contrast, is strictly one image per file.',
-        'So when you convert a multi-page TIFF to JPG, you can\'t end up with one multi-page JPG — that doesn\'t exist. If your goal is a single shareable document from a multi-page scan, converting to PDF is the better path. Use JPG when you have single-page images or want each page as a separate picture.',
-      ],
-    },
-    {
-      heading: 'Quality settings and bit depth',
-      paragraphs: [
-        'TIFFs often store 16 bits per channel for editing headroom; JPG is 8-bit. The conversion maps the image down to 8-bit, which is plenty for viewing and sharing but means JPG isn\'t the format for ongoing heavy edits. Do your tonal work on the TIFF, then export JPG as the final deliverable.',
-        'FileConvertir encodes JPG at a high quality level that keeps colour scans and photos looking faithful, giving you a small file that still represents the original well for screen and casual print.',
-      ],
-    },
-    {
-      heading: 'Handled locally, kept private',
-      paragraphs: [
-        'Scanned documents are often sensitive — contracts, tax forms, medical paperwork, ID copies. FileConvertir converts TIFF to JPG entirely in your browser, so those scans never get uploaded to anyone\'s server.',
-        'Drop a batch of up to 20 TIFFs, convert them in parallel, and download as individual JPGs or one ZIP. No account, no quota, and the same experience on every operating system.',
-      ],
-    },
-    {
-      heading: 'Not all TIFFs are uncompressed',
-      paragraphs: [
-        'It\'s a common assumption that every TIFF is a giant uncompressed file, but TIFF is really a flexible container that can hold data several ways: completely uncompressed, packed with lossless LZW or ZIP compression, or even — less commonly — with JPEG compression inside. That\'s why two TIFFs of the same image can differ wildly in size.',
-        'For your purposes the distinction rarely changes the outcome: whatever compression the TIFF uses internally, the conversion decodes it to pixels and re-encodes a standard JPG. The size shrink you see comes from JPG\'s efficient lossy compression, not from whatever the TIFF was doing.',
-        'The one case to keep in mind is a TIFF that already contains JPEG-compressed data. Converting it to a fresh JPG is a second lossy pass, so do it once from the best available source and avoid repeatedly re-saving the result.',
-        'In short, you don\'t have to know what flavour of TIFF you\'re holding. The converter reads whatever the file contains and gives you a clean, compact JPG — you just get a much smaller result and, occasionally, a reminder of how flexible the TIFF format really is under the hood.',
-      ],
-    },
-  ],
-
   'jpg-to-pdf': [
     {
       heading: 'Turning loose photos into one tidy document',
@@ -475,56 +374,4 @@ export const IMAGE_S_ARTICLES: Record<string, ArticleSection[]> = {
     },
   ],
 
-  'heic-to-pdf': [
-    {
-      heading: 'From iPhone camera roll to shareable document',
-      paragraphs: [
-        'Your iPhone shoots in HEIC, which is efficient but stubbornly incompatible with a lot of the world. When you need to send those photos as a proper document — to a school, an insurer, an employer, or a government form — turning them into a PDF solves two problems at once: it escapes HEIC\'s compatibility issues and packages multiple shots into one clean file.',
-        'PDF is the format institutions ask for. It opens identically everywhere, preserves page order, and reads as an official submission. Converting HEIC straight to PDF means you skip the awkward middle step of first making JPGs and then assembling them.',
-      ],
-    },
-    {
-      heading: 'Why not just send the HEIC files?',
-      paragraphs: [
-        'Because the person on the other end probably can\'t open them. Windows needs a paid extension for HEIC, many Android phones and web upload forms reject it outright, and plenty of document portals only accept PDF in the first place. Sending raw HEIC is a near-guaranteed "we couldn\'t open your file" reply.',
-        'Wrapping the photos in a PDF sidesteps all of that. The PDF embeds standard image data the reader can render, so it works on the recipient\'s machine regardless of whether they have any HEIC support at all.',
-      ],
-    },
-    {
-      heading: 'Perfect for forms, applications, and records',
-      paragraphs: [
-        'Photographed a signed form, an ID, a set of receipts, or a stack of paperwork with your iPhone? Those HEIC photos become a usable submission only once they\'re a PDF. Most application systems, HR portals, and claim forms specifically want a single PDF rather than a scatter of image attachments.',
-        'Combining several HEIC photos into one ordered PDF mirrors a real scanned document — page one, page two, and so on — which is exactly how reviewers expect to receive multi-page material.',
-      ],
-    },
-    {
-      heading: 'Printing iPhone photos reliably',
-      paragraphs: [
-        'Print shops and office printers handle PDFs far more predictably than HEIC, which many print drivers can\'t interpret. If you want to print a batch of iPhone photos — for a scrapbook, a noticeboard, or a handout — laying them into a PDF first gives you consistent, controllable output.',
-        'Because each photo is fitted to a page at its native resolution, the printed result stays sharp, and you control the order rather than leaving it to whatever sequence the printer decides on.',
-      ],
-    },
-    {
-      heading: 'What happens to Live Photos and metadata',
-      paragraphs: [
-        'A HEIC can contain more than the still image — Live Photo motion, depth data, and EXIF metadata like date and GPS. Converting to PDF flattens everything down to the visible photo on the page, dropping the motion and trimming metadata. For sharing and printing this is exactly what you want.',
-        'If you specifically need the Live Photo motion or full EXIF preserved, keep the original HEIC alongside your PDF. The PDF is the hand-off copy; the HEIC remains your archive.',
-      ],
-    },
-    {
-      heading: 'Converted on your device, never uploaded',
-      paragraphs: [
-        'The photos people turn into PDFs are frequently personal or official — IDs, medical forms, signed contracts. FileConvertir decodes your HEIC files and builds the PDF entirely in your browser, so nothing is ever sent to a server.',
-        'Drop up to 20 HEIC photos at once, get a single ordered PDF back, and download it immediately. No signup, no watermark across your pages, and it works the same on iPhone, Android, Windows, and Mac.',
-      ],
-    },
-    {
-      heading: 'Doing it straight from your iPhone',
-      paragraphs: [
-        'You don\'t need a computer for any of this. Open the converter in Safari or Chrome on your iPhone, tap to add photos straight from your camera roll, and the PDF is built right there on the device. That\'s ideal when you\'re away from a desk and a form needs submitting before a deadline.',
-        'Because everything runs locally in the browser, your photos never leave the phone — there\'s no upload over mobile data and nothing cached on a server. It\'s the same privacy you\'d get from a native app, without installing anything or granting broad photo-library permissions to a third party.',
-        'When you\'re back at a computer, the workflow is identical, just faster for big batches. Either way you end up with one tidy PDF you can email, AirDrop, or upload — and the original HEIC files stay untouched in your library as your high-quality archive.',
-      ],
-    },
-  ],
 };

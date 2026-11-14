@@ -3,53 +3,56 @@ import { fetchFile } from '@ffmpeg/util';
 import { getFfmpegCoreBaseUrl } from '@/lib/ffmpeg-core-url';
 
 let ffmpeg: FFmpeg | null = null;
-let loadFailed = false;
 let currentOnProgress: ((p: number) => void) | undefined;
 
-export function didFFmpegFail(): boolean {
-  return loadFailed;
-}
+/** The core is ~31 MB; allow slow connections enough time before giving up. */
+const FFMPEG_LOAD_TIMEOUT_MS = 120_000;
 
 export async function getFFmpeg(onProgress?: (p: number) => void): Promise<FFmpeg> {
   currentOnProgress = onProgress;
 
   if (ffmpeg && ffmpeg.loaded) return ffmpeg;
-  if (loadFailed) throw new Error('FFMPEG_UNAVAILABLE');
 
   if (!crossOriginIsolated) {
     console.warn('crossOriginIsolated is false – SharedArrayBuffer unavailable. FFmpeg.wasm may not work.');
   }
 
-  ffmpeg = new FFmpeg();
+  const instance = new FFmpeg();
+  ffmpeg = instance;
 
-  ffmpeg.on('log', ({ message }) => {
+  instance.on('log', ({ message }) => {
     console.log('[ffmpeg]', message);
   });
 
-  ffmpeg.on('progress', ({ progress }) => {
+  instance.on('progress', ({ progress }) => {
     currentOnProgress?.(Math.round(20 + progress * 70));
   });
 
   const baseURL = getFfmpegCoreBaseUrl();
 
-  const loadPromise = ffmpeg.load({
+  const loadPromise = instance.load({
     coreURL: `${baseURL}/ffmpeg-core.js`,
     wasmURL: `${baseURL}/ffmpeg-core.wasm`,
   });
 
-  const timeoutPromise = new Promise<never>((_, reject) =>
-    setTimeout(() => reject(new Error('FFMPEG_UNAVAILABLE')), 30000)
-  );
+  let timer: ReturnType<typeof setTimeout> | undefined;
+  const timeoutPromise = new Promise<never>((_, reject) => {
+    timer = setTimeout(() => reject(new Error('FFMPEG_UNAVAILABLE')), FFMPEG_LOAD_TIMEOUT_MS);
+  });
 
   try {
     await Promise.race([loadPromise, timeoutPromise]);
   } catch (err) {
+    // Release the worker and allow a later retry (a flaky network should not
+    // disable media conversion until the page is reloaded).
     ffmpeg = null;
-    loadFailed = true;
+    try { instance.terminate(); } catch { /* already terminated */ }
     throw err;
+  } finally {
+    if (timer) clearTimeout(timer);
   }
 
-  return ffmpeg;
+  return instance;
 }
 
 export async function convertWithFFmpeg(
@@ -65,26 +68,34 @@ export async function convertWithFFmpeg(
   const inputName = `input.${file.name.split('.').pop() || 'bin'}`;
   const outputName = `output.${targetFormat}`;
 
-  await ff.writeFile(inputName, await fetchFile(file));
+  try {
+    await ff.writeFile(inputName, await fetchFile(file));
 
-  const args = ffmpegArgs || ['-i', inputName, outputName];
+    const args = ffmpegArgs && ffmpegArgs.length ? ffmpegArgs : ['-i', inputName, outputName];
 
-  await ff.exec(args.length ? args : ['-i', inputName, outputName]);
+    const exitCode = await ff.exec(args);
+    if (exitCode !== 0) {
+      throw new Error(
+        `Conversion failed (FFmpeg exit code ${exitCode}). The file may be corrupted or use an unsupported codec.`,
+      );
+    }
 
-  const data = await ff.readFile(outputName);
-  onProgress?.(95);
+    const data = await ff.readFile(outputName);
+    onProgress?.(95);
 
-  // Cleanup
-  try { await ff.deleteFile(inputName); } catch { /* cleanup failure is non-fatal */ }
-  try { await ff.deleteFile(outputName); } catch { /* cleanup failure is non-fatal */ }
-
-  let blobParts: ArrayBuffer;
-  if (typeof data === 'string') {
-    blobParts = new TextEncoder().encode(data).buffer as ArrayBuffer;
-  } else {
-    blobParts = (data as Uint8Array).slice().buffer as ArrayBuffer;
+    let blobParts: ArrayBuffer;
+    if (typeof data === 'string') {
+      blobParts = new TextEncoder().encode(data).buffer as ArrayBuffer;
+    } else {
+      blobParts = (data as Uint8Array).slice().buffer as ArrayBuffer;
+    }
+    return new Blob([blobParts], { type: getMimeType(targetFormat) });
+  } finally {
+    // Always clean up so a failed run cannot leave a stale output behind
+    // that a later conversion would return by mistake.
+    try { await ff.deleteFile(inputName); } catch { /* cleanup failure is non-fatal */ }
+    try { await ff.deleteFile(outputName); } catch { /* cleanup failure is non-fatal */ }
   }
-  return new Blob([blobParts], { type: getMimeType(targetFormat) });
 }
 
 function getMimeType(format: string): string {

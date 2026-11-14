@@ -22,7 +22,6 @@ function getMimeType(format: string): string {
  */
 async function buildWoff(fontBuffer: ArrayBuffer): Promise<ArrayBuffer> {
   const sfntView = new DataView(fontBuffer);
-  const sfntSize = fontBuffer.byteLength;
 
   // Read SFNT header
   const sfntVersion = sfntView.getUint32(0);
@@ -115,6 +114,8 @@ async function buildWoff(fontBuffer: ArrayBuffer): Promise<ArrayBuffer> {
     dataOffset = (dataOffset + 3) & ~3;
   }
   const totalSize = dataOffset;
+  const totalSfntSize =
+    12 + 16 * numTables + woffTables.reduce((sum, t) => sum + ((t.origLength + 3) & ~3), 0);
 
   const woffBuf = new ArrayBuffer(totalSize);
   const woffView = new DataView(woffBuf);
@@ -126,7 +127,7 @@ async function buildWoff(fontBuffer: ArrayBuffer): Promise<ArrayBuffer> {
   woffView.setUint32(8, totalSize); // length
   woffView.setUint16(12, numTables);
   woffView.setUint16(14, 0); // reserved
-  woffView.setUint32(16, sfntSize); // totalSfntSize
+  woffView.setUint32(16, totalSfntSize); // totalSfntSize (spec: header + dir + padded tables)
   woffView.setUint16(20, 1); // majorVersion
   woffView.setUint16(22, 0); // minorVersion
   woffView.setUint32(24, 0); // metaOffset
@@ -157,6 +158,78 @@ async function buildWoff(fontBuffer: ArrayBuffer): Promise<ArrayBuffer> {
   return woffBuf;
 }
 
+
+const SFNT_TRUETYPE = 0x00010000;
+const SFNT_TRUE = 0x74727565; // 'true'
+const SFNT_OTTO = 0x4f54544f; // 'OTTO' (CFF outlines)
+const SFNT_TTCF = 0x74746366; // font collection
+const MAGIC_WOFF = 0x774f4646;
+
+async function inflate(data: Uint8Array): Promise<Uint8Array> {
+  const stream = new Blob([data as BlobPart]).stream().pipeThrough(new DecompressionStream('deflate'));
+  return new Uint8Array(await new Response(stream).arrayBuffer());
+}
+
+/**
+ * Unwrap a WOFF 1.0 file into the original SFNT bytes (lossless: tables are
+ * only decompressed, never re-encoded, so kerning/hinting/features survive).
+ */
+async function unwrapWoff(buffer: ArrayBuffer): Promise<ArrayBuffer> {
+  const view = new DataView(buffer);
+  if (view.byteLength < 44 || view.getUint32(0) !== MAGIC_WOFF) {
+    throw new Error('This file is not a valid WOFF font.');
+  }
+  const flavor = view.getUint32(4);
+  const numTables = view.getUint16(12);
+
+  const tables: { tag: Uint8Array; checksum: number; data: Uint8Array }[] = [];
+  for (let i = 0; i < numTables; i++) {
+    const dir = 44 + i * 20;
+    const offset = view.getUint32(dir + 4);
+    const compLength = view.getUint32(dir + 8);
+    const origLength = view.getUint32(dir + 12);
+    const raw = new Uint8Array(buffer, offset, compLength);
+    const data = compLength < origLength ? await inflate(raw) : raw;
+    tables.push({
+      tag: new Uint8Array(buffer, dir, 4),
+      checksum: view.getUint32(dir + 16),
+      data,
+    });
+  }
+
+  let offset = 12 + 16 * numTables;
+  const offsets = tables.map((t) => {
+    const o = offset;
+    offset += (t.data.length + 3) & ~3;
+    return o;
+  });
+
+  const out = new ArrayBuffer(offset);
+  const ov = new DataView(out);
+  const ou = new Uint8Array(out);
+  let entrySelector = 0;
+  while (1 << (entrySelector + 1) <= numTables) entrySelector++;
+  const searchRange = (1 << entrySelector) * 16;
+  ov.setUint32(0, flavor);
+  ov.setUint16(4, numTables);
+  ov.setUint16(6, searchRange);
+  ov.setUint16(8, entrySelector);
+  ov.setUint16(10, numTables * 16 - searchRange);
+  tables.forEach((t, i) => {
+    const dir = 12 + i * 16;
+    ou.set(t.tag, dir);
+    ov.setUint32(dir + 4, t.checksum);
+    ov.setUint32(dir + 8, offsets[i]);
+    ov.setUint32(dir + 12, t.data.length);
+    ou.set(t.data, offsets[i]);
+  });
+  return out;
+}
+
+function sfntFlavor(buffer: ArrayBuffer): number {
+  return buffer.byteLength >= 4 ? new DataView(buffer).getUint32(0) : 0;
+}
+
 export const fontConverter: ConverterPlugin = {
   id: 'font-converter',
   name: 'Font Converter',
@@ -176,22 +249,56 @@ export const fontConverter: ConverterPlugin = {
     const arrayBuffer = await file.arrayBuffer();
     onProgress?.(30);
 
-    // Parse font with opentype.js
-    const font = opentype.parse(arrayBuffer);
-    onProgress?.(60);
-
     const baseName = file.name.replace(/\.[^/.]+$/, '');
+    const sourceExt = file.name.split('.').pop()?.toLowerCase() ?? '';
 
-    if (targetFormat === 'woff') {
-      // Get TTF/OTF buffer first, then wrap as WOFF
-      const sfntBuffer = font.toArrayBuffer();
-      onProgress?.(75);
-      const woffBuffer = await buildWoff(sfntBuffer);
+    // Archive targets package the original file untouched.
+    if (!['zip', 'tar', 'gz'].includes(targetFormat)) {
+      // Work on the real SFNT bytes. WOFF is only a compression wrapper, so
+      // wrapping/unwrapping is lossless — unlike re-serialising through
+      // opentype.js, which drops kerning, ligatures, hinting and other tables.
+      const sfnt =
+        sourceExt === 'woff' || sfntFlavor(arrayBuffer) === MAGIC_WOFF
+          ? await unwrapWoff(arrayBuffer)
+          : arrayBuffer;
+      const flavor = sfntFlavor(sfnt);
+      if (flavor === SFNT_TTCF) {
+        throw new Error('Font collections (.ttc) are not supported. Extract a single font first.');
+      }
+      if (![SFNT_TRUETYPE, SFNT_TRUE, SFNT_OTTO].includes(flavor)) {
+        throw new Error('This file does not look like a valid font.');
+      }
+      onProgress?.(60);
+
+      if (targetFormat === 'woff') {
+        const woffBuffer = await buildWoff(sfnt);
+        onProgress?.(100);
+        return {
+          blob: new Blob([woffBuffer], { type: 'font/woff' }),
+          filename: `${baseName}.woff`,
+          mimeType: 'font/woff',
+        };
+      }
+
+      // Same outline type as requested (TrueType→ttf, CFF→otf): hand back the
+      // original bytes. Only a real TTF<->OTF outline change needs opentype.js.
+      const isCff = flavor === SFNT_OTTO;
+      if ((targetFormat === 'otf') === isCff) {
+        onProgress?.(100);
+        return {
+          blob: new Blob([sfnt], { type: getMimeType(targetFormat) }),
+          filename: `${baseName}.${targetFormat}`,
+          mimeType: getMimeType(targetFormat),
+        };
+      }
+
+      const font = opentype.parse(sfnt);
+      const outputBuffer = font.toArrayBuffer();
       onProgress?.(100);
       return {
-        blob: new Blob([woffBuffer], { type: 'font/woff' }),
-        filename: `${baseName}.woff`,
-        mimeType: 'font/woff',
+        blob: new Blob([outputBuffer], { type: getMimeType(targetFormat) }),
+        filename: `${baseName}.${targetFormat}`,
+        mimeType: getMimeType(targetFormat),
       };
     }
 
@@ -207,14 +314,6 @@ export const fontConverter: ConverterPlugin = {
       return result;
     }
 
-    // TTF and OTF: opentype.js outputs OpenType (OTF/TTF) format
-    const outputBuffer = font.toArrayBuffer();
-    onProgress?.(100);
-
-    return {
-      blob: new Blob([outputBuffer], { type: getMimeType(targetFormat) }),
-      filename: `${baseName}.${targetFormat}`,
-      mimeType: getMimeType(targetFormat),
-    };
+    throw new Error(`Font to ${targetFormat.toUpperCase()} is not supported.`);
   },
 };
