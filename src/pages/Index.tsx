@@ -43,11 +43,9 @@ const useCases = [
 
 const faqs = getHomepageSEO().faqs;
 
-/**
- * Full-bleed section band. `invert` flips the two brand colors locally
- * so we get the glyphy.io rhythm of alternating light/dark stripes.
- */
+/** Full-bleed section band separated by a hairline border. */
 function Band({
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   invert = false,
   children,
   id,
@@ -64,7 +62,7 @@ function Band({
     <section
       id={id}
       aria-label={ariaLabel}
-      className={`${invert ? 'section-invert ' : ''}bg-background text-foreground ${className}`}
+      className={`border-b border-border bg-background text-foreground ${className}`}
     >
       <div className="mx-auto max-w-3xl px-4 py-14 md:py-20">{children}</div>
     </section>
