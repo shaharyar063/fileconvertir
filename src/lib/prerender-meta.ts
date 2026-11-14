@@ -225,7 +225,9 @@ export function injectPageMeta(html: string, page: PrerenderPageMeta): string {
     )
     .join('\n        ');
 
-  const body = `<div data-prerender="true" style="max-width:48rem;margin:2rem auto;padding:0 1rem;font-family:system-ui,sans-serif;line-height:1.6">
+  // Visually hidden (not display:none): crawlers and screen readers still get the
+  // full content, but users never see an unstyled flash before React mounts.
+  const body = `<div data-prerender="true" style="position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0,0,0,0);clip-path:inset(50%);white-space:nowrap;border:0">
       ${page.bodyHtml ?? `<h1>${heading}</h1><p>${description}</p>`}
       <nav aria-label="Site navigation" style="margin-top:2rem">
         <h2 style="font-size:1rem;margin:0 0 0.75rem">All converters</h2>
