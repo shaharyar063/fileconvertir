@@ -11,6 +11,14 @@ export function formatConversionError(err: unknown): Error {
     );
   }
 
+  // The FFmpeg core is fetched from a CDN; a blocked/offline network surfaces as
+  // a raw browser error, which means nothing to users.
+  if (/Failed to fetch|dynamically imported module|NetworkError|Load failed|importScripts/i.test(message)) {
+    return new Error(
+      'Could not download the media converter. Check your internet connection (or ad/content blockers) and try again.',
+    );
+  }
+
   if (
     message === 'FFMPEG_UNAVAILABLE' ||
     /FFMPEG_UNAVAILABLE|load.*ffmpeg|ffmpeg.*load/i.test(message)

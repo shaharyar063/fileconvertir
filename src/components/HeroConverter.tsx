@@ -220,6 +220,7 @@ export function HeroConverter({
                   onRemove={() => removeFile(item.id)}
                   onDownload={() => downloadFile(item)}
                   disabled={isConverting}
+                  targetFormat={targetFormat}
                 />
               ))}
             </div>
@@ -309,13 +310,22 @@ export function HeroConverter({
 }
 
 function FileRow({
-  item, onRemove, onDownload, disabled,
+  item, onRemove, onDownload, disabled, targetFormat,
 }: {
   item: BulkFileItem;
   onRemove: () => void;
   onDownload: () => void;
   disabled: boolean;
+  targetFormat: string;
 }) {
+  // Audio/video use FFmpeg.wasm, a ~30 MB download on first use. Progress sits
+  // below 15% while it loads, so say what is happening instead of looking stuck.
+  const isLoadingEngine =
+    item.status === 'converting' &&
+    (item.info.category === 'audio' || item.info.category === 'video') &&
+    !['zip', 'tar', 'gz'].includes(targetFormat) &&
+    item.progress < 15;
+
   const statusIcon = {
     queued: <FileIcon className="h-4 w-4 text-muted-foreground" />,
     converting: <Loader2 className="h-4 w-4 animate-spin text-primary" />,
@@ -332,7 +342,10 @@ function FileRow({
         <p className="truncate text-xs font-semibold text-foreground">{item.info.name}</p>
         <p className="text-[10px] text-muted-foreground">
           {formatFileSize(item.info.size)}
-          {item.status === 'converting' && ` · ${item.progress}%`}
+          {item.status === 'converting' &&
+            (isLoadingEngine
+              ? ' · Loading converter… (first time only, ~30 MB)'
+              : ` · ${item.progress}%`)}
           {item.status === 'done' && item.result && ` → ${item.result.filename}`}
           {item.status === 'error' && item.error && ` · ${item.error}`}
         </p>
