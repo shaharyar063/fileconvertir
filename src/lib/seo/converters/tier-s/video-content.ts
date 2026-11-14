@@ -6,102 +6,6 @@ import type { ArticleSection, ConverterContentOverride } from '../../types';
 ─────────────────────────────────────────────────────────────────────────── */
 
 export const VIDEO_S_ARTICLES: Record<string, ArticleSection[]> = {
-  'mov-to-mp4': [
-    {
-      heading: 'Container vs codec: what is actually inside a MOV file',
-      paragraphs: [
-        'The single most useful thing to understand about MOV and MP4 is that they are containers, not video formats in the way most people imagine. A container is a wrapper — it holds a video stream, one or more audio streams, timecodes, and metadata, and it tells a player where each piece starts and stops. The actual picture is produced by a codec, almost always H.264 (AVC) or H.265 (HEVC) on modern Apple devices. So an iPhone MOV and a YouTube MP4 frequently hold the exact same H.264 video; they just live in different boxes.',
-        'This matters because it changes what "conversion" really means. When the codec inside your MOV is already H.264 or HEVC with AAC audio — which it almost always is — there is nothing to re-encode. The job is to lift those streams out of the QuickTime box and drop them into the MP4 box, byte for byte. Players on Windows, Android, and the web reject the MOV box but happily read the identical streams once they are in an MP4. You get full compatibility without touching a single pixel.',
-        'Knowing this also tells you when conversion will be slow. If your MOV happens to use Apple ProRes (common from Final Cut Pro or professional cameras), the streams are not web-friendly and a true re-encode is required. That is the rare case where MOV to MP4 takes real time and involves a quality decision rather than a simple relabel.',
-      ],
-    },
-    {
-      heading: 'Why your iPhone insists on recording MOV',
-      paragraphs: [
-        'Apple ships QuickTime/MOV as the default capture container on every iPhone and iPad because it integrates cleanly with the rest of the Apple ecosystem: AirDrop, Photos, iMovie, and Final Cut all expect it. Since iOS 11, the camera also defaults to HEVC video inside that MOV to save space, which is great until you try to share the file with someone on an older Windows laptop or an Android phone that has no HEVC decoder.',
-        'You can sidestep the HEVC half of the problem by switching Settings → Camera → Formats to "Most Compatible," which forces H.264 capture. But that does nothing about the MOV wrapper itself, and it makes new recordings larger. Converting after the fact is usually the better path: you keep small, high-quality recordings on your phone and only produce an MP4 when you actually need to send one somewhere.',
-        'This is also why a video that plays perfectly on your iPhone can refuse to open on a relative\'s PC. The picture is fine — the operating system just does not recognise the container, the codec, or both. MP4 with H.264 is the lowest common denominator that every device built in the last fifteen years understands.',
-      ],
-    },
-    {
-      heading: 'Remux vs re-encode: the difference that saves you hours',
-      paragraphs: [
-        'Remuxing copies the existing audio and video streams into a new container without decoding them. It is essentially a file-system operation: fast, lossless, and finished in seconds even for a long clip. Re-encoding, by contrast, decodes every frame back to raw pixels and compresses them again from scratch — slow, and it always discards a little quality because H.264 and HEVC are lossy.',
-        'FileConvertir prefers the remux path whenever the source streams are already MP4-compatible, which is the common case for iPhone and Mac recordings. That is why a one-minute clip can convert almost instantly. If you ever notice a MOV to MP4 conversion taking much longer, it usually means the source used a codec (like ProRes) that genuinely has to be transcoded.',
-        'The practical takeaway: do not assume "converting" automatically harms your footage. For the typical MOV from a phone, the resulting MP4 is bit-for-bit identical in picture quality to the original. You only pay a quality tax when a re-encode is truly unavoidable.',
-      ],
-    },
-    {
-      heading: 'When social platforms re-encode it anyway',
-      paragraphs: [
-        'Even after you produce a clean MP4, Instagram, TikTok, YouTube, and other platforms will re-compress your upload to fit their own bitrate ladders and resolutions. That is unavoidable and outside any converter\'s control. What converting to MP4 buys you is acceptance: many uploaders and editing front-ends silently reject or mishandle MOV files, especially HEVC ones, and you end up with a failed upload or a green-screen preview.',
-        'Because the platform will re-encode regardless, there is no benefit to obsessing over the quality of the MP4 you hand it — a high-quality remux is more than enough. The goal is simply to give the platform a container it will accept so its own pipeline can take over cleanly.',
-      ],
-    },
-    {
-      heading: 'Big files and the 100MB ceiling',
-      paragraphs: [
-        'Because FileConvertir runs FFmpeg.wasm inside the browser tab, it works on files up to 100MB. That comfortably covers most short clips, screen recordings, and social-media-length videos. A few minutes of 1080p H.264 typically fits well under the limit.',
-        'For a long 4K recording, a multi-gigabyte screen capture, or an archive of an entire event, a desktop tool like HandBrake or the native FFmpeg command line is the right choice — they have no memory ceiling and can batch hundreds of files overnight. The in-browser converter is built for the everyday "I just need this one MOV to play on Windows" problem, where uploading a private video to some server is exactly what you want to avoid.',
-      ],
-    },
-    {
-      heading: 'Editing MOV in Premiere, DaVinci, and Shotcut',
-      paragraphs: [
-        'Most professional editors handle MOV natively, but HEVC-in-MOV is a frequent stumbling block, particularly on Windows where the editor depends on a paid or missing system HEVC decoder. Symptoms include choppy scrubbing, audio that plays but no picture, or an outright import error. Converting to an H.264 MP4 first removes that dependency and usually makes timeline playback smoother.',
-        'If you plan to do heavy colour or effects work, remember that H.264/HEVC are delivery codecs, not editing codecs — every frame depends on its neighbours, which makes scrubbing CPU-intensive. For serious projects, editors often transcode to an intermediate format like ProRes or DNxHD. For light trims and assembling clips, though, a straightforward MP4 is perfectly workable and far smaller.',
-      ],
-    },
-  ],
-
-  'mkv-to-mp4': [
-    {
-      heading: 'Matroska: the Swiss-army container',
-      paragraphs: [
-        'MKV, short for Matroska, became the default for downloaded movies and TV because it can hold almost anything in one tidy file: a video stream, several audio tracks (original language plus dubs), multiple subtitle tracks, chapter markers, cover art, and even fonts for styled subtitles. That flexibility is exactly why media enthusiasts love it and why it dominates ripped and archived content.',
-        'MP4 is comparatively conservative. It was standardised for broad device playback, so it sticks to a smaller, well-supported set of streams and features. When you convert MKV to MP4 you are trading some of Matroska\'s flexibility for guaranteed playability — which is the correct trade the moment you need the file to "just work" on a phone, TV, or console.',
-        'Understanding this also explains why the conversion can sometimes change what is in the file. Anything MP4 does not support cleanly — a second commentary track, soft subtitles, embedded fonts — may be dropped or flattened. If those extras matter to you, it is worth knowing before you convert rather than discovering it on the couch.',
-      ],
-    },
-    {
-      heading: 'Why MKV will not direct-play on your iPhone or Apple TV',
-      paragraphs: [
-        'The codecs inside a typical MKV — usually H.264 or HEVC video with AAC, AC-3, or DTS audio — are mostly fine for Apple devices. The roadblock is the Matroska container itself: iOS and tvOS do not natively parse MKV, so even when the video would decode perfectly, the system refuses to open the wrapper. The result is a file that plays on your PC but is invisible to the Apple TV app or the iPhone Files preview.',
-        'Repackaging into MP4 fixes this because MP4 is a first-class citizen across Apple\'s platforms. When the MKV\'s video is already H.264/HEVC and the audio is AAC, the conversion is a remux: the streams are copied into the MP4 container untouched, so there is no quality loss and it finishes quickly.',
-        'The audio is where surprises happen. Many MKV releases ship with AC-3 or DTS surround audio that MP4 (and Apple devices) handle inconsistently. In those cases the audio specifically may need re-encoding to AAC, while the video is still copied losslessly.',
-      ],
-    },
-    {
-      heading: 'Soft subtitles, dubs, and what gets left behind',
-      paragraphs: [
-        'Subtitles come in two flavours. "Soft" subtitles are a separate text track you can toggle on and off; "hard" subtitles are burned permanently into the picture. MKV typically carries soft subtitles, which is convenient — but MP4 support for soft subtitle formats is narrow, so during conversion they are often dropped rather than carried over.',
-        'If subtitles are essential, the cleanest workflow is to keep a separate .srt file alongside your MP4; most players (VLC, Infuse, Plex, even Apple TV apps) will load a matching sidecar subtitle automatically. Alternatively, a desktop tool can burn the subtitles into the video before conversion, though that makes them permanent.',
-        'The same logic applies to multiple audio tracks. An MKV might contain the original language plus a dub plus director commentary; the MP4 output keeps the primary track. If you need a specific language, select or reorder tracks in a desktop tool first so the right one becomes primary.',
-      ],
-    },
-    {
-      heading: 'Direct play vs transcode: stop your Plex server from melting',
-      paragraphs: [
-        'Plex tries to "direct play" a file when the client device can read the container and codecs as-is. If it cannot — often because the device chokes on the MKV container or its audio — Plex transcodes on the fly, which pins your server\'s CPU and can cause buffering, especially on a low-power NAS or while several people stream at once.',
-        'Converting your library to MP4 with H.264/HEVC video and AAC audio gives Plex (and Jellyfin, and Emby) a format almost every client can direct-play. That moves the work off your server entirely: the client just reads the stream. For a home server handling multiple simultaneous viewers, this is the single biggest quality-of-life upgrade you can make.',
-      ],
-    },
-    {
-      heading: 'Remuxing keeps quality; transcoding does not',
-      paragraphs: [
-        'Because most MKV files already use device-friendly video codecs, the ideal MKV to MP4 conversion is a remux — copying streams into a new container with zero re-encoding and therefore zero quality loss. It is fast and the output is visually identical to the source.',
-        'A full transcode only becomes necessary when the source uses something MP4 cannot carry, or when you deliberately want to shrink the file or change resolution. Whenever you can avoid transcoding, do — every re-encode of a lossy codec throws away a little detail you can never get back.',
-      ],
-    },
-    {
-      heading: 'The size problem: a 12GB movie will not fit',
-      paragraphs: [
-        'A feature-length MKV is routinely 4–15GB, far beyond what an in-browser converter can hold in memory. FileConvertir\'s 100MB ceiling is ideal for clips, short episodes, and edited exports, but a full movie needs a desktop tool.',
-        'For large libraries, the free utility MKVToolNix can remux MKV to MP4 almost instantly without re-encoding, and HandBrake can transcode when you actually want smaller files. Use the browser converter for the quick, private, one-off jobs and reach for desktop software when you are processing whole movies or batches.',
-      ],
-    },
-  ],
-
   'avi-to-mp4': [
     {
       heading: 'Why AVI feels frozen in 1999',
@@ -138,7 +42,7 @@ export const VIDEO_S_ARTICLES: Record<string, ArticleSection[]> = {
       heading: 'Re-encoding is unavoidable here — and that is OK',
       paragraphs: [
         'Unlike MOV or MKV to MP4, AVI to MP4 almost always requires a true re-encode because the old codecs are not MP4-compatible. That means the conversion takes a little longer and, technically, passes the video through another lossy compression step.',
-        'In practice this rarely matters. The source AVI was usually standard-definition and already imperfect, and a high-quality H.264 re-encode preserves everything your eye will notice while making the file dramatically smaller and universally playable. The tiny theoretical quality loss is a fair price for footage that will actually open on a phone in 2025.',
+        'In practice this rarely matters. The source AVI was usually standard-definition and already imperfect, and an H.264 re-encode keeps what your eye will notice while making the file much smaller and universally playable. The tiny theoretical quality loss is a fair price for footage that will actually open on a phone in 2025.',
       ],
     },
     {
@@ -164,7 +68,7 @@ export const VIDEO_S_ARTICLES: Record<string, ArticleSection[]> = {
       paragraphs: [
         'A WebM file typically pairs VP9 (or VP8, or AV1) video with Opus audio. These are genuinely excellent, modern codecs — VP9 rivals HEVC for efficiency, and Opus is one of the best audio codecs ever standardised. The problem is purely about where they are supported, not how good they are.',
         'MP4 conventionally carries H.264/HEVC video and AAC audio, which is why WebM to MP4 is a real transcode rather than a quick remux: the VP9 video and Opus audio have to be decoded and re-encoded into H.264 and AAC. That takes processing time and introduces a small, usually invisible, quality loss.',
-        'Because it is a true re-encode, the output quality depends on the encoder settings, not just the source. A high-quality H.264 export from a clean VP9 source looks essentially identical to the original for normal viewing, which is exactly what you want when the goal is compatibility rather than archival.',
+        'Because it is a true re-encode, the output quality depends on the encoder settings, not just the source. The H.264 output from a clean VP9 source looks close to the original for normal viewing, which is what you want when the goal is compatibility rather than archival.',
       ],
     },
     {
@@ -324,7 +228,7 @@ export const VIDEO_S_NEW: Record<string, ConverterContentOverride> = {
       { q: 'Why convert MP4 to WebM for my website?', a: 'WebM with the VP9 codec is usually 25–40% smaller than an H.264 MP4 of the same quality, so pages load faster and use less bandwidth. WebM is also royalty-free, which is why it became the web\'s preferred format. The common best practice is to serve WebM with an MP4 fallback so every browser is covered.' },
       { q: 'Will I lose quality converting MP4 to WebM?', a: 'It is a re-encode (H.264 to VP9), so technically there is a small lossy step. In practice VP9 is so efficient that a well-encoded WebM looks essentially identical to the MP4 source at a smaller file size. The visible difference is negligible for normal web playback.' },
       { q: 'Do all browsers support WebM?', a: 'WebM is supported in Chrome, Firefox, Edge, Opera, and Android, and in Safari on recent macOS and iOS versions. For maximum coverage on older Apple devices, serve WebM with an MP4 fallback in your HTML5 video element.' },
-      { q: 'Is the conversion slower than other formats?', a: 'Yes — VP9 encoding is computationally heavier than simply copying streams, so MP4 to WebM takes longer than a container-only repackage. Expect roughly real-time or a bit slower depending on resolution and your device.' },
+      { q: 'Is the conversion slower than other formats?', a: 'Yes — VP9 encoding is computationally heavier than simply copying streams, so MP4 to WebM takes longer than a container-only repackage. Expect it to take a while; the time depends on the length of the video and your device.' },
       { q: 'Are my videos uploaded to a server?', a: 'No. FFmpeg.wasm runs entirely in your browser. Your MP4 is processed on your device and never uploaded, stored, or logged.' },
       { q: 'What audio codec does the WebM use?', a: 'WebM output uses Opus, a modern, efficient, royalty-free audio codec that pairs naturally with VP9 and is supported across the same browsers.' },
       { q: 'What is the maximum file size?', a: '100MB per file. For large videos or batch encoding of an entire site\'s media, a desktop tool like FFmpeg has no memory ceiling and is better suited.' },

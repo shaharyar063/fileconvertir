@@ -41,7 +41,7 @@ export const IMAGE_S_ARTICLES: Record<string, ArticleSection[]> = {
       heading: 'Everything stays in your browser',
       paragraphs: [
         'FileConvertir decodes WebP and writes PNG using your browser\'s built-in image engine, so nothing is uploaded. That\'s reassuring when the graphic is an unreleased product render, a confidential design comp, or a client logo under NDA.',
-        'It also means the tool works the same everywhere and offline once loaded. Drop up to 20 WebP files at once, let them convert in parallel, and download them individually or as one ZIP — no account, no watermark, no size gymnastics.',
+        'It also means the tool works the same everywhere. Drop up to 20 WebP files at once, let them convert in parallel, and download them individually or as one ZIP — no account, no watermark, no size gymnastics.',
       ],
     },
     {
@@ -263,113 +263,6 @@ export const IMAGE_S_ARTICLES: Record<string, ArticleSection[]> = {
         'SVGs can reference fonts and, occasionally, external images. When an SVG uses a system font that isn\'t guaranteed to exist on every machine, the safest way to keep text looking exactly right is to convert the text to outlines (paths) in your design tool before rasterising. That way the letters become shapes and render identically regardless of installed fonts.',
         'This is worth knowing because text is the part of an SVG most likely to surprise you after conversion. A heading that looked perfect in your editor can shift to a fallback font if the original typeface isn\'t available at render time. Outlining the text removes that risk entirely.',
         'For logos and icons — which are mostly paths and shapes already — this rarely comes up, and the PNG you get is a faithful, pixel-locked snapshot of the artwork at the resolution you chose.',
-      ],
-    },
-  ],
-
-  'jpg-to-pdf': [
-    {
-      heading: 'Turning loose photos into one tidy document',
-      paragraphs: [
-        'Photos are great for viewing but clumsy for sharing as a set. Send someone twelve separate JPGs and they arrive as a messy pile of attachments in no guaranteed order. Combine them into a single PDF and you get one clean document that opens the same way on every device, with the pages in exactly the order you chose.',
-        'This is why JPG-to-PDF is so popular for receipts, ID copies, signed forms, portfolios, and anything you photographed and now need to submit as a "document." A PDF reads as official and organised in a way a folder of images never will.',
-      ],
-    },
-    {
-      heading: 'The phone-as-scanner workflow',
-      paragraphs: [
-        'Most people don\'t own a scanner anymore — they photograph documents with their phone. That leaves you with JPGs of pages that you really need as a single PDF to email to HR, a landlord, a bank, or a government portal that only accepts PDF.',
-        'Converting JPG to PDF closes that gap. Snap each page, drop the photos in, and get back one multi-page PDF that behaves like a proper scan. It\'s the missing step between "I took pictures of the document" and "I submitted the document."',
-      ],
-    },
-    {
-      heading: 'Page size, orientation, and margins',
-      paragraphs: [
-        'When a photo becomes a PDF page, it has to be placed on a page of some size — typically A4 or US Letter. A good conversion fits the image to the page while keeping its aspect ratio, so portraits stay portrait and landscapes stay landscape rather than getting stretched.',
-        'Think about consistency if the document will be printed: photos taken at slightly different angles or zoom levels look more professional when each is fitted to the same page size with sensible margins. For pure on-screen sharing, exact page geometry matters less, but it still makes the result feel deliberate.',
-      ],
-    },
-    {
-      heading: 'Multiple photos, one ordered file',
-      paragraphs: [
-        'The real power of JPG-to-PDF is combining several images into one file in a chosen sequence — page one, page two, page three. That ordering is something a zip of loose images can\'t guarantee, and it\'s exactly what reviewers expect when they ask for "the documents as a single PDF."',
-        'Whether it\'s a two-sided ID, a multi-page contract, or a photo portfolio meant to be flipped through, packaging them in order makes the result easy for the recipient to read top to bottom.',
-      ],
-    },
-    {
-      heading: 'Quality, size, and readability',
-      paragraphs: [
-        'A PDF built from JPGs is essentially a wrapper around those images, so the photos\' own resolution determines how sharp the pages look. Photograph documents in good light and reasonably close, and the text in the resulting PDF stays legible.',
-        'Because JPGs are already compressed, the PDF stays a manageable size — far smaller than if you embedded uncompressed images — which keeps it easy to email even when it has several pages.',
-      ],
-    },
-    {
-      heading: 'Built in your browser, nothing uploaded',
-      paragraphs: [
-        'The documents people turn into PDFs are often the most sensitive things they own: passports, pay slips, lease agreements, medical forms. FileConvertir assembles the PDF entirely in your browser, so none of those images are ever sent to a server.',
-        'Drop up to 20 JPGs, get a single PDF back, and download it directly. No signup, no watermark stamped across your pages, and it works identically on phone and desktop.',
-      ],
-    },
-    {
-      heading: 'Tips for sharp, readable document photos',
-      paragraphs: [
-        'Since a JPG-to-PDF result is only as good as the photos you feed it, a few habits make a big difference. Shoot in even, diffuse light to avoid glare and harsh shadows, lay the page flat, and fill the frame with the document so the text is as large and crisp as possible. Holding the phone parallel to the page keeps lines straight rather than keystoned.',
-        'Avoid flash where you can — it tends to blow out the centre of a glossy page and cast a hot spot. Natural window light or a bright, even room light usually produces a cleaner, more legible capture that turns into a more professional-looking PDF page.',
-        'If a page comes out crooked or has distracting background, crop and straighten it before converting. A little tidying up front means the finished PDF reads like a real scan instead of a hurried snapshot, which matters when it\'s going to an employer, a bank, or a government office.',
-      ],
-    },
-  ],
-
-  'png-to-pdf': [
-    {
-      heading: 'Why screenshots and diagrams belong in a PDF',
-      paragraphs: [
-        'PNG is the format your computer reaches for when you take a screenshot or export a diagram, because it keeps text and lines razor-sharp. But a folder of PNGs is awkward to hand to someone — they have to open each one, and there\'s no fixed order. Wrapping them in a PDF turns a scattered set of images into a single, professional document.',
-        'That\'s why people convert PNG to PDF for things like bug reports, design specs, step-by-step guides, account statements, and slide exports. The recipient opens one file, scrolls through the pages in order, and prints it cleanly — no image-viewer juggling required.',
-      ],
-    },
-    {
-      heading: 'Keeping screenshots crisp',
-      paragraphs: [
-        'Because PNG is lossless, the text and UI elements in your screenshots stay sharp, and a well-made PDF preserves that clarity rather than recompressing it into mush. This matters when the whole point is for someone to read the small print in an error message or follow a labelled diagram.',
-        'If you\'d converted those screenshots to JPG first, the text edges would soften and you\'d see compression halos. Going PNG straight into a PDF keeps the source quality intact, which is why it\'s the preferred route for technical and instructional content.',
-      ],
-    },
-    {
-      heading: 'Flattening transparency',
-      paragraphs: [
-        'PNGs often carry transparency, and PDF pages need a defined background. During conversion, transparent areas are flattened onto a solid background (typically white) so the page renders predictably everywhere.',
-        'This is almost always what you want for a document, but it\'s worth knowing: a logo that floated transparently as a PNG will sit on a white page in the PDF. If preserving transparency for further compositing matters, keep the PNG; if you\'re building a readable document, flattening is exactly right.',
-      ],
-    },
-    {
-      heading: 'Combining several images in order',
-      paragraphs: [
-        'The big win is sequencing. A multi-step tutorial, a series of screenshots, or a set of diagrams can be combined into one PDF with the pages in the precise order you intend. That ordered, single-file result is what colleagues and clients expect when they ask you to "send it as a PDF."',
-        'It also travels better than a zip of images: PDFs preview inline in email and chat, open with a built-in reader on every device, and print as a coherent booklet rather than a stack of separate pictures.',
-      ],
-    },
-    {
-      heading: 'Page sizing for clean printing',
-      paragraphs: [
-        'When a PNG becomes a PDF page it\'s fitted to a standard page size while keeping its proportions, so nothing gets stretched. For wide screenshots, a landscape page can make better use of the space; for tall captures, portrait works better.',
-        'If the PDF is meant to be printed, consistent page sizing across all the images makes the output look intentional and professional rather than like a random assortment of pictures pasted together.',
-      ],
-    },
-    {
-      heading: 'Assembled locally for privacy',
-      paragraphs: [
-        'Screenshots can contain a lot you\'d rather not leak — account numbers, private messages, internal dashboards. FileConvertir builds the PDF entirely in your browser, so those images never get uploaded anywhere.',
-        'Drop up to 20 PNGs, receive one combined PDF, and download it on the spot. No account, no watermark, and the same smooth experience whether you\'re on Windows, Mac, Android, or iOS.',
-      ],
-    },
-    {
-      heading: 'PNG or JPG inside the PDF: which to choose',
-      paragraphs: [
-        'When you\'re deciding what to feed into a PDF, the content should guide you. PNG is the right source for screenshots, diagrams, charts, and anything with sharp text or flat colour, because its lossless data keeps those edges clean on the page. JPG is the better source for full photographs, where its smaller size keeps the PDF light.',
-        'Mixing them is fine — a single PDF can contain both — but a common mistake is converting screenshots to JPG first and then to PDF, which softens the text and adds compression halos. Going straight from PNG into the PDF avoids that and preserves every pixel of the original capture.',
-        'If file size becomes a concern with many high-resolution PNGs, that\'s the moment to weigh JPG for the purely photographic pages while keeping PNG for the text-heavy ones. Match the format to each page\'s content and you get the best of both: readable text and a manageable file.',
-        'As a rule of thumb, if you can read every character clearly when you zoom into the original PNG, the PDF will be just as legible. Start from the highest-resolution captures you have rather than ones already shrunk for a chat app, and your finished document will hold up both on screen and in print.',
       ],
     },
   ],

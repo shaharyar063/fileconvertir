@@ -76,7 +76,7 @@ function mdToHtml(md: string): string {
 
 function mdToText(md: string): string {
   return md
-    .replace(/```[\s\S]*?```/g, '')
+    .replace(/```[^\n]*\n([\s\S]*?)```/g, '$1')
     .replace(/`([^`]+)`/g, '$1')
     .replace(/#{1,6}\s+/g, '')
     .replace(/\*\*(.+?)\*\*/g, '$1')
@@ -84,21 +84,26 @@ function mdToText(md: string): string {
     .replace(/!\[([^\]]*)\]\([^)]+\)/g, '$1')
     .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
     .replace(/^>\s+/gm, '')
-    .replace(/^[-*]\s+/gm, '• ')
+    .replace(/^[-*]\s+/gm, '- ')
     .replace(/^---+$/gm, '')
     .trim();
 }
 
-async function textToPdf(text: string): Promise<Blob> {
+async function textToPdf(text: string, monospace = false): Promise<Blob> {
   const { jsPDF } = await import('jspdf');
   const doc = new jsPDF();
+  // Plain text and CSV keep their alignment in a monospace font; everything
+  // else uses the standard proportional font.
+  doc.setFont(monospace ? 'courier' : 'helvetica');
+  doc.setFontSize(monospace ? 10 : 11);
+  const lineHeight = monospace ? 4.5 : 5.5;
   const lines = doc.splitTextToSize(text, 180);
   let y = 15;
   const pageHeight = doc.internal.pageSize.getHeight();
   for (const line of lines) {
     if (y > pageHeight - 15) { doc.addPage(); y = 15; }
     doc.text(line, 15, y);
-    y += 7;
+    y += lineHeight;
   }
   return doc.output('blob');
 }
@@ -191,7 +196,7 @@ export const documentConverter: ConverterPlugin = {
     }
 
     if (targetFormat === 'pdf') {
-      const blob = await textToPdf(text);
+      const blob = await textToPdf(text, ext === 'txt' || ext === 'csv');
       onProgress?.(100);
       return { blob, filename: `${baseName}.pdf`, mimeType: 'application/pdf' };
     }

@@ -40,7 +40,8 @@ export const audioConverter: ConverterPlugin = {
       const inputName = `input.${file.name.split('.').pop() || 'mp3'}`;
       const outputName = `output.${targetFormat}`;
       const codec = getAudioCodec(targetFormat);
-      const args = ['-i', inputName, '-acodec', codec, outputName];
+      // MP3 is encoded at a fixed 192 kbps (what the pages describe); other codecs use FFmpeg defaults.
+      const args = ['-i', inputName, '-acodec', codec, ...(targetFormat === 'mp3' ? ['-b:a', '192k'] : []), outputName];
 
       const blob = await convertWithFFmpeg(file, targetFormat, onProgress, args);
       onProgress?.(100);

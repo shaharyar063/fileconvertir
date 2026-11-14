@@ -48,7 +48,7 @@ export const videoConverter: ConverterPlugin = {
       const outputName = `output.${targetFormat}`;
 
       if (AUDIO_TARGETS.includes(targetFormat)) {
-        args = ['-i', inputName, '-vn', '-acodec', getAudioCodec(targetFormat), outputName];
+        args = ['-i', inputName, '-vn', '-acodec', getAudioCodec(targetFormat), ...(targetFormat === 'mp3' ? ['-b:a', '192k'] : []), outputName];
       } else {
         args = ['-i', inputName, '-threads', '1', ...getVideoArgs(targetFormat), outputName];
       }

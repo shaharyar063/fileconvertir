@@ -41,7 +41,7 @@ export const AUDIO_S_ARTICLES: Record<string, ArticleSection[]> = {
       heading: 'Doing it privately, in your browser, in bulk',
       paragraphs: [
         'Most M4A-to-MP3 sites upload your file to a server, convert it there, and hand back a download link — which means your voice memos and personal recordings briefly live on someone else\'s machine. FileConvertir runs FFmpeg compiled to WebAssembly directly in your browser, so the audio is decoded and re-encoded on your own CPU and never travels anywhere. You can confirm this by opening your browser\'s developer tools, switching to the Network tab, and watching that no file upload happens while a conversion runs.',
-        'Because it is local, batch conversion is painless and there is no per-file upload wait. Drop in a whole folder of iPhone exports — up to 20 files at a time — let them process in parallel, and download them individually or as a single ZIP. The first conversion in a session takes a couple of extra seconds while the FFmpeg engine loads into memory; everything after that is roughly real-time, so a three-minute song finishes in about three seconds on a modern laptop.',
+        'Because it is local, batch conversion is painless and there is no per-file upload wait. Drop in a whole folder of iPhone exports — up to 20 files at a time — let them process in parallel, and download them individually or as a single ZIP. The first conversion in a session takes extra time while the FFmpeg engine (about 30 MB) downloads and loads; after that, speed depends on your device and the length of the file.',
       ],
     },
   ],
@@ -80,7 +80,7 @@ export const AUDIO_S_ARTICLES: Record<string, ArticleSection[]> = {
       heading: 'Converting privately without an upload',
       paragraphs: [
         'Large WAV files are exactly the kind of thing you do not want to upload to a random conversion site — they are slow to transfer and they may contain unreleased music or private recordings. FileConvertir sidesteps that entirely by running FFmpeg in WebAssembly inside your browser. The encoding happens on your own machine, your audio never leaves the device, and there is no account, watermark, or daily limit.',
-        'You can batch up to 20 WAV files at once and download them as a ZIP. Because there is no upload step, the only wait is the actual encoding, which runs at roughly real time. The practical ceiling is 100 MB per file; for marathon recording sessions larger than that, a desktop copy of FFmpeg is the better tool, but for everyday tracks and episodes the browser handles it comfortably.',
+        'You can batch up to 20 WAV files at once and download them as a ZIP. Because there is no upload step, the only wait is the actual encoding, which depends on your device. The practical ceiling is 100 MB per file; for marathon recording sessions larger than that, a desktop copy of FFmpeg is the better tool, but for everyday tracks and episodes the browser handles it comfortably.',
       ],
     },
   ],
@@ -118,7 +118,7 @@ export const AUDIO_S_ARTICLES: Record<string, ArticleSection[]> = {
       heading: 'Why local conversion suits a music library',
       paragraphs: [
         'Uploading a FLAC library to a web converter is doubly painful: the files are large, so transfers crawl, and the audio may be unreleased or personally meaningful. FileConvertir runs FFmpeg as WebAssembly in your browser, so each FLAC is decoded and re-encoded on your own CPU with nothing sent to a server. No account, no quota, no upload progress bar — just local processing you can verify in your browser\'s Network tab.',
-        'The first conversion of a session spends a moment loading the FFmpeg engine; after that, tracks process at roughly real time. The per-file ceiling is 100 MB, which comfortably covers even long hi-res FLAC tracks. For an entire multi-thousand-song migration, a desktop batch tool will be faster, but for converting an album or a handful of tracks to take on the road, the browser is more than enough.',
+        'The first conversion of a session spends extra time loading the FFmpeg engine; after that, how long each track takes depends on your device. The per-file ceiling is 100 MB, which comfortably covers even long hi-res FLAC tracks. For an entire multi-thousand-song migration, a desktop batch tool will be faster, but for converting an album or a handful of tracks to take on the road, the browser is more than enough.',
       ],
     },
   ],
@@ -156,7 +156,7 @@ export const AUDIO_S_ARTICLES: Record<string, ArticleSection[]> = {
       heading: 'Private, local, batch conversion',
       paragraphs: [
         'Like the rest of FileConvertir, AAC-to-MP3 runs on FFmpeg compiled to WebAssembly and executes entirely in your browser. Your audio is decoded and re-encoded on your own CPU and is never uploaded to a server, which you can confirm in the Network tab of your browser\'s developer tools. There is no signup, no watermark, and no daily limit.',
-        'You can batch up to 20 files at once and grab them as a ZIP, which is handy for converting a batch of downloaded clips or recordings in one pass. The first file in a session takes a moment longer while FFmpeg loads; after that, conversion runs at roughly real time, with a 100 MB ceiling per file that covers everything short of very long uncompressed sources.',
+        'You can batch up to 20 files at once and grab them as a ZIP, which is handy for converting a batch of downloaded clips or recordings in one pass. The first file in a session takes longer while FFmpeg loads; after that, speed depends on your device, and there is a 100 MB ceiling per file that covers everything short of very long uncompressed sources.',
         'The same approach works identically on Windows, macOS, Linux, Android, and iOS, because it depends only on a modern browser rather than any installed software. That means you can fix an AAC file that will not play in the car straight from the phone in the driveway, or convert a folder of recordings on a work laptop where you cannot install programs — all without your audio ever leaving the device.',
       ],
     },
@@ -195,7 +195,7 @@ export const AUDIO_S_ARTICLES: Record<string, ArticleSection[]> = {
       heading: 'Local conversion, no codec packs required',
       paragraphs: [
         'The appeal of converting in the browser is that you skip the whole codec-pack rabbit hole. FileConvertir runs FFmpeg as WebAssembly on your own machine, decoding the OGG and writing the MP3 locally — nothing is uploaded, there is no account, and there are no limits beyond a 100 MB-per-file ceiling. It works the same on Windows, Mac, Linux, and mobile because it relies only on your browser.',
-        'You can drop up to 20 OGG files at once — handy for an extracted soundtrack folder — and download them together as a ZIP. The first conversion warms up the FFmpeg engine and takes a couple of extra seconds; subsequent files process at roughly real time. Because everything stays on your device, private recordings and personal game rips never travel across the internet to a stranger\'s server.',
+        'You can drop up to 20 OGG files at once — handy for an extracted soundtrack folder — and download them together as a ZIP. The first conversion downloads and warms up the FFmpeg engine, so it takes longer; after that, speed depends on your device. Because everything stays on your device, private recordings and personal game rips never travel across the internet to a stranger\'s server.',
       ],
     },
   ],
@@ -321,7 +321,7 @@ export const AUDIO_S_NEW: Record<string, ConverterContentOverride> = {
         heading: 'Converting privately in your browser',
         paragraphs: [
           'FileConvertir performs the entire conversion with FFmpeg compiled to WebAssembly, running on your own CPU inside the browser. Your MP3s are decoded to WAV locally and never uploaded to any server — a claim you can verify by opening developer tools, switching to the Network tab, and watching that no file transfer occurs during a conversion. There is no account, no watermark, and no daily limit.',
-          'Batch conversion handles up to 20 files at once and bundles the results as a ZIP, which is convenient for prepping a set of tracks for a CD or an editing session. The first conversion of a session takes a couple of extra seconds while the FFmpeg engine loads; after that, decoding runs at roughly real time. The per-file ceiling is 100 MB on the MP3 input — and since WAV output is far larger, very long recordings are better handled by a desktop FFmpeg install, while everyday tracks convert comfortably in the browser.',
+          'Batch conversion handles up to 20 files at once and bundles the results as a ZIP, which is convenient for prepping a set of tracks for a CD or an editing session. The first conversion of a session takes extra time while the FFmpeg engine loads; after that, speed depends on your device. The per-file ceiling is 100 MB on the MP3 input — and since WAV output is far larger, very long recordings are better handled by a desktop FFmpeg install, while everyday tracks convert comfortably in the browser.',
         ],
       },
     ],

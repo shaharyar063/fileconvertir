@@ -58,14 +58,14 @@ export const PRIORITY_S_PAGES: Record<string, ConverterContentOverride> = {
       { title: 'Works in every modern browser', text: 'Chrome, Edge, Firefox, Safari — desktop and mobile. Note: requires SharedArrayBuffer support, which all modern browsers have.' },
     ],
     faqs: [
-      { q: 'How do I convert iPhone voice memos to MP3?', a: 'Export the voice memo from the Voice Memos app (Share → Save to Files), then drop the .m4a file into FileConvertir. The MP3 is ready in seconds.' },
+      { q: 'How do I convert iPhone voice memos to MP3?', a: 'Export the voice memo from the Voice Memos app (Share → Save to Files), then drop the .m4a file into FileConvertir. The MP3 is ready when the conversion finishes; the time depends on your device.' },
       { q: 'Can I convert Apple Music or iTunes M4A to MP3?', a: 'Yes for unprotected M4A files (your own recordings, free songs, podcast files). DRM-protected M4P files from older iTunes Store purchases cannot be converted by any browser tool — that\'s a deliberate Apple restriction.' },
       { q: 'Are my audio files uploaded to a server?', a: 'No. FFmpeg runs in your browser via WebAssembly — your files never leave your device. There is no upload, no logging, and no server-side storage.' },
       { q: 'What bitrate is the MP3?', a: 'The MP3 is encoded at 192 kbps CBR, which is high quality for music and excellent for voice. This roughly matches the perceptual quality of the M4A source.' },
       { q: 'Will I lose audio quality?', a: 'Some quality loss is unavoidable when converting between two lossy formats (M4A/AAC → MP3). At 192 kbps the loss is inaudible to most listeners on most playback equipment.' },
       { q: 'Why won\'t my car stereo play M4A files?', a: 'Many car stereos and older Bluetooth speakers only support MP3 and WMA. Converting to MP3 fixes the playback issue.' },
       { q: 'Can I batch convert M4A to MP3?', a: 'Yes — up to 20 files at once. Drop them in, wait a moment, download the ZIP.' },
-      { q: 'How long does it take?', a: 'Roughly real-time on a modern laptop — a 3-minute song converts in about 3 seconds. First conversion takes a bit longer because FFmpeg.wasm has to load.' },
+      { q: 'How long does it take?', a: 'Speed depends on your device and the length of the file. First conversion takes a bit longer because FFmpeg.wasm has to load.' },
       { q: 'What\'s the max file size?', a: '100MB per file. A typical 1-hour podcast at 192 kbps is around 86MB, so this fits.' },
     ],
     useCases: [
@@ -73,40 +73,6 @@ export const PRIORITY_S_PAGES: Record<string, ConverterContentOverride> = {
       'Play Apple Music or GarageBand exports on car stereos and Bluetooth speakers that reject M4A',
       'Import M4A recordings into audio editors like Audacity that work better with MP3',
       'Upload M4A podcast episodes to hosting platforms that require MP3 format',
-    ],
-  },
-
-  'mov-to-mp4': {
-    title: 'MOV to MP4 Converter — Free, No Upload | FileConvertir',
-    metaDescription: 'Convert MOV to MP4 free online — no upload, 100% private. Fix QuickTime video compatibility on Windows, Android & social media. Browser-based, no signup.',
-    heading: 'MOV to MP4 Converter',
-    description: 'Convert Apple QuickTime MOV videos to universally compatible MP4 instantly in your browser. Fix playback on Windows, Android, social media uploaders, and video editors that reject MOV.',
-    longDescription: 'MOV is Apple\'s QuickTime container, used by iPhone, iPad, Mac screen recordings and Final Cut Pro. While modern Windows can play MOV, many video editors, social platforms (older TikTok, some Instagram tools), Android apps, and Bluetooth/cast receivers only accept MP4. Converting MOV to MP4 is a container repackage — usually no re-encoding is needed because both formats commonly use H.264 or HEVC video. FileConvertir runs FFmpeg.wasm in your browser to do this with zero upload, zero signup, and full privacy.',
-    howToSteps: [
-      { name: 'Drop your MOV file', text: 'Drag and drop your .mov video into the converter or click "Select Files".' },
-      { name: 'MP4 is preselected', text: 'The output is already set to MP4 — conversion begins automatically when the file is added.' },
-      { name: 'Browser-based FFmpeg conversion', text: 'FFmpeg.wasm processes your video in-browser. Nothing is ever uploaded to a server.' },
-      { name: 'Download your MP4', text: 'Save the converted MP4 to your device as soon as it\'s ready.' },
-    ],
-    whyChooseUs: [
-      { title: 'No upload, no waiting', text: 'Most online MOV converters upload the entire video, then queue it server-side. FileConvertir starts converting immediately, with no upload step at all.' },
-      { title: 'No quality loss when possible', text: 'For MOV files using H.264/HEVC video and AAC audio, FFmpeg simply re-wraps the streams into an MP4 container — no re-encoding, no quality loss, and very fast.' },
-      { title: '100% private', text: 'Your video never leaves your device. There is no server-side storage, no upload log, nothing.' },
-    ],
-    faqs: [
-      { q: 'Why won\'t Windows or Android play my MOV file?', a: 'Modern Windows 10/11 can play many MOV files via the built-in HEVC extension, but it\'s unreliable. Android requires a third-party player. Converting to MP4 makes the video play natively everywhere.' },
-      { q: 'Will I lose video quality converting MOV to MP4?', a: 'Usually no. If the MOV uses H.264 or HEVC video and AAC audio (which is typical for iPhone recordings), FFmpeg can re-wrap the streams without re-encoding — this is lossless.' },
-      { q: 'Are my videos uploaded to your server?', a: 'No. FFmpeg.wasm runs in your browser. The video stays on your device the entire time.' },
-      { q: 'How long does conversion take?', a: 'For container-only repackaging (the common case): a 1-minute video converts in 2–5 seconds. For files needing re-encoding, expect roughly 0.5–1× real-time.' },
-      { q: 'What\'s the maximum video file size?', a: '100MB per file. For larger videos, use a desktop tool like HandBrake.' },
-      { q: 'Why does my iPhone export videos as MOV instead of MP4?', a: 'iPhone records in MOV by default because it\'s Apple\'s native container. Both MOV and MP4 can hold the same H.264/HEVC video — converting is mostly a relabeling operation.' },
-      { q: 'Can I convert MOV to MP4 on iPhone or Android?', a: 'Yes — open FileConvertir.com in mobile Safari or Chrome, upload your video from the camera roll, and download the converted MP4. All processing happens on your phone.' },
-    ],
-    useCases: [
-      'Play iPhone and Mac screen recordings on Windows PCs, Android phones, and Smart TVs',
-      'Upload MOV videos to social media platforms, presentation tools, and CMSs that require MP4',
-      'Share QuickTime recordings with colleagues who use non-Apple devices',
-      'Fix MOV files rejected by video editors, messaging apps, and media players',
     ],
   },
 
@@ -134,7 +100,7 @@ export const PRIORITY_S_PAGES: Record<string, ConverterContentOverride> = {
       { q: 'Will the PNG be larger than the WebP?', a: 'Yes, usually 2–4× larger because PNG is lossless and WebP has more efficient compression. That\'s the trade-off for compatibility.' },
       { q: 'Will quality be lost?', a: 'No — PNG is lossless. The output is pixel-identical to the WebP source image.' },
       { q: 'Why did websites switch to WebP in the first place?', a: 'WebP files are typically 25–35% smaller than equivalent JPG/PNG, which speeds up websites. Google Search even uses WebP support as a ranking signal indirectly via Core Web Vitals.' },
-      { q: 'Can I convert animated WebP?', a: 'Currently only the first frame of an animated WebP is converted. For animations, convert to GIF instead.' },
+      { q: 'Can I convert animated WebP?', a: 'Currently only the first frame of an animated WebP is converted.' },
       { q: 'What\'s the max file size?', a: '100MB per file, which is far more than typical WebP images need.' },
     ],
     useCases: [
@@ -223,7 +189,7 @@ export const PRIORITY_S_PAGES: Record<string, ConverterContentOverride> = {
     title: 'SVG to PNG Converter — Free, Custom Resolution | FileConvertir',
     metaDescription: 'Convert SVG to PNG free online — no upload, no signup. Export SVG logos & icons as PNG at any resolution. Preserves transparency. Works on Windows, Mac, mobile.',
     heading: 'SVG to PNG Converter',
-    description: 'Convert SVG vector files to PNG raster images at the resolution you need. Perfect for exporting logos, icons, and illustrations to use in Word, PowerPoint, social media, and apps that can\'t display SVG.',
+    description: 'Convert SVG vector files to PNG raster images at the size declared in the SVG. Perfect for exporting logos, icons, and illustrations to use in Word, PowerPoint, social media, and apps that can\'t display SVG.',
     longDescription: 'SVG (Scalable Vector Graphics) is perfect for logos and icons — infinitely scalable, tiny file size. The problem is that most non-web software can\'t display SVG: Microsoft Word, PowerPoint, Outlook, Android XML drawables, video editors, many email clients, and countless apps require PNG. FileConvertir exports your SVG to PNG directly in your browser using the Canvas API, which means the SVG is rasterized at browser resolution without any upload. Transparency is fully preserved in the output PNG, so your transparent logo stays transparent.',
     howToSteps: [
       { name: 'Drop your SVG files', text: 'Drag and drop your .svg files into the converter, or click "Select Files". Supports batch conversion of up to 20 files.' },
@@ -254,76 +220,6 @@ export const PRIORITY_S_PAGES: Record<string, ConverterContentOverride> = {
     ],
   },
 
-  'png-to-pdf': {
-    title: 'PNG to PDF Converter — Free, Multiple Pages | FileConvertir',
-    metaDescription: 'Convert PNG to PDF free online — no upload, no signup. Combine multiple PNG images into one PDF document. Works on Windows, Mac & mobile. 100% private.',
-    heading: 'PNG to PDF Converter',
-    description: 'Convert PNG images to PDF — combine multiple screenshots, scans, or photos into a single PDF document. Everything runs in your browser. No upload, no account required.',
-    longDescription: 'Whether you\'re combining screenshots into a report, packaging signed form photos as a PDF, or turning a sequence of images into a presentable document, PNG to PDF is a daily need. FileConvertir handles this entirely client-side using jsPDF — your images never leave your browser. Each PNG is embedded into the PDF at its full resolution, with no compression beyond what\'s needed to fit the page. Multi-image batches are combined into a single PDF with one image per page, making it easy to deliver a professional document from a set of screenshots.',
-    howToSteps: [
-      { name: 'Add your PNG files', text: 'Drag and drop one or more .png files into the converter, or click "Select Files". Up to 20 images per batch.' },
-      { name: 'Select PDF as output', text: 'Choose PDF from the output format dropdown. Images are added to the PDF in the order they appear.' },
-      { name: 'PDF is built in your browser', text: 'jsPDF assembles the PDF entirely on your device — no server, no upload, no cloud.' },
-      { name: 'Download the PDF', text: 'Save the finished PDF file. Multiple PNGs become a single multi-page PDF.' },
-    ],
-    whyChooseUs: [
-      { title: 'Multiple images → one PDF document', text: 'Drop several PNG screenshots or scans at once. They become a single PDF with one image per page — ready to email or print.' },
-      { title: 'Sensitive images stay private', text: 'Screenshots of documents, financial statements, or forms never touch a server. All processing is local.' },
-      { title: 'No account, no limits, free', text: 'Convert as many PNG files to PDF as you need. No signup, no daily cap, no watermark added.' },
-    ],
-    faqs: [
-      { q: 'Can I combine multiple PNG images into one PDF?', a: 'Yes — drop multiple PNGs at once. They are combined into a single PDF document with one image per page, in the order you added them.' },
-      { q: 'Are my images uploaded to a server?', a: 'No. The PDF is assembled entirely in your browser using jsPDF. Your images never leave your device.' },
-      { q: 'Will the image quality be preserved in the PDF?', a: 'Yes. Each PNG is embedded at its full resolution. The PDF may be larger than the source PNGs because PDF stores images differently, but no visual quality is lost.' },
-      { q: 'What page size will the PDF be?', a: 'Each page is sized to fit the PNG image. If your PNG is wider than tall, it\'s placed in landscape orientation; taller than wide gets portrait orientation.' },
-      { q: 'Can I convert transparent PNG files to PDF?', a: 'Yes. Transparent areas are rendered against a white background in the PDF, as PDF doesn\'t natively support page-level transparency.' },
-      { q: 'What is the maximum number of PNGs I can combine?', a: 'Up to 20 PNG files per batch, with a 100MB limit per file. For very large batches, convert in multiple sessions.' },
-      { q: 'Can I convert PNG screenshots to PDF for printing?', a: 'Absolutely. The PDF is sized to your image dimensions. For best print results, use high-resolution source PNGs (at least 150 DPI equivalent width).' },
-      { q: 'Does this work on mobile?', a: 'Yes — works on iPhone Safari and Android Chrome. Large batches may be slower on older phones.' },
-    ],
-    useCases: [
-      'Combine multiple screenshots into a single PDF report for sharing or printing',
-      'Package signed form photos or scanned receipts as a PDF for email submission',
-      'Convert PNG wireframe screens to a PDF deck for stakeholder review',
-      'Bundle PNG product images into a PDF catalog without design software',
-    ],
-  },
-
-  'jpg-to-pdf': {
-    title: 'JPG to PDF Converter — Free, Combine Multiple Photos | FileConvertir',
-    metaDescription: 'Convert JPG to PDF free online — no upload, no signup. Combine multiple JPEG photos into one PDF document instantly. Works on Windows, Mac & mobile. 100% private.',
-    heading: 'JPG to PDF Converter',
-    description: 'Convert JPEG photos to PDF — combine multiple images into a single professional document. Works entirely in your browser. No upload, no account needed.',
-    longDescription: 'Converting photos to PDF is one of the most common document tasks: attaching proof of ID for rental applications, submitting insurance claim photos, bundling product shots for clients, or turning a set of scanned receipts into an expense report. FileConvertir assembles your JPG files into a PDF document entirely in your browser using jsPDF — nothing is uploaded to any server. Multiple JPEGs become a single multi-page PDF, with each photo on its own page at its native resolution.',
-    howToSteps: [
-      { name: 'Add your JPG files', text: 'Drag and drop your .jpg or .jpeg photos into the converter, or click "Select Files". Add up to 20 photos per batch.' },
-      { name: 'Select PDF as output', text: 'Choose PDF from the output format dropdown. Photos will appear in the PDF in the order you added them.' },
-      { name: 'PDF is built in your browser', text: 'jsPDF assembles the document on your device. No image is ever sent to a server.' },
-      { name: 'Download the PDF', text: 'Save the finished PDF. Multiple photos become one multi-page document.' },
-    ],
-    whyChooseUs: [
-      { title: 'Photo order preserved', text: 'Photos appear in the PDF in the order you added them. Reorder by dragging files before converting.' },
-      { title: 'Sensitive photos stay private', text: 'ID photos, medical images, or financial documents are never uploaded. Local processing only.' },
-      { title: 'Works on any device, no install', text: 'Convert JPEG to PDF on Windows, Mac, iPhone, or Android — right in the browser, nothing to download.' },
-    ],
-    faqs: [
-      { q: 'How do I combine multiple JPG photos into one PDF?', a: 'Drop all your JPG files at once into the converter, select PDF as output, and download. All photos are combined into a single PDF with one image per page.' },
-      { q: 'Are my photos uploaded to your server?', a: 'No. The PDF is assembled entirely in your browser using jsPDF. Your photos never leave your device.' },
-      { q: 'Will photo quality be preserved in the PDF?', a: 'Yes. Each JPG is embedded at its original resolution. No additional compression is applied.' },
-      { q: 'Can I choose the page order?', a: 'Photos appear in the order you added them. Drop them in the desired sequence, or adjust the order in the file picker before converting.' },
-      { q: 'What page size will the PDF use?', a: 'Each page fits the photo. Landscape photos get landscape pages; portrait photos get portrait pages.' },
-      { q: 'How many photos can I combine in one PDF?', a: 'Up to 20 JPG files per batch. Each file can be up to 100MB. For larger batches, convert in multiple sessions.' },
-      { q: 'Can I use this for insurance claim or ID document photos?', a: 'Yes, and it\'s a great use case because the photos never leave your device. No cloud conversion means no privacy risk for sensitive documents.' },
-      { q: 'Does this work on iPhone?', a: 'Yes. Open the page in Safari, tap "Select Files," choose photos from your camera roll, and download the PDF.' },
-    ],
-    useCases: [
-      'Bundle ID photos, utility bills, and proof documents into a single PDF for rental or visa applications',
-      'Combine insurance claim photos into a PDF to email to your insurance provider',
-      'Package product photos for clients or print-shop submissions as a multi-page PDF',
-      'Turn scanned receipts or invoices into a PDF expense report for accounting',
-    ],
-  },
-
   'mp4-to-mp3': {
     title: 'MP4 to MP3 Converter — Extract Audio Free | FileConvertir',
     metaDescription: 'Extract audio from MP4 free online — no upload, no signup, 100% private. Convert MP4 video to MP3 in your browser. Works on Windows, Mac, Android. No size tricks.',
@@ -339,14 +235,14 @@ export const PRIORITY_S_PAGES: Record<string, ConverterContentOverride> = {
     whyChooseUs: [
       { title: 'True in-browser processing — not a server', text: 'Many "browser" converters are just upload forms. FileConvertir runs FFmpeg.wasm in your browser tab — your video never touches a server.' },
       { title: '192 kbps MP3 output', text: 'Audio is extracted and encoded at 192 kbps, which is high quality for music, speech, and podcasts. Audible difference from source is negligible.' },
-      { title: 'Works offline after first load', text: 'Once the page and FFmpeg.wasm have loaded, subsequent conversions work without an internet connection.' },
+      { title: 'Keeps working without a connection', text: 'Once the page and FFmpeg.wasm have loaded in your open tab, further conversions do not need an internet connection.' },
     ],
     faqs: [
       { q: 'How do I extract audio from an MP4 video online for free?', a: 'Drop your MP4 into FileConvertir, select MP3 as output, and download. The audio is extracted and saved as MP3 in your browser — no upload, no account, free.' },
       { q: 'Is audio quality preserved when extracting from MP4?', a: 'If the MP4 audio is AAC (standard for H.264 MP4), it\'s re-encoded to 192 kbps MP3. Some quality loss is unavoidable (AAC → MP3 is a lossy-to-lossy conversion), but at 192 kbps the difference is inaudible for most content.' },
       { q: 'Are my videos uploaded to your server?', a: 'No. FFmpeg.wasm processes the video entirely in your browser. The video file never leaves your device.' },
       { q: 'What\'s the maximum MP4 file size?', a: '100MB per file. A 1-hour lecture at 720p is typically 300–500MB, which exceeds this limit — for large files, use a desktop tool like FFmpeg or HandBrake.' },
-      { q: 'How long does extraction take?', a: 'For most MP4 files, audio extraction takes 1–5 seconds per minute of video on a modern computer. The first conversion takes longer because FFmpeg.wasm needs to load.' },
+      { q: 'How long does extraction take?', a: 'Extraction time depends on your device and the length of the video. The first conversion takes longer because FFmpeg.wasm needs to load.' },
       { q: 'Can I extract audio from MP4 on my iPhone?', a: 'Yes — open FileConvertir in Safari on iPhone, select your MP4 from Files, and download the MP3. Processing happens on your device.' },
       { q: 'Does the converter work with MP4 files from screen recorders?', a: 'Yes. Screen recordings (from Loom, OBS, Camtasia, or the built-in Mac/Windows recorder) in MP4 format are supported.' },
       { q: 'What if my MP4 has no audio track?', a: 'If the MP4 contains no audio (some silent screen recordings don\'t), the output will be a near-empty MP3. Check that your source video has an audio track before converting.' },
@@ -532,41 +428,6 @@ export const PRIORITY_S_PAGES: Record<string, ConverterContentOverride> = {
      NEW PRIORITY PAGES — VIDEO CONVERSIONS
   ───────────────────────────────────────────────────────────────────────── */
 
-  'mkv-to-mp4': {
-    title: 'MKV to MP4 Converter — Free, No Quality Loss | FileConvertir',
-    metaDescription: 'Convert MKV to MP4 free online — no upload, no signup. Fix MKV playback on iPhone, Smart TV & Plex. Browser-based, 100% private. No re-encoding when possible.',
-    heading: 'MKV to MP4 Converter',
-    description: 'Convert MKV video files to MP4 for playback on iPhones, Smart TVs, Plex, and apps that reject MKV. Runs entirely in your browser — no upload, no account required.',
-    longDescription: 'MKV (Matroska) is the most popular container for downloaded movies and TV shows. It supports multiple audio tracks, subtitles, and chapter markers in a single file — perfect for media archiving. The problem: iPhones, iPads, many Smart TVs, Plex without transcoding enabled, Chromecast, and AirPlay all struggle or outright refuse to play MKV. Converting to MP4 fixes compatibility while preserving the video quality. When the MKV\'s video codec is H.264 or HEVC and audio is AAC, FileConvertir re-wraps without re-encoding — the conversion is nearly instant and quality is identical.',
-    howToSteps: [
-      { name: 'Drop your MKV file', text: 'Drag your .mkv file into the converter or click "Select Files". Files up to 100MB are supported.' },
-      { name: 'Select MP4 as output', text: 'Choose MP4 from the format dropdown. The converter will handle the container repackaging.' },
-      { name: 'FFmpeg converts in your browser', text: 'FFmpeg.wasm processes the MKV on your device. For H.264 MKV files, it re-wraps without re-encoding — very fast. Nothing is uploaded.' },
-      { name: 'Download the MP4', text: 'Save the converted MP4. It\'s ready for iPhone, Plex, Smart TV, or any media player.' },
-    ],
-    whyChooseUs: [
-      { title: 'No re-encoding for H.264 MKV files', text: 'Most MKV files use H.264 video and AAC audio. FileConvertir detects this and re-wraps the streams — no quality loss, and the conversion takes seconds instead of minutes.' },
-      { title: '100% private — movie files stay on your device', text: 'MKV files are often large and personal. FileConvertir processes them in-browser without uploading anything to a server.' },
-      { title: 'Fixes iPhone, Plex, and Smart TV compatibility', text: 'MP4 is the universal video container. Converting MKV to MP4 fixes playback on virtually every device.' },
-    ],
-    faqs: [
-      { q: 'Why won\'t my iPhone play MKV files?', a: 'iOS doesn\'t natively support the MKV container. iPhone can play H.264 and HEVC video content, but only inside MP4 or MOV containers. Converting the MKV to MP4 solves this without any quality loss if the video codec is compatible.' },
-      { q: 'Will I lose video quality converting MKV to MP4?', a: 'Not if the MKV uses H.264 or HEVC video and AAC audio — which is typical for downloaded content. FFmpeg re-wraps the streams into an MP4 container without re-encoding. Quality is bit-for-bit identical.' },
-      { q: 'Can I play the converted MP4 on my Smart TV?', a: 'Yes — MP4 with H.264 video is the most widely supported video format. Every Smart TV from the last decade supports it natively.' },
-      { q: 'Why does Plex transcode my MKV files?', a: 'Plex transcodes MKV files that use codecs its client device doesn\'t support directly. Converting to MP4 with H.264/AAC tells Plex the file is already in a direct-play compatible format, eliminating transcoding.' },
-      { q: 'What\'s the maximum file size?', a: '100MB per file. Feature-length MKV movies are typically 1–15GB, which exceeds this limit — for large files, use HandBrake or desktop FFmpeg.' },
-      { q: 'Are my video files uploaded to your server?', a: 'No. FFmpeg.wasm processes everything in your browser.' },
-      { q: 'What if my MKV has multiple audio or subtitle tracks?', a: 'The converter selects the primary audio track. Subtitle tracks are not included in the MP4 output.' },
-      { q: 'Does this work for short MKV clips under 100MB?', a: 'Yes — short clips, screen recordings, and edited MKV exports under 100MB convert quickly and cleanly.' },
-    ],
-    useCases: [
-      'Play MKV movies and TV episodes on iPhone, iPad, or Apple TV via AirPlay',
-      'Fix MKV files that Plex Media Server forces to transcode rather than direct-play',
-      'Convert MKV recordings to MP4 for uploading to YouTube, Vimeo, or social media',
-      'Make MKV video clips compatible with Smart TVs, Chromecast, and Fire Stick',
-    ],
-  },
-
   'avi-to-mp4': {
     title: 'AVI to MP4 Converter — Free, Modernize Old Videos | FileConvertir',
     metaDescription: 'Convert AVI to MP4 free online — no upload, no signup. Play old AVI videos on iPhone, Android & modern apps. Browser-based, 100% private. No quality loss.',
@@ -576,7 +437,7 @@ export const PRIORITY_S_PAGES: Record<string, ConverterContentOverride> = {
     howToSteps: [
       { name: 'Drop your AVI file', text: 'Drag your .avi video into the converter or click "Select Files". Supports files up to 100MB.' },
       { name: 'Select MP4 as output', text: 'Choose MP4 from the format dropdown.' },
-      { name: 'FFmpeg re-encodes in your browser', text: 'FFmpeg.wasm re-encodes the AVI to H.264 MP4 on your device. This may take a few seconds for longer clips. Nothing is uploaded.' },
+      { name: 'FFmpeg re-encodes in your browser', text: 'FFmpeg.wasm re-encodes the AVI to H.264 MP4 on your device. Longer clips take longer. Nothing is uploaded.' },
       { name: 'Download the MP4', text: 'Save the converted MP4. Ready for iPhone, YouTube, or any modern media player.' },
     ],
     whyChooseUs: [
@@ -586,12 +447,12 @@ export const PRIORITY_S_PAGES: Record<string, ConverterContentOverride> = {
     ],
     faqs: [
       { q: 'Why can\'t my iPhone play AVI files?', a: 'iOS and the Apple ecosystem only support H.264 and HEVC video in MP4 or MOV containers. AVI is not a supported container on iPhone. Converting to MP4 is the fix.' },
-      { q: 'Will converting AVI to MP4 reduce quality?', a: 'For most AVI files, re-encoding to H.264 MP4 is done at high quality settings. Some quality reduction is inherent in re-encoding, but the output is excellent for viewing and sharing purposes.' },
+      { q: 'Will converting AVI to MP4 reduce quality?', a: 'The video is re-encoded to H.264 with fast settings that keep browser memory use low. Some quality reduction is inherent in re-encoding, but the output is fine for viewing and sharing.' },
       { q: 'My old AVI videos use the DivX or Xvid codec — will they convert?', a: 'Yes. FFmpeg supports DivX 3/4/5, Xvid, and most other classic AVI codecs. These old files typically convert well to H.264 MP4.' },
       { q: 'Can I upload AVI to YouTube?', a: 'YouTube does accept AVI, but MP4 with H.264 is the recommended format for fastest processing and best quality. Converting first often speeds up YouTube processing and avoids codec-related issues.' },
       { q: 'Are my videos uploaded to a server?', a: 'No. FFmpeg.wasm processes everything in your browser.' },
       { q: 'What\'s the maximum AVI file size?', a: '100MB per file. Old DV or SD-resolution AVI files are often under this limit; HD AVI files may exceed it.' },
-      { q: 'How long does conversion take?', a: 'AVI re-encoding takes longer than a simple re-wrap because the video must be re-encoded. Expect roughly 1–3 seconds per minute of video on a modern computer.' },
+      { q: 'How long does conversion take?', a: 'AVI re-encoding takes longer than a simple re-wrap because the video must be re-encoded. Expect minutes rather than seconds for longer videos, depending on your device.' },
     ],
     useCases: [
       'Play old home videos from camcorders and Windows Movie Maker on iPhone, iPad, and Android',
@@ -624,7 +485,7 @@ export const PRIORITY_S_PAGES: Record<string, ConverterContentOverride> = {
       { q: 'Can I play WebM on iPhone?', a: 'iPhone natively supports WebM in Safari starting with iOS 16 (VP8 only). For older iOS versions or better compatibility across all Apple devices, convert to MP4.' },
       { q: 'Does Loom export videos as WebM?', a: 'Loom downloads vary by browser. Chrome typically downloads as WebM. If your Loom recording is WebM, drop it here to convert to MP4 for sharing outside the browser.' },
       { q: 'Are my video files uploaded to a server?', a: 'No. FFmpeg.wasm processes everything in your browser.' },
-      { q: 'Will quality be preserved?', a: 'WebM typically uses VP8 or VP9 codec. Converting to H.264 MP4 involves re-encoding, which may introduce a small quality reduction, but output is excellent for sharing and editing.' },
+      { q: 'Will quality be preserved?', a: 'WebM typically uses VP8 or VP9 codec. Converting to H.264 MP4 involves re-encoding, which introduces some quality reduction; the output is suitable for sharing.' },
       { q: 'What\'s the maximum file size?', a: '100MB per file.' },
     ],
     useCases: [
@@ -648,7 +509,7 @@ export const PRIORITY_S_PAGES: Record<string, ConverterContentOverride> = {
       { name: 'Download the MP3', text: 'Save the extracted MP3 — plays on any device, media player, or car stereo.' },
     ],
     whyChooseUs: [
-      { title: 'Extract audio without video editors', text: 'No QuickTime Pro, no iMovie, no Final Cut needed. Drop the MOV here and download the MP3 in seconds.' },
+      { title: 'Extract audio without video editors', text: 'No QuickTime Pro, no iMovie, no Final Cut needed. Drop the MOV here and download the MP3 when it finishes.' },
       { title: 'Private — MOV recordings stay local', text: 'MOV files from screen recordings or iPhone often contain private content. Nothing is uploaded to a server.' },
       { title: 'Works on Windows and Android too', text: 'Even if you received a MOV file on a non-Apple device, FileConvertir converts it to MP3 in any modern browser.' },
     ],
@@ -672,41 +533,6 @@ export const PRIORITY_S_PAGES: Record<string, ConverterContentOverride> = {
   /* ─────────────────────────────────────────────────────────────────────────
      NEW PRIORITY PAGES — DOCUMENT CONVERSIONS
   ───────────────────────────────────────────────────────────────────────── */
-
-  'docx-to-pdf': {
-    title: 'DOCX to PDF Converter — Free, Preserves Formatting | FileConvertir',
-    metaDescription: 'Convert Word DOCX to PDF free online — no upload, no signup. Preserve fonts, layout & formatting. Browser-based, 100% private. Works on Windows, Mac & mobile.',
-    heading: 'DOCX to PDF Converter',
-    description: 'Convert Word DOCX documents to PDF instantly in your browser. Preserve your formatting, fonts, and layout for professional document sharing — without uploading your file to any server.',
-    longDescription: 'Converting a Word document to PDF is one of the most universal tasks in any workplace or school: sending a resume, sharing a report, locking a contract for signature, or creating a print-ready document. FileConvertir converts DOCX to PDF directly in your browser using Mammoth.js and jsPDF, extracting your document\'s text and structure without uploading it to any server. Your document content stays on your device — especially important for confidential contracts, CVs, or business reports. The PDF output preserves headings, paragraphs, lists, and text formatting from your Word document.',
-    howToSteps: [
-      { name: 'Drop your DOCX file', text: 'Drag your .docx file into the converter, or click "Select Files" to browse.' },
-      { name: 'Select PDF as output', text: 'Choose PDF from the output format dropdown.' },
-      { name: 'Browser converts locally', text: 'Mammoth.js extracts the document content and jsPDF assembles the PDF on your device. Nothing is uploaded.' },
-      { name: 'Download the PDF', text: 'Save the finished PDF — ready to send, print, or share.' },
-    ],
-    whyChooseUs: [
-      { title: 'Document stays on your device', text: 'Confidential contracts, CVs, and business reports are processed locally. Nothing goes to a server, unlike most online DOCX-to-PDF tools.' },
-      { title: 'No Microsoft Word needed', text: 'Convert DOCX to PDF on Windows, Mac, Linux, iPad, or Android — no Office license required.' },
-      { title: 'Free, no account, no watermark', text: 'No limit on conversions, no watermark added to your PDF, no signup required.' },
-    ],
-    faqs: [
-      { q: 'Will the PDF look exactly like my Word document?', a: 'FileConvertir preserves text, headings, paragraphs, bold/italic formatting, and lists. Complex layouts with advanced tables, text boxes, footnotes, or custom fonts may render differently. For pixel-perfect conversion, use "Save as PDF" in Microsoft Word itself or Google Docs.' },
-      { q: 'Is my DOCX document uploaded to a server?', a: 'No. Mammoth.js and jsPDF process the document entirely in your browser. Your file never leaves your device.' },
-      { q: 'Why convert DOCX to PDF instead of sharing the DOCX?', a: 'PDFs preserve your formatting exactly as you designed it, regardless of what software or OS the recipient uses. They also prevent accidental editing and are accepted by most submission portals, email clients, and print shops.' },
-      { q: 'Does this work on iPhone or Android?', a: 'Yes. Open the page in mobile Safari or Chrome, select your DOCX file, and download the PDF.' },
-      { q: 'Can I convert a password-protected DOCX?', a: 'No. Password-protected DOCX files cannot be opened without the password, and the converter cannot bypass document protection.' },
-      { q: 'Will images in my DOCX appear in the PDF?', a: 'Basic image embedding is supported, though complex image positioning from Word layouts may differ.' },
-      { q: 'Is there a file size limit?', a: 'Up to 100MB per DOCX file. Most normal documents are well under 10MB.' },
-      { q: 'What if I get a blank PDF?', a: 'This can happen with DOCX files that use advanced features or unusual encoding. Try re-saving the document in Word or Google Docs first, then converting.' },
-    ],
-    useCases: [
-      'Convert your resume or CV from DOCX to PDF before emailing or uploading to job portals',
-      'Share business reports and proposals as PDF to prevent recipients from editing the content',
-      'Submit DOCX academic papers or assignments to portals that only accept PDF',
-      'Create a print-ready PDF from a Word document without opening Microsoft Word',
-    ],
-  },
 
   'docx-to-txt': {
     title: 'DOCX to TXT Converter — Extract Text from Word Free | FileConvertir',

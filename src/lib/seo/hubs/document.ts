@@ -81,7 +81,7 @@ export const DOCUMENT_SOURCE_HUBS: Record<string, FormatSEO> = {
     details:
       'A TXT file holds characters and nothing else: no fonts, sizes, colours or images. That makes it the most portable format there is, readable by any program on any system, and the usual way to store notes, logs, code snippets and exported data.',
     longDescription:
-      'Converting a TXT file to PDF is a way to hand someone a fixed, printable copy that opens in any PDF viewer. Text is set in a standard font and wrapped to the page width; line breaks in the file are preserved. The PDF font covers Latin characters, so text in other scripts such as Arabic, Chinese or Cyrillic may not display correctly in the PDF. Keep that in mind before converting non-Latin text.',
+      'Converting a TXT file to PDF is a way to hand someone a fixed, printable copy that opens in any PDF viewer. Text is set in a monospace font and wrapped to the page width. The PDF font covers Latin characters, so text in other scripts such as Arabic, Chinese or Cyrillic may not display correctly in the PDF. Keep that in mind before converting non-Latin text.',
     useCases: [
       'Turn notes or a log file into a PDF you can attach or print',
       'Share a plain-text document in a format that looks the same everywhere',
@@ -145,7 +145,7 @@ export const DOCUMENT_SOURCE_HUBS: Record<string, FormatSEO> = {
     details:
       'Markdown is a plain-text writing format created by John Gruber in 2004. Symbols such as # for headings, asterisks for emphasis and dashes for lists let you write structured text in any editor, and tools turn it into HTML. It is the standard for README files, documentation and notes.',
     longDescription:
-      'The Markdown converter removes the markup (heading hashes, emphasis marks, link syntax, code fences) and sets the remaining text in a PDF. Headings are not styled larger, so the result is a clean, readable copy rather than a rendered document. If you need Markdown rendered with headings, code blocks and styling, convert it to HTML elsewhere and print that to PDF from your browser.',
+      'The Markdown converter removes the markup (heading hashes, emphasis marks, link syntax, code fences) and sets the remaining text in a PDF, keeping the contents of code blocks. Headings are not styled larger, so the result is a clean, readable copy rather than a rendered document. If you need Markdown rendered with headings, code blocks and styling, convert it to HTML elsewhere and print that to PDF from your browser.',
     useCases: [
       'Share the text of a README or notes with someone who has no Markdown tools',
       'Get a printable copy of a plain Markdown document',
@@ -162,7 +162,7 @@ export const DOCUMENT_SOURCE_HUBS: Record<string, FormatSEO> = {
       },
       {
         q: 'What happens to code blocks?',
-        a: 'In a PDF, code blocks are removed along with the other markup. If you need the code, convert to HTML instead.',
+        a: 'The code itself is kept as plain text, but the fences are removed and there is no monospace styling or highlighting. Convert to HTML if you need code formatting.',
       },
     ],
   },

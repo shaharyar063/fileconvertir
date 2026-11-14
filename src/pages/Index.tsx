@@ -16,8 +16,8 @@ const popularConversions: { slug: string; label: string; tagline: string }[] = [
   { slug: 'png-to-jpg',   label: 'PNG to JPG',   tagline: 'Shrink screenshots & photos' },
   { slug: 'webp-to-jpg',  label: 'WebP to JPG',  tagline: 'Insert web images into Office' },
   { slug: 'mp4-to-mp3',   label: 'MP4 to MP3',   tagline: 'Extract audio from any video' },
-  { slug: 'mkv-to-mp4',   label: 'MKV to MP4',   tagline: 'Fix Plex & iPhone playback' },
-  { slug: 'docx-to-pdf',  label: 'DOCX to PDF',  tagline: 'Lock formatting for sharing' },
+  { slug: 'mkv-to-mp4',   label: 'MKV to MP4',   tagline: 'Play MKV on iPhones and TVs' },
+  { slug: 'docx-to-pdf',  label: 'DOCX to PDF',  tagline: 'Text of a Word file as a PDF' },
   { slug: 'pdf-to-txt',   label: 'PDF to Text',  tagline: 'Extract text for AI & editing' },
 ];
 // Reference PRIORITY_CONVERTERS so the link list stays in sync with the priority list

@@ -58,3 +58,20 @@ describe('html to text', () => {
     expect(out).toBe('Title\nFirst\nSecond\nline');
   });
 });
+
+describe('markdown to text', () => {
+  it('keeps code block contents and uses plain dashes for lists', async () => {
+    const { documentConverter } = await import('@/converters/document-converter');
+    const md = '# Title\n\n- one\n- two\n\n```js\nconst x = 1;\n```\n';
+    const file = { name: 'a.md', text: async () => md, arrayBuffer: async () => new TextEncoder().encode(md).buffer } as unknown as File;
+    const res = await documentConverter.convert(file, 'txt');
+    const out = await new Promise<string>((resolve) => {
+      const r = new FileReader();
+      r.onload = () => resolve(String(r.result));
+      r.readAsText(res.blob);
+    });
+    expect(out).toContain('const x = 1;');
+    expect(out).toContain('- one');
+    expect(out).not.toContain('```');
+  });
+});
