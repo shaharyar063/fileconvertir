@@ -23,7 +23,13 @@ async function htmlToText(file: File): Promise<string> {
   const parser = new DOMParser();
   const doc = parser.parseFromString(html, 'text/html');
   doc.querySelectorAll('script, style, noscript, template').forEach((el) => el.remove());
-  return doc.body.textContent || '';
+  // textContent glues block elements together ("<p>a</p><p>b</p>" -> "ab"), so
+  // put line breaks where the browser would show them.
+  doc.querySelectorAll('br').forEach((el) => el.replaceWith('\n'));
+  doc
+    .querySelectorAll('p, div, h1, h2, h3, h4, h5, h6, li, tr, section, article, blockquote, pre, ul, ol, table')
+    .forEach((el) => el.append('\n'));
+  return (doc.body.textContent || '').replace(/\n{3,}/g, '\n\n').trim();
 }
 
 async function pdfToText(file: File): Promise<string> {

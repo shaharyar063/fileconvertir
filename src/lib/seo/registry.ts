@@ -1,7 +1,7 @@
 import type { ConverterSEO, FormatSEO, HomepageSEO } from './types';
 import { mergeConverterSEO } from './merge';
 import { getTierSContent } from './converters/tier-s';
-import { buildSourceHubSEO, buildTargetHubSEO } from './builders/hub-builder';
+import { SOURCE_HUBS, TARGET_HUBS } from './hubs';
 import { HOMEPAGE_SEO } from './homepage';
 import { TIER_S_SLUGS, PRIORITY_CONVERTERS } from './constants';
 
@@ -20,12 +20,19 @@ export function getConverterSEO(source: string, target: string): ConverterSEO {
   return mergeConverterSEO(src, target, content);
 }
 
+/** Content for a "Convert to X" hub page. */
 export function getFormatSEO(targetFormat: string): FormatSEO {
-  return buildTargetHubSEO(targetFormat);
+  const hub = TARGET_HUBS[targetFormat];
+  if (!hub) throw new Error(`No hub content for target format "${targetFormat}"`);
+  return hub;
 }
 
+/** Content for a source-format hub page (`/png/`). */
 export function getSourceFormatSEO(sourceFormat: string): FormatSEO {
-  return buildSourceHubSEO(sourceFormat);
+  const key = sourceFormat === 'jpeg' ? 'jpg' : sourceFormat;
+  const hub = SOURCE_HUBS[key];
+  if (!hub) throw new Error(`No hub content for source format "${sourceFormat}"`);
+  return hub;
 }
 
 export function getHomepageSEO(): HomepageSEO {

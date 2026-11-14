@@ -39,3 +39,22 @@ describe('file sniffing', () => {
     expect(await fileMatchesClaimedExtension(fakeFile([0x00, 0x11, 0x22, 0x33]), 'png')).toBe(false);
   });
 });
+
+describe('html to text', () => {
+  it('keeps block elements on separate lines', async () => {
+    const { documentConverter } = await import('@/converters/document-converter');
+    const html = '<html><body><h1>Title</h1><p>First</p><p>Second<br>line</p><script>x()</script></body></html>';
+    const file = {
+      name: 'a.html',
+      text: async () => html,
+      arrayBuffer: async () => new TextEncoder().encode(html).buffer,
+    } as unknown as File;
+    const res = await documentConverter.convert(file, 'txt');
+    const out = await new Promise<string>((resolve) => {
+      const r = new FileReader();
+      r.onload = () => resolve(String(r.result));
+      r.readAsText(res.blob);
+    });
+    expect(out).toBe('Title\nFirst\nSecond\nline');
+  });
+});
