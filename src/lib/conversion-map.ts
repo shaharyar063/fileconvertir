@@ -13,32 +13,24 @@ export interface ConversionEntry {
 
 export const conversionMap: ConversionEntry[] = [
   // ── Images ───────────────────────────────────────────────
-  // Browser: Canvas API (jpg/png/webp/avif), manual builders (bmp/gif/tiff/ico/eps/svg/psd/tga), jsPDF (pdf)
-  { source: 'jpg',  targets: ['png', 'webp', 'gif', 'bmp', 'avif', 'tiff', 'ico', 'svg', 'pdf', 'zip', 'tar', 'gz'],
+  // Browser: Canvas API (jpg/png/webp), manual builders (bmp/gif/tiff/ico/eps/svg/psd/tga), jsPDF (pdf)
+  { source: 'jpg',  targets: ['png', 'webp', 'gif', 'bmp', 'tiff', 'ico', 'svg', 'pdf', 'zip', 'tar', 'gz'],
     converterId: 'image-converter', category: 'image' },
-  { source: 'jpeg', targets: ['png', 'webp', 'gif', 'bmp', 'avif', 'tiff', 'ico', 'svg', 'pdf', 'zip', 'tar', 'gz'],
+  { source: 'jpeg', targets: ['png', 'webp', 'gif', 'bmp', 'tiff', 'ico', 'svg', 'pdf', 'zip', 'tar', 'gz'],
     converterId: 'image-converter', category: 'image' },
-  { source: 'png',  targets: ['jpg', 'webp', 'gif', 'bmp', 'avif', 'tiff', 'ico', 'eps', 'svg', 'psd', 'tga', 'pdf', 'zip', 'tar', 'gz'],
+  { source: 'png',  targets: ['jpg', 'webp', 'gif', 'bmp', 'tiff', 'ico', 'eps', 'svg', 'psd', 'tga', 'pdf', 'zip', 'tar', 'gz'],
     converterId: 'image-converter', category: 'image' },
-  { source: 'webp', targets: ['jpg', 'png', 'gif', 'bmp', 'avif', 'tiff', 'ico', 'svg', 'pdf', 'zip', 'tar', 'gz'],
+  { source: 'webp', targets: ['jpg', 'png', 'gif', 'bmp', 'tiff', 'ico', 'svg', 'pdf', 'zip', 'tar', 'gz'],
     converterId: 'image-converter', category: 'image' },
   { source: 'gif',  targets: ['jpg', 'png', 'webp', 'bmp', 'tiff', 'pdf', 'zip', 'tar', 'gz'],
     converterId: 'image-converter', category: 'image' },
-  { source: 'bmp',  targets: ['jpg', 'png', 'webp', 'gif', 'tiff', 'avif', 'pdf', 'zip', 'tar', 'gz'],
+  { source: 'bmp',  targets: ['jpg', 'png', 'webp', 'gif', 'tiff', 'pdf', 'zip', 'tar', 'gz'],
     converterId: 'image-converter', category: 'image' },
   { source: 'svg',  targets: ['png', 'jpg', 'webp', 'pdf', 'zip', 'tar', 'gz'],
     converterId: 'image-converter', category: 'image' },
   { source: 'ico',  targets: ['png', 'jpg', 'webp', 'pdf', 'zip', 'tar', 'gz'],
     converterId: 'image-converter', category: 'image' },
   { source: 'avif', targets: ['jpg', 'png', 'webp', 'gif', 'bmp', 'tiff', 'pdf', 'zip', 'tar', 'gz'],
-    converterId: 'image-converter', category: 'image' },
-  // HEIC/HEIF: Apple's modern image formats — 1.8M+ monthly searches for "heic to jpg"
-  { source: 'heic', targets: ['jpg', 'png', 'webp', 'gif', 'bmp', 'tiff', 'pdf', 'zip', 'tar', 'gz'],
-    converterId: 'image-converter', category: 'image' },
-  { source: 'heif', targets: ['jpg', 'png', 'webp', 'gif', 'bmp', 'tiff', 'pdf', 'zip', 'tar', 'gz'],
-    converterId: 'image-converter', category: 'image' },
-  // TIFF: High-demand in photography/print workflows (~200k/month "tiff to jpg")
-  { source: 'tiff', targets: ['jpg', 'png', 'webp', 'gif', 'bmp', 'avif', 'pdf', 'zip', 'tar', 'gz'],
     converterId: 'image-converter', category: 'image' },
 
   // ── Documents ────────────────────────────────────────────

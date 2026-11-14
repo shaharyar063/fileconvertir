@@ -18,7 +18,7 @@ export const HOMEPAGE_SEO: HomepageSEO = {
     },
     {
       q: 'What formats can I convert?',
-      a: '200+ routes across images (HEIC, PNG, WebP, AVIF), documents (PDF, DOCX), audio/video (FFmpeg), fonts, and archives.',
+      a: '200+ routes across images (PNG, JPG, WebP, AVIF), documents (PDF, DOCX), audio/video (FFmpeg), fonts, and archives.',
     },
     {
       q: 'What is the maximum file size?',
@@ -38,7 +38,7 @@ export const HOMEPAGE_SEO: HomepageSEO = {
     },
     {
       q: 'Which conversions are most popular?',
-      a: 'HEIC to JPG, MOV to MP4, M4A to MP3, WebP to PNG, and PNG to JPG are frequent — each has a dedicated page.',
+      a: 'PNG to JPG, MOV to MP4, M4A to MP3, WebP to PNG, and PNG to JPG are frequent — each has a dedicated page.',
     },
   ],
 };

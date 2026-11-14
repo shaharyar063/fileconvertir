@@ -13,11 +13,9 @@ import { sitePath } from './site-url';
  */
 const PRIORITY_SLUGS = new Set([
   // Original priority pages
-  'heic-to-jpg',
   'avif-to-jpg',
   'm4a-to-mp3',
   'mov-to-mp4',
-  'tiff-to-jpg',
   'webp-to-png',
   // Image conversions — boosted
   'webp-to-jpg',
@@ -25,7 +23,6 @@ const PRIORITY_SLUGS = new Set([
   'svg-to-png',
   'png-to-pdf',
   'jpg-to-pdf',
-  'heic-to-pdf',
   // Audio conversions — boosted
   'mp4-to-mp3',
   'wav-to-mp3',
@@ -146,7 +143,6 @@ export function getAllSitewideNavLinks(): NavLink[] {
  * Mix of high-volume standbys and boosted opportunity pages.
  */
 export const POPULAR_LINKS: NavLink[] = [
-  { href: sitePath('heic-to-jpg'),   label: 'HEIC to JPG' },
   { href: sitePath('webp-to-jpg'),   label: 'WebP to JPG' },
   { href: sitePath('avif-to-jpg'),   label: 'AVIF to JPG' },
   { href: sitePath('png-to-pdf'),    label: 'PNG to PDF' },
@@ -158,12 +154,10 @@ export const POPULAR_LINKS: NavLink[] = [
   { href: sitePath('mkv-to-mp4'),    label: 'MKV to MP4' },
   { href: sitePath('docx-to-pdf'),   label: 'DOCX to PDF' },
   { href: sitePath('pdf-to-txt'),    label: 'PDF to Text' },
-  { href: sitePath('heic-to-pdf'),   label: 'HEIC to PDF' },
   { href: sitePath('svg-to-png'),    label: 'SVG to PNG' },
   { href: sitePath('ttf-to-woff'),   label: 'TTF to WOFF' },
   { href: sitePath('m4a-to-mp3'),    label: 'M4A to MP3' },
   { href: sitePath('webm-to-mp4'),   label: 'WebM to MP4' },
-  { href: sitePath('tiff-to-jpg'),   label: 'TIFF to JPG' },
 ];
 
 /**
@@ -171,7 +165,6 @@ export const POPULAR_LINKS: NavLink[] = [
  * category. Keeps the footer to ~12 links instead of 36+ hub pages.
  */
 export const FOOTER_FORMAT_LINKS: NavLink[] = [
-  { href: sitePath('heic'),   label: 'HEIC' },
   { href: sitePath('webp'),   label: 'WebP' },
   { href: sitePath('avif'),   label: 'AVIF' },
   { href: sitePath('png'),    label: 'PNG'  },
@@ -200,7 +193,6 @@ export const BOOSTED_LINKS: NavLink[] = [
   { href: sitePath('wav-to-mp3'),   label: 'WAV to MP3',    },
   { href: sitePath('docx-to-pdf'),  label: 'DOCX to PDF',   },
   { href: sitePath('pdf-to-txt'),   label: 'PDF to Text',   },
-  { href: sitePath('heic-to-pdf'),  label: 'HEIC to PDF',   },
   { href: sitePath('jpg-to-pdf'),   label: 'JPG to PDF',    },
   { href: sitePath('svg-to-png'),   label: 'SVG to PNG',    },
   { href: sitePath('docx-to-txt'),  label: 'DOCX to TXT',   },

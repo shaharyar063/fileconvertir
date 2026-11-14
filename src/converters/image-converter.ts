@@ -1,9 +1,8 @@
 import { ConverterPlugin, ConversionResult, ConversionOption } from '@/lib/converter-types';
 import { getTargetsForSource } from '@/lib/conversion-map';
 
-// heic/heif: natively rendered by modern browsers (iOS Safari, Chrome on macOS/Windows 11+)
-// tiff: supported via canvas in all modern browsers
-const IMAGE_FORMATS = ['jpg', 'jpeg', 'png', 'webp', 'gif', 'bmp', 'avif', 'tiff', 'heic', 'heif', 'ico', 'eps', 'svg', 'psd', 'tga'];
+// heic/heif/tiff are intentionally not supported as inputs: most browsers cannot decode them.
+const IMAGE_FORMATS = ['jpg', 'jpeg', 'png', 'webp', 'gif', 'bmp', 'avif', 'ico', 'eps', 'svg', 'psd', 'tga'];
 import { ArchiveFormat, buildSingleFileArchive } from '@/lib/build-archive';
 
 function getMimeType(format: string): string {

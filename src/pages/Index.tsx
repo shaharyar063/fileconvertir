@@ -13,7 +13,7 @@ import { BOOSTED_LINKS } from '@/lib/site-navigation';
 import { sitePath } from '@/lib/site-url';
 
 const popularConversions: { slug: string; label: string; tagline: string }[] = [
-  { slug: 'heic-to-jpg',  label: 'HEIC to JPG',  tagline: 'Open iPhone photos on Windows' },
+  { slug: 'png-to-jpg',   label: 'PNG to JPG',   tagline: 'Shrink screenshots & photos' },
   { slug: 'webp-to-jpg',  label: 'WebP to JPG',  tagline: 'Insert web images into Office' },
   { slug: 'mp4-to-mp3',   label: 'MP4 to MP3',   tagline: 'Extract audio from any video' },
   { slug: 'mkv-to-mp4',   label: 'MKV to MP4',   tagline: 'Fix Plex & iPhone playback' },
@@ -24,7 +24,7 @@ const popularConversions: { slug: string; label: string; tagline: string }[] = [
 void PRIORITY_CONVERTERS;
 
 const categories = [
-  { key: 'Image', icon: Image, label: 'Images', desc: 'PNG, JPG, WebP, AVIF, HEIC, HEIF, GIF, BMP, TIFF, SVG, ICO' },
+  { key: 'Image', icon: Image, label: 'Images', desc: 'PNG, JPG, WebP, AVIF, GIF, BMP, TIFF, SVG, ICO' },
   { key: 'Document', icon: FileText, label: 'Documents', desc: 'PDF, DOCX, ODT, TXT, HTML, Markdown, CSV, RTF' },
   { key: 'Audio', icon: Music, label: 'Audio', desc: 'MP3, WAV, AAC, OGG, FLAC, M4A — extract from video' },
   { key: 'Video', icon: Film, label: 'Video', desc: 'MP4, MOV, AVI, MKV, WebM — extract audio' },
