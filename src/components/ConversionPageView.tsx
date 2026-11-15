@@ -1,7 +1,7 @@
 import { useCallback, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
-import type { ConverterRoute } from '@/lib/converters';
+import { getFormatPageBySlug, getSourceFormatPage, type ConverterRoute } from '@/lib/converters';
 import type { ConversionPage } from '@/lib/seo/pages/types';
 import { formatLabel } from '@/lib/format-label';
 import { getRelatedConverters } from '@/lib/site-navigation';
@@ -84,13 +84,29 @@ export function ConversionPageView({ route, page }: { route: ConverterRoute; pag
       </div>
 
       {!isGuidePair && (
-        <p className="mt-8 text-sm text-muted-foreground">
-          Looking for the guide?{' '}
-          <Link to={sitePath(route.slug)} reloadDocument className="font-medium text-foreground underline underline-offset-4">
-            Read about {pair} conversion
-          </Link>
-          .
-        </p>
+        <nav className="mt-8 text-sm text-muted-foreground" aria-label="Related pages">
+          <ul className="flex flex-wrap gap-x-5 gap-y-2">
+            {selection.source && getSourceFormatPage(selection.source) && (
+              <li>
+                <Link to={sitePath(selection.source)} className="font-medium text-foreground underline underline-offset-4">
+                  All {formatLabel(selection.source)} conversions
+                </Link>
+              </li>
+            )}
+            {selection.target && getFormatPageBySlug(`to-${selection.target}`) && (
+              <li>
+                <Link to={sitePath(`to-${selection.target}`)} className="font-medium text-foreground underline underline-offset-4">
+                  Convert to {formatLabel(selection.target)}
+                </Link>
+              </li>
+            )}
+            <li>
+              <Link to={sitePath(route.slug)} reloadDocument className="font-medium text-foreground underline underline-offset-4">
+                Back to the {pair} guide
+              </Link>
+            </li>
+          </ul>
+        </nav>
       )}
 
       {isGuidePair && (
