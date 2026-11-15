@@ -14,6 +14,7 @@ import { getConversionPage } from './seo/pages';
 import type { ConversionPage } from './seo/pages/types';
 import { formatLabel } from './format-label';
 import { SITE_URL, absoluteUrl } from './site-url';
+import { PRIVACY_PAGE } from './seo/privacy';
 
 export { SITE_URL };
 
@@ -105,6 +106,10 @@ export function getAllPrerenderPages(): PrerenderPageMeta[] {
       bodyHtml: buildBodyHtml({
         heading: home.heading,
         description: home.description,
+        steps: home.content.howItWorks,
+        infoBlocks: [{ title: 'Why convert in your browser', text: home.content.comparison.rows.map((r) => `${r.label}: ${r.a}, compared with ${r.b}.`).join(' ') }],
+        listTitle: 'Limits to know about',
+        list: home.content.limits,
         faqs: home.faqs,
       }),
     },
@@ -173,6 +178,19 @@ export function getAllPrerenderPages(): PrerenderPageMeta[] {
       ],
     });
   }
+
+  pages.push({
+    path: 'privacy',
+    title: PRIVACY_PAGE.title,
+    description: PRIVACY_PAGE.metaDescription,
+    canonical: absoluteUrl('privacy'),
+    heading: PRIVACY_PAGE.heading,
+    bodyHtml: buildBodyHtml({
+      heading: PRIVACY_PAGE.heading,
+      description: PRIVACY_PAGE.intro,
+      article: PRIVACY_PAGE.sections.map((s) => ({ heading: s.heading, paragraphs: s.paragraphs })),
+    }),
+  });
 
   return pages;
 }
