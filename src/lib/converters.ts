@@ -1,5 +1,6 @@
 import { conversionMap } from './conversion-map';
 import { HAND_WRITTEN_SLUGS } from './seo/converters/tier-s';
+import { CONVERSION_PAGES } from './seo/pages';
 
 export interface ConverterRoute {
   slug: string;
@@ -39,7 +40,7 @@ const allConversionPairs: ConverterRoute[] = conversionMap
     }))
   );
 
-const publishedSlugs = new Set<string>(HAND_WRITTEN_SLUGS);
+const publishedSlugs = new Set<string>([...HAND_WRITTEN_SLUGS, ...Object.keys(CONVERSION_PAGES)]);
 
 /**
  * Converter pages that exist as URLs: only conversions with hand-written

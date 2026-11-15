@@ -11,6 +11,9 @@ import {
   buildHowToSchema,
 } from './seo-jsonld';
 import { getAllSitewideNavLinks, getPrerenderInternalLinks } from './site-navigation';
+import { getConversionPage } from './seo/pages';
+import type { ConversionPage } from './seo/pages/types';
+import { formatLabel } from './format-label';
 import { SITE_URL, absoluteUrl, canonicalSlug } from './site-url';
 
 export { SITE_URL };
@@ -68,6 +71,29 @@ function buildBodyHtml(p: BodyParts): string {
   return out.join('\n');
 }
 
+
+/** Static HTML for a conversion page: same four sections as the rendered page. */
+function conversionBodyHtml(page: ConversionPage, pair: string, source: string): string {
+  const out: string[] = [`<h1>${e(page.heading)}</h1>`, `<p>${e(page.description)}</p>`];
+  out.push(`<h2>How to Convert ${e(pair)}</h2><ol>`);
+  for (const st of page.steps) out.push(`<li><h3>${e(st.name)}</h3><p>${e(st.text)}</p></li>`);
+  out.push('</ol>');
+  out.push(`<h2>Understanding ${e(pair)} Conversion</h2>`);
+  for (const p of page.understanding.paragraphs) out.push(`<p>${e(p)}</p>`);
+  for (const g of page.understanding.graphics) out.push(`<p>${e(g.caption)}</p>`);
+  for (const sub of page.understanding.subsections ?? []) {
+    out.push(`<h3>${e(sub.heading)}</h3>`);
+    for (const p of sub.paragraphs) out.push(`<p>${e(p)}</p>`);
+  }
+  out.push(`<h2>Why and When to Convert ${e(pair)}</h2><ul>`);
+  for (const s of page.whyWhen.scenarios) out.push(`<li><strong>${e(s.title)}.</strong> ${e(s.text)}</li>`);
+  out.push('</ul>');
+  out.push(`<h3>When to keep the ${e(source)} instead</h3><p>${e(page.whyWhen.keepOriginal)}</p>`);
+  out.push('<h2>Frequently Asked Questions</h2>');
+  for (const f of page.faqs) out.push(`<h3>${e(f.q)}</h3><p>${e(f.a)}</p>`);
+  return out.join('\n');
+}
+
 export function getAllPrerenderPages(): PrerenderPageMeta[] {
   const home = getHomepageSEO();
   const pages: PrerenderPageMeta[] = [
@@ -86,6 +112,29 @@ export function getAllPrerenderPages(): PrerenderPageMeta[] {
   ];
 
   for (const route of converterRoutes) {
+    const page = getConversionPage(route.slug);
+    if (page) {
+      const source = formatLabel(route.sourceFormat);
+      const pair = `${source} to ${formatLabel(route.targetFormat)}`;
+      pages.push({
+        path: route.slug,
+        title: page.title,
+        description: page.metaDescription,
+        canonical: absoluteUrl(route.slug),
+        heading: page.heading,
+        jsonLd: [
+          buildHowToSchema(`How to convert ${pair}`, page.steps),
+          buildFAQSchema(page.faqs),
+          buildBreadcrumbSchema([
+            { name: 'Home', url: absoluteUrl() },
+            { name: `${source} converter`, url: absoluteUrl(route.sourceFormat) },
+            { name: page.heading, url: absoluteUrl(route.slug) },
+          ]),
+        ],
+        bodyHtml: conversionBodyHtml(page, pair, source),
+      });
+      continue;
+    }
     const seo = getConverterSEO(route.sourceFormat, route.targetFormat);
     const schemas: object[] = [
       buildFAQSchema(seo.faqs),

@@ -8,9 +8,11 @@ import { HeroConverter } from '@/components/HeroConverter';
 import { CheckCircle, ArrowRight, Sparkles } from 'lucide-react';
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@/components/ui/accordion';
 import { useDocumentHead } from '@/hooks/use-document-head';
+import { getConversionPage } from '@/lib/seo/pages';
+import { ConversionPageView } from '@/components/ConversionPageView';
 import { buildFAQSchema, buildBreadcrumbSchema, buildHowToSchema, absoluteUrl } from '@/lib/seo-jsonld';
 
-export default function ConverterPage() {
+function LegacyConverterPage() {
   const { slug } = useParams<{ slug: string }>();
   const route = slug ? getConverterBySlug(slug) : undefined;
   const seo = route ? getConverterSEO(route.sourceFormat, route.targetFormat) : undefined;
@@ -216,4 +218,12 @@ export default function ConverterPage() {
       )}
     </article>
   );
+}
+
+export default function ConverterPage() {
+  const { slug } = useParams<{ slug: string }>();
+  const route = slug ? getConverterBySlug(slug) : undefined;
+  const page = route ? getConversionPage(route.slug) : undefined;
+  if (route && page) return <ConversionPageView key={route.slug} route={route} page={page} />;
+  return <LegacyConverterPage />;
 }
