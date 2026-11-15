@@ -2,7 +2,6 @@ import { FONT_SOURCES } from '@/lib/source-formats';
 import { ConverterPlugin, ConversionResult, ConversionOption } from '@/lib/converter-types';
 import { getTargetsForSource } from '@/lib/conversion-map';
 import { ArchiveFormat, buildSingleFileArchive } from '@/lib/build-archive';
-import opentype from 'opentype.js';
 
 
 function getMimeType(format: string): string {
@@ -255,12 +254,10 @@ export const fontConverter: ConverterPlugin = {
     // Archive targets package the original file untouched.
     if (!['zip', 'tar', 'gz'].includes(targetFormat)) {
       // Work on the real SFNT bytes. WOFF is only a compression wrapper, so
-      // wrapping/unwrapping is lossless — unlike re-serialising through
-      // opentype.js, which drops kerning, ligatures, hinting and other tables.
-      const sfnt =
-        sourceExt === 'woff' || sfntFlavor(arrayBuffer) === MAGIC_WOFF
-          ? await unwrapWoff(arrayBuffer)
-          : arrayBuffer;
+      // wrapping and unwrapping never changes the font itself: kerning,
+      // hinting and every other table are kept exactly.
+      const isWoff = sourceExt === 'woff' || sfntFlavor(arrayBuffer) === MAGIC_WOFF;
+      const sfnt = isWoff ? await unwrapWoff(arrayBuffer) : arrayBuffer;
       const flavor = sfntFlavor(sfnt);
       if (flavor === SFNT_TTCF) {
         throw new Error('Font collections (.ttc) are not supported. Extract a single font first.');
@@ -280,23 +277,19 @@ export const fontConverter: ConverterPlugin = {
         };
       }
 
-      // Same outline type as requested (TrueType→ttf, CFF→otf): hand back the
-      // original bytes. Only a real TTF<->OTF outline change needs opentype.js.
+      // TTF and OTF differ in outline type (TrueType vs PostScript/CFF). Changing
+      // outline type is a different, lossy job, so only the matching target is
+      // accepted instead of writing a mislabelled file.
       const isCff = flavor === SFNT_OTTO;
-      if ((targetFormat === 'otf') === isCff) {
-        onProgress?.(100);
-        return {
-          blob: new Blob([sfnt], { type: getMimeType(targetFormat) }),
-          filename: `${baseName}.${targetFormat}`,
-          mimeType: getMimeType(targetFormat),
-        };
+      if (targetFormat === 'ttf' && isCff) {
+        throw new Error('This font has PostScript (CFF) outlines, so it is an OTF font. Choose OTF as the output.');
       }
-
-      const font = opentype.parse(sfnt);
-      const outputBuffer = font.toArrayBuffer();
+      if (targetFormat === 'otf' && !isCff) {
+        throw new Error('This font has TrueType outlines, so it is a TTF font. Choose TTF as the output.');
+      }
       onProgress?.(100);
       return {
-        blob: new Blob([outputBuffer], { type: getMimeType(targetFormat) }),
+        blob: new Blob([sfnt], { type: getMimeType(targetFormat) }),
         filename: `${baseName}.${targetFormat}`,
         mimeType: getMimeType(targetFormat),
       };

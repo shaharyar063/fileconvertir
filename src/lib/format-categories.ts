@@ -16,7 +16,7 @@ export const formatCategories: FormatCategory[] = [
     key: 'image',
     label: 'Images',
     icon: Image,
-    formats: ['jpg', 'jpeg', 'png', 'webp', 'avif', 'gif', 'bmp', 'svg', 'ico'],
+    formats: ['jpg', 'jpeg', 'png', 'webp', 'avif', 'gif', 'bmp', 'tiff', 'svg', 'ico', 'eps', 'psd', 'tga'],
   },
   {
     key: 'document',
