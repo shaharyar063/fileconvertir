@@ -193,7 +193,7 @@ export const MEDIA_SOURCE_HUBS: Record<string, FormatSEO> = {
     details:
       'MP4 (MPEG-4 Part 14) is the container used for most online video. It usually carries H.264 video and AAC audio, and nearly every phone, TV and browser can play it. The container itself is only a wrapper; compatibility depends on the codecs inside.',
     longDescription:
-      'The common job here is pulling the soundtrack out of a video as MP3 or WAV. Converting to WebM re-encodes the video with VP9, which is what some web platforms prefer. Video conversion runs in the browser with FFmpeg compiled to WebAssembly, so it is much slower than desktop software: expect minutes rather than seconds for long clips. It also needs enough memory, so very large videos may fail on phones. Keep files under the 100 MB limit.',
+      'The common job here is pulling the soundtrack out of a video as MP3 or WAV. Converting to WebM re-encodes the video with VP8, an open codec that some web platforms prefer. Video conversion runs in the browser with FFmpeg compiled to WebAssembly, so it is much slower than desktop software: expect minutes rather than seconds for long clips. It also needs enough memory, so very large videos may fail on phones. Keep files under the 100 MB limit.',
     useCases: [
       'Save the audio of a lecture, interview or concert as MP3',
       'Get a WAV soundtrack to use in an editor',
@@ -460,14 +460,14 @@ export const MEDIA_TARGET_HUBS: Record<string, FormatSEO> = {
   webm: {
     title: 'Convert to WebM — MP4 to WebM',
     metaDescription:
-      'Convert MP4 video to WebM in your browser for web publishing. Free, private with no upload. Encoded with VP9, which is slow in the browser.',
+      'Convert MP4 video to WebM in your browser for web publishing. Free and private with no upload. Encoded with VP8 video and Opus audio.',
     heading: 'Convert to WebM',
     description:
       'Convert MP4 video to WebM for websites that prefer an open format.',
     details:
       'WebM is an open, web-oriented video format from Google that uses VP8, VP9 or AV1 video with Vorbis or Opus audio. It is well supported in browsers and is often smaller than MP4 for the same quality, but it does not play natively on many TVs and Apple devices.',
     longDescription:
-      'The WebM files made here use VP9 video and Opus audio, encoded with fast settings that keep browser memory use low. VP9 is a heavy encoder, so conversion takes noticeably longer than MP4 conversions and long videos may be slow or fail on phones. Use WebM for web pages that you control; use MP4 when you need maximum compatibility.',
+      'The WebM files made here use VP8 video and Opus audio, which every WebM-capable browser plays. VP8 is the older WebM codec, so files are not as small as VP9 or AV1 would make them. Use WebM for web pages that you control; use MP4 when you need maximum compatibility.',
     useCases: [
       'Serve an open-format video on your own website',
       'Meet a platform requirement for WebM',
@@ -475,8 +475,8 @@ export const MEDIA_TARGET_HUBS: Record<string, FormatSEO> = {
     ],
     faqs: [
       {
-        q: 'Why is WebM conversion slower than MP4?',
-        a: 'VP9 is much more demanding to encode than H.264, and the browser version of FFmpeg runs on one thread.',
+        q: 'Which codec is used for the video?',
+        a: 'VP8. The newer VP9 encoder does not run reliably inside a browser, so use desktop software if you need VP9 or AV1.',
       },
       {
         q: 'Will it play on an iPhone?',

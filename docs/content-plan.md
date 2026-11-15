@@ -95,7 +95,7 @@ theme-aware, responsive, with a text alternative and caption.
 | `/ogg-to-mp3/` | Vorbis audio for Apple devices and cars | flow, format table | support |
 | `/mp4-to-mp3/` | audio extraction; video discarded | tracks, size bars | — |
 | `/mp4-to-wav/` | uncompressed soundtrack for editing | tracks, size bars | — |
-| `/mp4-to-webm/` | VP9/Opus for the web; slow encode | tracks, format table | support |
+| `/mp4-to-webm/` | VP8/Opus for the web | tracks, format table | support |
 | `/mov-to-mp4/` | iPhone video for everything else; re-encode | tracks, format table | support |
 | `/mov-to-mp3/` | audio from iPhone/QuickTime recordings | tracks, flow | — |
 | `/mkv-to-mp4/` | Matroska to device-friendly MP4; extra tracks dropped | tracks, format table | support |

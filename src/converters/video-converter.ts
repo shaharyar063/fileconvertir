@@ -89,7 +89,8 @@ function getVideoArgs(format: string): string[] {
   // Use fast presets and lower quality to avoid WASM memory/speed issues
   switch (format) {
     case 'webm':
-      return ['-c:v', 'libvpx-vp9', '-crf', '35', '-b:v', '0', '-deadline', 'realtime', '-cpu-used', '8', '-row-mt', '0', '-c:a', 'libopus'];
+      // VP8, not VP9: the libvpx-vp9 encoder crashes the single-threaded WebAssembly build.
+      return ['-c:v', 'libvpx', '-crf', '10', '-b:v', '2M', '-deadline', 'realtime', '-cpu-used', '5', '-c:a', 'libopus'];
     case 'mp4':
       return ['-c:v', 'libx264', '-preset', 'ultrafast', '-crf', '28', '-c:a', 'aac'];
     case 'mkv':
