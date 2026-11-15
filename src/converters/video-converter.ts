@@ -1,9 +1,9 @@
+import { VIDEO_SOURCES } from '@/lib/source-formats';
 import { ConverterPlugin, ConversionResult, ConversionOption } from '@/lib/converter-types';
 import { getTargetsForSource } from '@/lib/conversion-map';
 import { formatConversionError } from '@/lib/conversion-errors';
 import { ArchiveFormat, buildSingleFileArchive } from '@/lib/build-archive';
 
-const VIDEO_SOURCES = ['mp4', 'mov', 'avi', 'mkv', 'webm'];
 const AUDIO_TARGETS = ['mp3', 'wav'];
 const VIDEO_TARGETS = ['mp4', 'webm'];
 

@@ -171,6 +171,25 @@ export function escapeHtml(value: string): string {
     .replace(/"/g, '&quot;');
 }
 
+
+/**
+ * Static copy of the site header (same markup and classes as SiteHeader), shown
+ * while the JavaScript loads so the page is never blank and nothing jumps when
+ * React takes over.
+ */
+const HEADER_SHELL = `<header class="bg-background text-foreground border-b border-border sticky top-0 z-50">
+      <div class="mx-auto flex max-w-5xl items-center justify-between px-4 py-3">
+        <a href="/" class="flex items-center gap-2.5 group rounded-lg px-1" aria-label="FileConvertir — Home">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" class="h-7 w-7 shrink-0" aria-hidden="true"><rect width="32" height="32" rx="7" fill="hsl(var(--foreground))"/><path d="M25 10 L17 15 L17 12.5 L5 12.5 L5 7.5 L17 7.5 L17 5 Z" fill="hsl(var(--background))"/><path d="M7 22 L15 17 L15 19.5 L27 19.5 L27 24.5 L15 24.5 L15 27 Z" fill="hsl(var(--background))"/></svg>
+          <span class="text-base font-extrabold tracking-tight text-foreground">FileConvertir</span>
+        </a>
+        <nav class="flex items-center gap-2" aria-label="Site navigation">
+          <a href="/#categories" class="inline-flex items-center rounded-lg px-3 py-2 text-xs font-bold uppercase tracking-wider text-foreground">All Formats</a>
+          <span class="inline-flex h-9 w-9 items-center justify-center rounded-full border border-foreground" aria-hidden="true"><svg viewBox="0 0 24 24" class="h-5 w-5"><defs><clipPath id="shell-tt"><circle cx="12" cy="12" r="11"/></clipPath></defs><g clip-path="url(#shell-tt)"><rect x="0" y="0" width="12" height="24" fill="hsl(var(--foreground))"/><rect x="12" y="0" width="12" height="24" fill="hsl(var(--background))"/></g><circle cx="12" cy="12" r="11" fill="none" stroke="hsl(var(--foreground))" stroke-width="1.5"/></svg></span>
+        </nav>
+      </div>
+    </header>`;
+
 export function injectPageMeta(html: string, page: PrerenderPageMeta): string {
   const title = escapeHtml(page.title);
   const description = escapeHtml(page.description);
@@ -235,7 +254,9 @@ export function injectPageMeta(html: string, page: PrerenderPageMeta): string {
     </div>`;
 
   if (!out.includes('data-prerender="true"')) {
-    out = out.replace('<div id="root"></div>', `<div id="root">${body}</div>`);
+    // Visible header shell + visually hidden crawler content. React replaces both on mount.
+    const shellHtml = `<div class="flex min-h-screen flex-col bg-background">${HEADER_SHELL}<main class="flex-1"></main></div>`;
+    out = out.replace('<div id="root"></div>', `<div id="root">${shellHtml}${body}</div>`);
   }
 
   if (page.noindex) {

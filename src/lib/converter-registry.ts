@@ -1,28 +1,43 @@
 import { ConverterPlugin, ConversionOption } from './converter-types';
-import { imageConverter } from '@/converters/image-converter';
-import { documentConverter } from '@/converters/document-converter';
-import { audioConverter } from '@/converters/audio-converter';
-import { videoConverter } from '@/converters/video-converter';
-import { fontConverter } from '@/converters/font-converter';
-import { archiveConverter } from '@/converters/archive-converter';
+import { getTargetsForSource } from './conversion-map';
+import {
+  ARCHIVE_SOURCES,
+  AUDIO_SOURCES,
+  DOCUMENT_SOURCES,
+  FONT_SOURCES,
+  IMAGE_SOURCES,
+  VIDEO_SOURCES,
+} from './source-formats';
+
+interface RegistryEntry {
+  sourceFormats: string[];
+  /** Converters (and the heavy libraries they use) load on first use only. */
+  load: () => Promise<ConverterPlugin>;
+}
+
+const entries: RegistryEntry[] = [
+  { sourceFormats: IMAGE_SOURCES, load: () => import('@/converters/image-converter').then((m) => m.imageConverter) },
+  { sourceFormats: DOCUMENT_SOURCES, load: () => import('@/converters/document-converter').then((m) => m.documentConverter) },
+  { sourceFormats: AUDIO_SOURCES, load: () => import('@/converters/audio-converter').then((m) => m.audioConverter) },
+  { sourceFormats: VIDEO_SOURCES, load: () => import('@/converters/video-converter').then((m) => m.videoConverter) },
+  { sourceFormats: FONT_SOURCES, load: () => import('@/converters/font-converter').then((m) => m.fontConverter) },
+  { sourceFormats: ARCHIVE_SOURCES, load: () => import('@/converters/archive-converter').then((m) => m.archiveConverter) },
+];
+
+function findEntry(sourceExtension: string): RegistryEntry | undefined {
+  return entries.find((e) => e.sourceFormats.includes(sourceExtension.toLowerCase()));
+}
 
 class ConverterRegistry {
-  private plugins: ConverterPlugin[] = [];
-
-  register(plugin: ConverterPlugin) {
-    this.plugins.push(plugin);
-  }
-
-  getConverterForFormat(sourceExtension: string): ConverterPlugin | null {
-    return this.plugins.find(p =>
-      p.sourceFormats.includes(sourceExtension.toLowerCase())
-    ) || null;
-  }
-
+  /** Output formats for an input extension. Answered from the conversion map, so no converter code is loaded. */
   getTargetFormats(sourceExtension: string): ConversionOption[] {
-    const converter = this.getConverterForFormat(sourceExtension);
-    if (!converter) return [];
-    return converter.getTargetFormats(sourceExtension.toLowerCase());
+    const ext = sourceExtension.toLowerCase();
+    if (!findEntry(ext)) return [];
+    return getTargetsForSource(ext).map((targetFormat) => ({
+      targetFormat,
+      label: targetFormat.toUpperCase(),
+      description: `Convert to ${targetFormat.toUpperCase()}`,
+    }));
   }
 
   async convert(
@@ -31,17 +46,11 @@ class ConverterRegistry {
     targetFormat: string,
     onProgress?: (progress: number) => void
   ) {
-    const converter = this.getConverterForFormat(sourceExtension);
-    if (!converter) throw new Error(`No converter found for .${sourceExtension} files`);
+    const entry = findEntry(sourceExtension);
+    if (!entry) throw new Error(`No converter found for .${sourceExtension} files`);
+    const converter = await entry.load();
     return converter.convert(file, targetFormat, onProgress);
   }
 }
 
 export const registry = new ConverterRegistry();
-
-registry.register(imageConverter);
-registry.register(documentConverter);
-registry.register(audioConverter);
-registry.register(videoConverter);
-registry.register(fontConverter);
-registry.register(archiveConverter);

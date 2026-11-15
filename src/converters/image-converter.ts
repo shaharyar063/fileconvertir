@@ -1,7 +1,7 @@
+import { IMAGE_SOURCES } from '@/lib/source-formats';
 import { ConverterPlugin, ConversionResult, ConversionOption } from '@/lib/converter-types';
 import { getTargetsForSource } from '@/lib/conversion-map';
 
-const IMAGE_FORMATS = ['jpg', 'jpeg', 'png', 'webp', 'gif', 'bmp', 'avif', 'ico', 'eps', 'svg', 'psd', 'tga'];
 import { ArchiveFormat, buildSingleFileArchive } from '@/lib/build-archive';
 
 function getMimeType(format: string): string {
@@ -304,7 +304,7 @@ function buildTiff(imageData: ImageData, w: number, h: number): Blob {
 export const imageConverter: ConverterPlugin = {
   id: 'image-converter',
   name: 'Image Converter',
-  sourceFormats: IMAGE_FORMATS,
+  sourceFormats: IMAGE_SOURCES,
 
   getTargetFormats(sourceFormat: string): ConversionOption[] {
     return getTargetsForSource(sourceFormat).map(f => ({

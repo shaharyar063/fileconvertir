@@ -1,3 +1,4 @@
+import { DOCUMENT_SOURCES } from '@/lib/source-formats';
 import { ConverterPlugin, ConversionResult, ConversionOption } from '@/lib/converter-types';
 import { getTargetsForSource } from '@/lib/conversion-map';
 import { textToDocx } from '@/lib/build-docx';
@@ -5,7 +6,6 @@ import { extractPdfText } from '@/lib/pdf-text';
 import { ArchiveFormat, buildSingleFileArchive } from '@/lib/build-archive';
 import { escapeHtml, safeHttpUrl, sanitizeExportedHtml } from '@/lib/escape-html';
 
-const DOC_SOURCES = ['pdf', 'docx', 'odt', 'txt', 'rtf', 'html', 'md', 'csv'];
 
 async function readTextFile(file: File): Promise<string> {
   return file.text();
@@ -145,7 +145,7 @@ async function extractText(file: File, ext: string): Promise<string> {
 export const documentConverter: ConverterPlugin = {
   id: 'document-converter',
   name: 'Document Converter',
-  sourceFormats: DOC_SOURCES,
+  sourceFormats: DOCUMENT_SOURCES,
 
   getTargetFormats(sourceFormat: string): ConversionOption[] {
     return getTargetsForSource(sourceFormat).map(t => ({

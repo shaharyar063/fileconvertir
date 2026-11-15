@@ -1,10 +1,10 @@
+import { ARCHIVE_SOURCES } from '@/lib/source-formats';
 import { ConverterPlugin, ConversionResult, ConversionOption } from '@/lib/converter-types';
 import { getTargetsForSource } from '@/lib/conversion-map';
 import JSZip from 'jszip';
 import { safeArchiveEntryName } from '@/lib/safe-archive-path';
 import { buildTar, dedupeFileNames } from '@/lib/build-archive';
 
-const ARCHIVE_SOURCES = ['zip', 'tar', 'gz'];
 
 /**
  * Parse a TAR archive and return its files.
