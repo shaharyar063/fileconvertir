@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { CONVERSION_PAGES } from '@/lib/seo/pages';
 import { conversionMap } from '@/lib/conversion-map';
+import { formatLabel } from '@/lib/format-label';
 
 const entries = Object.entries(CONVERSION_PAGES);
 
@@ -15,6 +16,12 @@ describe('conversion pages', () => {
     expect(page.metaDescription.length).toBeLessThanOrEqual(160);
     // 1–2 sentences above the tool
     expect(page.description.split(/(?<=[.!?])\s+/).length).toBeLessThanOrEqual(2);
+    // The description sits under the H1 and carries the page's keywords.
+    const [src, tgt] = slug.split('-to-').map(formatLabel);
+    expect(page.description.toLowerCase()).toContain(`${src} to ${tgt}`.toLowerCase());
+    expect(page.description.toLowerCase()).toContain('online');
+    expect(page.description.toLowerCase()).toContain('free');
+    expect(page.description.length).toBeLessThanOrEqual(260);
     expect(page.steps).toHaveLength(3);
     expect(page.understanding.paragraphs.length).toBeGreaterThanOrEqual(1);
     expect(page.understanding.graphics.length).toBeGreaterThanOrEqual(1);

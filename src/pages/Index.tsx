@@ -82,9 +82,7 @@ export default function Index() {
           <h1 className="text-4xl font-extrabold tracking-tight text-foreground md:text-5xl">
             Free Online File Converter
           </h1>
-          <p className="mt-4 max-w-xl text-base text-foreground/90 leading-relaxed">
-            Convert images, documents, audio, video, fonts & archives instantly in your browser. 100% private — your files never leave your device.
-          </p>
+          <p className="mt-2 max-w-2xl text-xs leading-snug text-muted-foreground">{homeSeo.description}</p>
         </header>
         <div className="mt-8">
           <HeroConverter />

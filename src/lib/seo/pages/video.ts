@@ -11,7 +11,7 @@ export const VIDEO_PAGES: Record<string, ConversionPage> = {
       'Extract the audio from an MP4 video as a 192 kbps MP3 in your browser. The video is never uploaded. Free and private, files up to 100 MB.',
     heading: 'MP4 to MP3 Converter',
     description:
-      'Extract the soundtrack of an MP4 video and save it as an MP3. The video stays on your device throughout.',
+      'Convert MP4 to MP3 online for free: extract the audio from a video as a 192 kbps MP3. The video never leaves your device and no sign-up is needed; the limit is 100 MB.',
     steps: [
       { name: 'Add your MP4 video', text: 'Click Select Files or drop an MP4 onto the converter. Each file can be up to 100 MB.' },
       { name: 'Convert to MP3', text: 'Press Convert. The picture is discarded and the audio is encoded at 192 kbps. The first run downloads the media engine (about 30 MB).' },
@@ -71,7 +71,7 @@ export const VIDEO_PAGES: Record<string, ConversionPage> = {
       'Extract the audio from an MP4 as uncompressed 16-bit WAV in your browser, ready for editing. Free, private, with no upload. Up to 100 MB.',
     heading: 'MP4 to WAV Converter',
     description:
-      'Extract the audio from an MP4 video as uncompressed 16-bit WAV, ready for an audio editor. Nothing is uploaded.',
+      'Convert MP4 to WAV online for free to extract uncompressed audio from a video for editing. The audio is pulled out in your browser, so nothing is uploaded; videos can be up to 100 MB.',
     steps: [
       { name: 'Add your MP4 video', text: 'Click Select Files or drop an MP4 onto the converter, up to 100 MB.' },
       { name: 'Convert to WAV', text: 'Press Convert. The audio track is decoded to 16-bit PCM and the video is discarded. The first run downloads the media engine.' },
@@ -130,7 +130,7 @@ export const VIDEO_PAGES: Record<string, ConversionPage> = {
       'Convert MP4 to WebM (VP8 video, Opus audio) in your browser for web use. Free and private with nothing uploaded. Files up to 100 MB.',
     heading: 'MP4 to WebM Converter',
     description:
-      'Convert MP4 video to WebM with VP8 video and Opus audio for use on the web. Encoding runs in your browser.',
+      'Convert MP4 to WebM online for free with VP8 video and Opus audio for websites. Encoded in your browser with no sign-up, so your video is not uploaded; the limit is 100 MB.',
     steps: [
       { name: 'Add your MP4 video', text: 'Click Select Files or drop an MP4 onto the converter. The limit is 100 MB per file.' },
       { name: 'Convert to WebM', text: 'Press Convert. Video is re-encoded with VP8 and audio with Opus. The first run downloads the media engine (about 30 MB).' },
@@ -203,7 +203,7 @@ export const VIDEO_PAGES: Record<string, ConversionPage> = {
       'Convert MOV videos from iPhone or Mac to MP4 in your browser. Re-encoded to H.264 for wide compatibility. Free, private, no upload, 100 MB limit.',
     heading: 'MOV to MP4 Converter',
     description:
-      'Convert MOV videos from an iPhone or Mac to MP4 that plays almost anywhere. The video is processed in your browser.',
+      'Convert MOV to MP4 online for free so iPhone and Mac videos play on Windows, Android and the web. Your video is re-encoded in your browser and never uploaded, up to 100 MB.',
     steps: [
       { name: 'Add your MOV video', text: 'Click Select Files or drop a MOV file onto the converter. The limit is 100 MB, roughly one to two minutes of 1080p iPhone video.' },
       { name: 'Convert to MP4', text: 'Press Convert. The video is re-encoded to H.264 with AAC audio. The first run downloads the media engine (about 30 MB).' },
@@ -276,7 +276,7 @@ export const VIDEO_PAGES: Record<string, ConversionPage> = {
       'Extract the audio from a MOV video as a 192 kbps MP3 in your browser. Works with iPhone and QuickTime recordings. Free, private, no upload.',
     heading: 'MOV to MP3 Converter',
     description:
-      'Save the sound from a MOV video as an MP3. Works with iPhone and QuickTime recordings, entirely in your browser.',
+      'Convert MOV to MP3 online for free to extract the audio from iPhone and QuickTime videos at 192 kbps. Your video stays on your device, with no upload or sign-up.',
     steps: [
       { name: 'Add your MOV video', text: 'Click Select Files or drop a MOV file onto the converter, up to 100 MB.' },
       { name: 'Convert to MP3', text: 'Press Convert. The picture is ignored and the audio is encoded at 192 kbps. The first run downloads the media engine.' },
@@ -337,7 +337,7 @@ export const VIDEO_PAGES: Record<string, ConversionPage> = {
       'Convert MKV to MP4 in your browser for TVs, iPhones and editors. Re-encoded to H.264; extra audio tracks are dropped. Free, no upload.',
     heading: 'MKV to MP4 Converter',
     description:
-      'Convert MKV videos to MP4 so they play on more devices. One video and one audio track are kept, and nothing is uploaded.',
+      'Convert MKV to MP4 online for free so videos play on iPhones, TVs and editors. Runs in your browser with no upload or sign-up, for files up to 100 MB; extra audio tracks are dropped.',
     steps: [
       { name: 'Add your MKV video', text: 'Click Select Files or drop an MKV onto the converter. Files can be up to 100 MB, which suits clips more than films.' },
       { name: 'Convert to MP4', text: 'Press Convert. Video is re-encoded to H.264 and audio to AAC. The first run downloads the media engine (about 30 MB).' },
@@ -412,7 +412,7 @@ export const VIDEO_PAGES: Record<string, ConversionPage> = {
       'Convert old AVI videos to MP4 in your browser so they play on phones and TVs. Re-encoded to H.264. Free, private, no upload, 100 MB limit.',
     heading: 'AVI to MP4 Converter',
     description:
-      'Convert AVI videos to MP4 for modern phones, TVs and browsers. Conversion happens on your device, with no upload.',
+      'Convert AVI to MP4 online for free so old videos play on phones, TVs and browsers. Converted on your device with no account, for files up to 100 MB.',
     steps: [
       { name: 'Add your AVI video', text: 'Click Select Files or drop an AVI onto the converter, up to 100 MB.' },
       { name: 'Convert to MP4', text: 'Press Convert. The video is re-encoded to H.264 and the audio to AAC. The first run downloads the media engine.' },
@@ -473,7 +473,7 @@ export const VIDEO_PAGES: Record<string, ConversionPage> = {
       'Convert WebM to MP4 in your browser so recordings open in editors and on iPhones. Re-encoded to H.264 and AAC. Free, private, no upload.',
     heading: 'WebM to MP4 Converter',
     description:
-      'Convert WebM videos, such as browser screen recordings, to MP4 that opens in editors and on iPhones. No upload needed.',
+      'Convert WebM to MP4 online for free so screen recordings open in editors and on iPhones. Nothing is uploaded and no sign-up is needed; files can be up to 100 MB.',
     steps: [
       { name: 'Add your WebM video', text: 'Click Select Files or drop a WebM file onto the converter, up to 100 MB.' },
       { name: 'Convert to MP4', text: 'Press Convert. VP8 or VP9 video becomes H.264, and Opus or Vorbis audio becomes AAC. The first run downloads the media engine.' },

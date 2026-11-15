@@ -6,7 +6,7 @@ export const HOMEPAGE_SEO: HomepageSEO = {
     'Convert images, documents, audio, video, fonts and archives in your browser. 100% private — files never leave your device. No signup, free, 230+ conversions.',
   heading: 'Free Online File Converter',
   description:
-    'Convert images, documents, audio, video, fonts and archives instantly in your browser. Private, free, and works on desktop or mobile.',
+    'Free online file converter: convert images, documents, audio, video, fonts and archives in your browser with no upload or sign-up. Your files never leave your device.',
   faqs: [
     {
       q: 'Is FileConvertir really free?',

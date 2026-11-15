@@ -57,7 +57,7 @@ export function FormatPageView({
     <article className="mx-auto max-w-3xl px-4 py-8">
       <header>
         <h1 className="text-3xl font-extrabold text-foreground md:text-4xl">{seo.heading}</h1>
-        <p className="mt-3 text-base leading-relaxed text-muted-foreground">{seo.description}</p>
+        <p className="mt-2 text-xs leading-snug text-muted-foreground">{seo.description}</p>
       </header>
 
       <div className="mt-6">{tool}</div>

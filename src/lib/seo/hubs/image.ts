@@ -9,7 +9,7 @@ export const IMAGE_SOURCE_HUBS: Record<string, FormatSEO> = {
       'Convert JPG photos to PNG or PDF in your browser. Files stay on your device, nothing is uploaded, and you can convert up to 20 photos at a time.',
     heading: 'JPG File Converter',
     description:
-      'Convert JPG photos to PNG or PDF without uploading them anywhere. Pick a target format below, or drop your files into the converter above.',
+      'Free online JPG converter: convert JPG to PNG or PDF in your browser with no upload or sign-up. Handles JPG and JPEG photos, up to 20 files at a time.',
     details:
       'JPG (also written JPEG) is the lossy image format almost every camera, phone and website uses. It stores photographs compactly by discarding detail the eye is unlikely to notice, which is why a 12-megapixel photo can fit in two or three megabytes. The trade-off is that every re-save loses a little more quality, and JPG has no transparency channel.',
     longDescription:
@@ -46,7 +46,7 @@ export const IMAGE_SOURCE_HUBS: Record<string, FormatSEO> = {
       'Convert PNG images to JPG, WebP, TIFF or PDF in your browser. Free, private, no upload, and transparency is handled for you when the target needs it.',
     heading: 'PNG File Converter',
     description:
-      'Turn PNG screenshots and graphics into smaller JPG or WebP files, or into a PDF or TIFF, entirely inside your browser.',
+      'Free online PNG converter: convert PNG to JPG, WebP, TIFF or PDF in your browser. Shrink screenshots and graphics with no upload or sign-up.',
     details:
       'PNG is a lossless image format built for graphics: screenshots, logos, diagrams and anything with sharp edges or transparency. It compresses without discarding any pixels, which keeps text crisp but makes photographs large. A full-screen screenshot saved as PNG is often several megabytes, while the same image as JPG is a fraction of that.',
     longDescription:
@@ -83,7 +83,7 @@ export const IMAGE_SOURCE_HUBS: Record<string, FormatSEO> = {
       'Convert WebP images to PNG or JPG so they open anywhere. Runs in your browser with no upload, and keeps transparency when you choose PNG.',
     heading: 'WebP File Converter',
     description:
-      'Save WebP images as PNG or JPG so they work in editors, office apps and upload forms that do not accept WebP.',
+      'Free online WebP converter: convert WebP to PNG or JPG so images open in any app. Runs in your browser with no upload or sign-up.',
     details:
       'WebP is an image format Google released in 2010 to make web pages lighter. It offers both lossy and lossless compression, supports transparency and animation, and typically produces smaller files than JPG or PNG at similar visual quality. Every current browser can display it, but many desktop programs, older phones and upload forms still reject it.',
     longDescription:
@@ -116,7 +116,7 @@ export const IMAGE_SOURCE_HUBS: Record<string, FormatSEO> = {
       'Open AVIF images anywhere by converting them to JPG or PNG. The conversion happens in your browser, so your pictures are never uploaded.',
     heading: 'AVIF File Converter',
     description:
-      'Convert AVIF images to JPG or PNG so editors, documents and older devices can open them.',
+      'Free online AVIF converter: convert AVIF to JPG or PNG so images open on any device. Runs in your browser with no upload or sign-up; it reads AVIF but cannot create it.',
     details:
       'AVIF is an image format built on the AV1 video codec and standardised in 2019. It usually beats JPG and WebP on file size at the same quality and supports transparency, HDR and wide colour. Modern versions of Chrome, Firefox and Safari display it, but many editing programs and older operating systems still cannot open an .avif file.',
     longDescription:
@@ -148,7 +148,7 @@ export const IMAGE_SOURCE_HUBS: Record<string, FormatSEO> = {
       'Convert a GIF to a PNG image in your browser. Free, private and instant, with no upload. Note that animated GIFs become a single still frame.',
     heading: 'GIF File Converter',
     description:
-      'Convert GIF images to PNG. Everything runs in your browser and your files never leave your device.',
+      'Free online GIF converter: convert GIF to PNG to save a still image, in your browser with no upload or sign-up. An animated GIF gives its first frame.',
     details:
       'GIF dates from 1987 and is limited to 256 colours per image, which is why photographs look grainy in GIF form. Its lasting value is simple animation, and it supports one-bit transparency, meaning a pixel is either fully see-through or fully solid. The format uses lossless LZW compression.',
     longDescription:
@@ -180,7 +180,7 @@ export const IMAGE_SOURCE_HUBS: Record<string, FormatSEO> = {
       'Shrink huge BMP images by converting them to JPG right in your browser. Free, private, with no upload. Typical size savings are very large.',
     heading: 'BMP File Converter',
     description:
-      'Convert bulky BMP images to JPG. Conversion runs in your browser, so nothing is uploaded.',
+      'Free online BMP converter: convert BMP to JPG and shrink large bitmaps in your browser, with no upload or sign-up.',
     details:
       'BMP is the Windows bitmap format. It stores pixels with little or no compression, so files are large: a 1920×1080 image at 24 bits per pixel is roughly 6 MB. It has no real advantage on the web today, but it is still produced by older software, screen-capture tools and some embedded devices.',
     longDescription:
@@ -208,7 +208,7 @@ export const IMAGE_SOURCE_HUBS: Record<string, FormatSEO> = {
       'Turn SVG graphics into PNG images in your browser. Free and private, with no upload. The PNG is rendered at the size the SVG declares.',
     heading: 'SVG File Converter',
     description:
-      'Convert an SVG to a PNG image for places that cannot display vector graphics.',
+      'Free online SVG converter: convert SVG to PNG for sites and apps that reject vector files. Runs in your browser with no upload or sign-up.',
     details:
       'SVG is a vector format written in XML. Instead of storing pixels, it stores shapes, paths and text, so it stays sharp at any size and is usually tiny for logos and icons. Browsers display SVG natively, but many email clients, social networks, slide tools and upload forms do not accept it.',
     longDescription:
@@ -242,7 +242,7 @@ export const IMAGE_TARGET_HUBS: Record<string, FormatSEO> = {
       'Convert PNG, WebP, AVIF or BMP images to JPG in your browser. Smaller files that open everywhere, free, private and with no upload.',
     heading: 'Convert to JPG',
     description:
-      'Make a JPG from a PNG, WebP, AVIF or BMP. Choose the converter that matches your source file below.',
+      'Convert to JPG online: turn PNG, WebP, AVIF or BMP images into JPG in your browser, free, with no upload or sign-up.',
     details:
       'JPG is the default format for photographs. It uses lossy compression tuned to human vision, which makes files small, and it is understood by every browser, phone, printer and upload form. It cannot store transparency, and quality drops slightly each time a JPG is saved again.',
     longDescription:
@@ -274,7 +274,7 @@ export const IMAGE_TARGET_HUBS: Record<string, FormatSEO> = {
       'Convert JPG, WebP, AVIF, GIF or SVG files to lossless PNG in your browser. Keeps transparency, runs privately and never uploads your files.',
     heading: 'Convert to PNG',
     description:
-      'Create a lossless PNG from JPG, WebP, AVIF, GIF or SVG. Pick the converter that matches your source file below.',
+      'Convert to PNG online: make a PNG from JPG, WebP, AVIF, GIF or SVG in your browser, free, with no upload and transparency kept where the source has it.',
     details:
       'PNG is a lossless image format with full alpha transparency. Nothing is thrown away when a picture is saved as PNG, so it suits screenshots, logos, diagrams and images you intend to edit again. The cost is file size, especially for photographs.',
     longDescription:
@@ -307,7 +307,7 @@ export const IMAGE_TARGET_HUBS: Record<string, FormatSEO> = {
       'Convert PNG images to WebP for faster web pages. Runs in your browser with no upload and keeps transparency. Needs a browser that can encode WebP.',
     heading: 'Convert to WebP',
     description:
-      'Make a WebP from a PNG to cut file size while keeping transparency.',
+      'Convert to WebP online: turn PNG images into WebP for faster websites, free, in your browser with no upload. Needs a browser that can encode WebP.',
     details:
       'WebP is Google\'s web image format. It supports lossy and lossless compression, transparency and animation, and usually produces files noticeably smaller than JPG or PNG at similar visual quality. All current browsers display it.',
     longDescription:
@@ -339,7 +339,7 @@ export const IMAGE_TARGET_HUBS: Record<string, FormatSEO> = {
       'Convert PNG images to TIFF in your browser for print and archive workflows. Free, private and with no upload. Output is uncompressed 8-bit RGB.',
     heading: 'Convert to TIFF',
     description:
-      'Create a TIFF from a PNG for print shops and archives that ask for it.',
+      'Convert to TIFF online: make a TIFF from a PNG for print and archive use, free, in your browser with no upload or sign-up.',
     details:
       'TIFF is a flexible image container created in the 1980s that remains common in print production, scanning and archiving. It can hold lossless or uncompressed pixel data, many colour modes and multiple pages. Most web browsers cannot display it.',
     longDescription:

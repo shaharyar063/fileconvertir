@@ -8,7 +8,7 @@ export const DOCUMENT_PAGES: Record<string, ConversionPage> = {
       'Convert the text of a Word DOCX file to a simple PDF in your browser. Fonts, images, tables and layout are not kept. Free and private.',
     heading: 'DOCX to PDF Converter',
     description:
-      'Turn the text of a Word document into a plain PDF, privately in your browser. Formatting, images and tables are not carried over.',
+      'Convert DOCX to PDF online for free: a Word document\'s text becomes a plain PDF in your browser. Fonts, images and tables are not kept; no upload or sign-up.',
     steps: [
       { name: 'Add your DOCX file', text: 'Click Select Files or drop up to 20 Word documents onto the converter. Only .docx is supported, not .doc.' },
       { name: 'Convert to PDF', text: 'Press Convert. The text is read from the document and set on A4 pages in a standard font.' },
@@ -66,7 +66,7 @@ export const DOCUMENT_PAGES: Record<string, ConversionPage> = {
       'Extract the plain text from a Word DOCX file in your browser. Formatting, images and tables are removed. Free, private and nothing uploaded.',
     heading: 'DOCX to TXT Converter',
     description:
-      'Pull the plain text out of a Word document and save it as a TXT file. The document never leaves your device.',
+      'Convert DOCX to TXT online for free to extract the text from a Word document. Runs in your browser with no upload or sign-up; formatting, images and tables are removed.',
     steps: [
       { name: 'Add your DOCX file', text: 'Click Select Files or drop up to 20 .docx documents onto the converter.' },
       { name: 'Convert to TXT', text: 'Press Convert. The text of each document is extracted, one paragraph after another.' },
@@ -125,7 +125,7 @@ export const DOCUMENT_PAGES: Record<string, ConversionPage> = {
       'Extract the text from a PDF as a TXT file in your browser. Works on PDFs with a text layer, not scans. Free, private and nothing uploaded.',
     heading: 'PDF to TXT Converter',
     description:
-      'Extract the text from a PDF and save it as a plain TXT file. The PDF is read in your browser and is never uploaded.',
+      'Convert PDF to TXT online for free: a PDF to text converter that extracts the text in your browser, with no upload or sign-up. Works on PDFs with a text layer; scanned PDFs need OCR.',
     steps: [
       { name: 'Add your PDF file', text: 'Click Select Files or drop up to 20 PDFs onto the converter. Each can be up to 100 MB.' },
       { name: 'Convert to TXT', text: 'Press Convert. The text layer of every page is read in order.' },
@@ -182,7 +182,7 @@ export const DOCUMENT_PAGES: Record<string, ConversionPage> = {
       'Convert plain text files to PDF in your browser. Monospace font on A4 pages with wrapped lines. Free and private, nothing is uploaded.',
     heading: 'TXT to PDF Converter',
     description:
-      'Turn a plain text file into a printable PDF in your browser. Spacing is kept, and nothing is uploaded.',
+      'Convert TXT to PDF online for free: turn a text file into a printable A4 PDF in a monospace font that keeps spacing. No upload or sign-up.',
     steps: [
       { name: 'Add your TXT file', text: 'Click Select Files or drop up to 20 text files onto the converter.' },
       { name: 'Convert to PDF', text: 'Press Convert. The text is set in a monospace font on A4 pages, wrapping long lines.' },
@@ -239,7 +239,7 @@ export const DOCUMENT_PAGES: Record<string, ConversionPage> = {
       'Convert an HTML file to a PDF of its readable text in your browser. Styles, images and scripts are not rendered. Free, private, no upload.',
     heading: 'HTML to PDF Converter',
     description:
-      'Convert an HTML file to a PDF containing its readable text. The page is not rendered, so styling and images are not included.',
+      'Convert HTML to PDF online for free: save the readable text of an HTML file as a PDF. Runs in your browser with no upload or sign-up; styles, images and scripts are not rendered.',
     steps: [
       { name: 'Add your HTML file', text: 'Click Select Files or drop up to 20 saved .html files onto the converter. Web addresses are not accepted.' },
       { name: 'Convert to PDF', text: 'Press Convert. Scripts and styles are removed and the text is set on A4 pages.' },
@@ -297,7 +297,7 @@ export const DOCUMENT_PAGES: Record<string, ConversionPage> = {
       'Convert Markdown files to a plain-text PDF in your browser. Syntax is removed; headings and code are not styled. Free, private, no upload.',
     heading: 'Markdown to PDF Converter',
     description:
-      'Convert a Markdown file to a PDF of its text in your browser. The syntax is removed and headings are not styled.',
+      'Convert Markdown to PDF online for free: turn a .md file into a plain-text PDF. Runs in your browser with no upload or sign-up; headings and code blocks are not styled.',
     steps: [
       { name: 'Add your Markdown file', text: 'Click Select Files or drop up to 20 .md files onto the converter.' },
       { name: 'Convert to PDF', text: 'Press Convert. Markdown symbols are stripped and the text is set on A4 pages.' },

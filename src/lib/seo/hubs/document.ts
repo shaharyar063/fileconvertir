@@ -9,7 +9,7 @@ export const DOCUMENT_SOURCE_HUBS: Record<string, FormatSEO> = {
       'Extract the text from a PDF as a plain TXT file in your browser. Free and private, nothing is uploaded. Scanned PDFs without a text layer are not supported.',
     heading: 'PDF File Converter',
     description:
-      'Pull the text out of a PDF and save it as a TXT file, all inside your browser.',
+      'Free online PDF converter: extract the text from a PDF as a TXT file in your browser, with no upload or sign-up. Scanned PDFs need OCR, which is not included.',
     details:
       'PDF (Portable Document Format) was created by Adobe in 1993 and became an ISO standard in 2008. It describes exactly where every character, line and image sits on a page, which is why a PDF looks the same on every device. That fixed layout is also what makes PDFs awkward to edit or to copy text from.',
     longDescription:
@@ -45,7 +45,7 @@ export const DOCUMENT_SOURCE_HUBS: Record<string, FormatSEO> = {
       'Convert Word DOCX files to PDF or plain text in your browser. Text only: images, tables and styling are not carried over. Free and no upload.',
     heading: 'DOCX File Converter',
     description:
-      'Turn the text of a Word document into a PDF or a TXT file without uploading it.',
+      'Free online DOCX converter: convert Word documents to PDF or TXT in your browser with no upload or sign-up. Text only; formatting and images are not kept.',
     details:
       'DOCX is the Word format introduced with Office 2007. It is a ZIP archive of XML files that hold the text, styles, images and settings, and it became an ECMA and ISO standard. Because it describes flowing, editable content rather than fixed pages, the same document can paginate differently in Word, LibreOffice and Google Docs.',
     longDescription:
@@ -77,7 +77,7 @@ export const DOCUMENT_SOURCE_HUBS: Record<string, FormatSEO> = {
       'Convert plain TXT files to PDF in your browser. Free and private with no upload. Uses a standard Latin font, so some scripts may not display.',
     heading: 'TXT File Converter',
     description:
-      'Turn a plain text file into a PDF, directly in your browser.',
+      'Free online TXT converter: convert plain text files to PDF in your browser with no upload or sign-up, set in a monospace font on A4 pages.',
     details:
       'A TXT file holds characters and nothing else: no fonts, sizes, colours or images. That makes it the most portable format there is, readable by any program on any system, and the usual way to store notes, logs, code snippets and exported data.',
     longDescription:
@@ -109,7 +109,7 @@ export const DOCUMENT_SOURCE_HUBS: Record<string, FormatSEO> = {
       'Convert an HTML file to a text-only PDF in your browser. Free, private and no upload. Styling, images and scripts are not rendered.',
     heading: 'HTML File Converter',
     description:
-      'Convert an HTML file to a PDF containing its readable text.',
+      'Free online HTML converter: convert an HTML file to a PDF of its readable text, in your browser with no upload or sign-up. Styles and images are not rendered.',
     details:
       'HTML is the markup language of the web. A file consists of tags that describe headings, paragraphs, links, images and structure, with separate CSS describing how it looks. Opening the same HTML in different browsers can produce slightly different layouts.',
     longDescription:
@@ -141,7 +141,7 @@ export const DOCUMENT_SOURCE_HUBS: Record<string, FormatSEO> = {
       'Convert Markdown files to PDF in your browser. The markup is stripped and the text is laid out plainly. Free, private and no upload required.',
     heading: 'Markdown File Converter',
     description:
-      'Turn a Markdown file into a PDF of its text, right in your browser.',
+      'Free online Markdown converter: convert .md files to a plain-text PDF in your browser with no upload or sign-up. Syntax is removed; headings and code are not styled.',
     details:
       'Markdown is a plain-text writing format created by John Gruber in 2004. Symbols such as # for headings, asterisks for emphasis and dashes for lists let you write structured text in any editor, and tools turn it into HTML. It is the standard for README files, documentation and notes.',
     longDescription:
@@ -175,7 +175,7 @@ export const DOCUMENT_TARGET_HUBS: Record<string, FormatSEO> = {
       'Make a PDF from JPG, PNG, DOCX, TXT, HTML or Markdown in your browser. Free, private and no upload. Documents are converted as text only.',
     heading: 'Convert to PDF',
     description:
-      'Create a PDF from an image or a text-based document. Each converter below runs privately in your browser.',
+      'Convert to PDF online: make a PDF from JPG, PNG, DOCX, TXT, HTML or Markdown, free, in your browser with no upload or sign-up. Documents are converted as text only.',
     details:
       'PDF is the universal format for sharing fixed-layout documents. A PDF looks the same on any device and is accepted by almost every portal, printer and email system, which is why forms and offices ask for it by name.',
     longDescription:
@@ -211,7 +211,7 @@ export const DOCUMENT_TARGET_HUBS: Record<string, FormatSEO> = {
       'Extract plain text from PDF or Word DOCX files in your browser. Free and private, with no upload. Scanned PDFs without a text layer are not supported.',
     heading: 'Convert to TXT',
     description:
-      'Get the plain text out of a PDF or a Word document and save it as a TXT file.',
+      'Convert to TXT online: extract plain text from PDF or Word DOCX files, free, in your browser with no upload or sign-up. Scanned PDFs need OCR.',
     details:
       'TXT is plain text with no formatting, the lowest common denominator that any program on any system can open. It is the right format for pulling words out of a document, for notes, and for feeding content into other tools.',
     longDescription:
