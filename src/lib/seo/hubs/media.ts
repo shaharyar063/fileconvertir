@@ -4,12 +4,12 @@ import type { FormatSEO } from '../types';
 
 export const MEDIA_SOURCE_HUBS: Record<string, FormatSEO> = {
   mp3: {
-    title: 'MP3 Converter — Convert MP3 to WAV and More',
+    title: 'MP3 Converter Online — Convert MP3 to WAV and More',
     metaDescription:
-      'Convert MP3 audio to WAV, AAC, OGG, FLAC or M4A in your browser. Free and private, with no upload. Lossy MP3 cannot regain quality in a lossless format.',
+      'Free online MP3 converter. Convert MP3 to WAV and other audio formats in your browser with no upload or sign-up. Files up to 100 MB, batch up to 20.',
     heading: 'MP3 File Converter',
     description:
-      'Convert MP3 files to WAV and other audio formats without uploading them anywhere.',
+      'Free online MP3 converter: convert MP3 to WAV and other audio formats in your browser with no upload or sign-up, for files up to 100 MB.',
     details:
       'MP3 (MPEG-1 Audio Layer III) is the lossy audio format that made digital music portable. It discards sounds that are hard to hear to shrink files to roughly a tenth of CD size: at 128 kbps a minute of stereo audio is about 1 MB. Every player, phone and car stereo plays it.',
     longDescription:
@@ -40,12 +40,12 @@ export const MEDIA_SOURCE_HUBS: Record<string, FormatSEO> = {
   },
 
   wav: {
-    title: 'WAV Converter — Convert WAV to MP3 or FLAC',
+    title: 'WAV Converter Online — Convert WAV to MP3 or FLAC',
     metaDescription:
-      'Convert WAV audio to MP3 or FLAC in your browser. Free and private, with no upload. MP3 makes files much smaller, FLAC keeps full quality.',
+      'Free online WAV converter. Convert WAV to MP3 or FLAC in your browser with no upload or sign-up. Shrink recordings or archive them without losing quality.',
     heading: 'WAV File Converter',
     description:
-      'Shrink WAV recordings to MP3, or keep them lossless as FLAC, without uploading anything.',
+      'Free online WAV converter: convert WAV to MP3 or FLAC in your browser with no upload or sign-up. Shrink recordings or archive them losslessly.',
     details:
       'WAV is an uncompressed audio container from Microsoft and IBM dating to 1991. CD-quality stereo (44.1 kHz, 16-bit) takes about 10 MB per minute, so recordings and exports get large quickly. It is a standard format in recording software and audio editors because nothing has been thrown away.',
     longDescription:
@@ -72,12 +72,12 @@ export const MEDIA_SOURCE_HUBS: Record<string, FormatSEO> = {
   },
 
   flac: {
-    title: 'FLAC Converter — Convert FLAC to MP3',
+    title: 'FLAC Converter Online — Convert FLAC to MP3 Free',
     metaDescription:
-      'Convert FLAC to MP3 in your browser for phones, cars and players that do not support FLAC. Free, private, no upload. Expect a lossy, much smaller file.',
+      'Free online FLAC converter. Convert FLAC to MP3 for phones, cars and players, in your browser with no upload or sign-up. Keep your FLAC files as the master.',
     heading: 'FLAC File Converter',
     description:
-      'Convert FLAC files to MP3 so they play on any device.',
+      'Free online FLAC converter: convert FLAC to MP3 for phones, cars and players, in your browser with no upload or sign-up.',
     details:
       'FLAC (Free Lossless Audio Codec) compresses audio without discarding any information, typically to about half the size of the equivalent WAV. It is the usual choice for ripped CDs and high-resolution music libraries. Support is good on computers and many phones, but patchy in older cars, players and some apps.',
     longDescription:
@@ -100,12 +100,12 @@ export const MEDIA_SOURCE_HUBS: Record<string, FormatSEO> = {
   },
 
   ogg: {
-    title: 'OGG Converter — Convert OGG to MP3',
+    title: 'OGG Converter Online — Convert OGG to MP3 Free',
     metaDescription:
-      'Convert OGG Vorbis audio to MP3 in your browser for wider device support. Free, private and no upload. Note that this adds a second lossy encode.',
+      'Free online OGG converter. Convert OGG to MP3 so audio plays on iPhones, cars and any device, in your browser with no upload or sign-up. Batch up to 20 files.',
     heading: 'OGG File Converter',
     description:
-      'Convert OGG audio to MP3 so it plays on devices and apps that skip OGG.',
+      'Free online OGG converter: convert OGG to MP3 so audio plays on iPhones and any device, in your browser with no upload or sign-up.',
     details:
       'OGG is an open container, most often holding Vorbis audio. It was designed as a free alternative to MP3 and delivers similar or slightly better quality at the same bitrate. It is common in games, Linux software and some web audio, but Apple devices and many car stereos do not play it.',
     longDescription:
@@ -128,12 +128,12 @@ export const MEDIA_SOURCE_HUBS: Record<string, FormatSEO> = {
   },
 
   aac: {
-    title: 'AAC Converter — Convert AAC to MP3',
+    title: 'AAC Converter Online — Convert AAC to MP3 Free',
     metaDescription:
-      'Convert AAC audio files to MP3 in your browser. Free, private, no upload. A second lossy encode slightly reduces quality, so use the original if you can.',
+      'Free online AAC converter. Convert AAC audio files to MP3 in your browser with no upload or sign-up, so they play in any player or editor. Batch up to 20.',
     heading: 'AAC File Converter',
     description:
-      'Convert AAC audio to MP3 for players and apps that only know MP3.',
+      'Free online AAC converter: convert AAC audio files to MP3 in your browser with no upload or sign-up.',
     details:
       'AAC (Advanced Audio Coding) was designed as the successor to MP3 and generally sounds better at the same bitrate. It is the default audio format on iPhones and in YouTube and streaming services. Raw .aac files are less common than AAC inside an M4A or MP4 container.',
     longDescription:
@@ -156,12 +156,12 @@ export const MEDIA_SOURCE_HUBS: Record<string, FormatSEO> = {
   },
 
   m4a: {
-    title: 'M4A Converter — Convert M4A to MP3 or WAV',
+    title: 'M4A Converter Online — Convert M4A to MP3 or WAV',
     metaDescription:
-      'Convert M4A audio to MP3 or WAV in your browser. Free and private, with no upload. Handy for iPhone voice memos and iTunes purchases.',
+      'Free online M4A converter. Convert M4A voice memos and iTunes audio to MP3 or WAV in your browser, with no upload or sign-up. Batch up to 20 files at once.',
     heading: 'M4A File Converter',
     description:
-      'Convert M4A files, such as iPhone voice memos, to MP3 or WAV.',
+      'Free online M4A converter: convert M4A voice memos and iTunes audio to MP3 or WAV in your browser, with no upload or sign-up.',
     details:
       'M4A is the audio-only form of the MP4 container, typically carrying AAC audio. Apple uses it for iTunes purchases, Voice Memos and GarageBand exports. It can also hold Apple Lossless (ALAC) audio. Many non-Apple tools and older devices handle it poorly.',
     longDescription:
@@ -184,12 +184,12 @@ export const MEDIA_SOURCE_HUBS: Record<string, FormatSEO> = {
   },
 
   mp4: {
-    title: 'MP4 Converter — Extract Audio or Convert to WebM',
+    title: 'MP4 Converter Online — MP4 to MP3, WAV or WebM',
     metaDescription:
-      'Convert MP4 video to MP3 or WAV audio, or re-encode it as WebM, in your browser. Free and private with no upload. Large videos can take a while.',
+      'Free online MP4 converter. Extract audio from MP4 as MP3 or WAV, or convert MP4 to WebM, in your browser with no upload or sign-up. Videos up to 100 MB.',
     heading: 'MP4 File Converter',
     description:
-      'Extract audio from an MP4 or convert it to WebM, entirely on your device.',
+      'Free online MP4 converter: extract audio from MP4 as MP3 or WAV, or convert MP4 to WebM, in your browser with no upload or sign-up.',
     details:
       'MP4 (MPEG-4 Part 14) is the container used for most online video. It usually carries H.264 video and AAC audio, and nearly every phone, TV and browser can play it. The container itself is only a wrapper; compatibility depends on the codecs inside.',
     longDescription:
@@ -216,12 +216,12 @@ export const MEDIA_SOURCE_HUBS: Record<string, FormatSEO> = {
   },
 
   mov: {
-    title: 'MOV Converter — Convert MOV to MP4 or MP3',
+    title: 'MOV Converter Online — Convert MOV to MP4 or MP3',
     metaDescription:
-      'Convert MOV video to MP4, or extract the audio as MP3, in your browser. Free, private, no upload. Works for iPhone recordings under 100 MB.',
+      'Free online MOV converter. Convert MOV to MP4 or extract MP3 audio from iPhone and Mac videos, in your browser with no upload or sign-up. Up to 100 MB.',
     heading: 'MOV File Converter',
     description:
-      'Turn MOV videos from iPhones and Macs into MP4, or pull out the audio as MP3.',
+      'Free online MOV converter: convert MOV to MP4 or extract MP3 audio from iPhone and Mac videos, in your browser with no upload or sign-up.',
     details:
       'MOV is Apple\'s QuickTime container. iPhones and Macs record into it, and it plays smoothly across Apple software. Outside that ecosystem, support is less reliable, and large iPhone recordings can use HEVC video that older Windows software cannot decode.',
     longDescription:
@@ -248,12 +248,12 @@ export const MEDIA_SOURCE_HUBS: Record<string, FormatSEO> = {
   },
 
   mkv: {
-    title: 'MKV Converter — Convert MKV to MP4',
+    title: 'MKV Converter Online — Convert MKV to MP4 Free',
     metaDescription:
-      'Convert MKV video to MP4 in your browser for TVs, phones and editors that cannot open Matroska. Free, private, no upload, up to 100 MB per file.',
+      'Free online MKV converter. Convert MKV to MP4 for iPhones, TVs and editors, in your browser with no upload or sign-up. One audio track is kept; up to 100 MB.',
     heading: 'MKV File Converter',
     description:
-      'Convert MKV videos to MP4 so they play on more devices.',
+      'Free online MKV converter: convert MKV to MP4 for iPhones, TVs and editors, in your browser with no upload or sign-up.',
     details:
       'MKV is the Matroska container, an open format that can hold any number of video, audio and subtitle tracks. It is popular for ripped media and downloads, but many TVs, phones and editing tools do not play it directly.',
     longDescription:
@@ -280,12 +280,12 @@ export const MEDIA_SOURCE_HUBS: Record<string, FormatSEO> = {
   },
 
   avi: {
-    title: 'AVI Converter — Convert AVI to MP4',
+    title: 'AVI Converter Online — Convert AVI to MP4 Free',
     metaDescription:
-      'Convert old AVI videos to MP4 in your browser. Free and private with no upload. Works on files up to 100 MB; longer videos can take time.',
+      'Free online AVI converter. Convert AVI to MP4 so old videos play on modern phones, TVs and browsers, in your browser with no upload or sign-up. Up to 100 MB.',
     heading: 'AVI File Converter',
     description:
-      'Convert AVI videos to MP4 for modern phones, TVs and players.',
+      'Free online AVI converter: convert AVI to MP4 so old videos play on modern devices, in your browser with no upload or sign-up.',
     details:
       'AVI is a container Microsoft introduced in 1992. It was the standard on Windows for years, and many old camcorder clips and downloads are still in it. It is inefficient by today\'s standards and does not handle modern features well, so newer devices often skip it.',
     longDescription:
@@ -308,12 +308,12 @@ export const MEDIA_SOURCE_HUBS: Record<string, FormatSEO> = {
   },
 
   webm: {
-    title: 'WebM Converter — Convert WebM to MP4',
+    title: 'WebM Converter Online — Convert WebM to MP4 Free',
     metaDescription:
-      'Convert WebM video to MP4 in your browser so it plays on iPhones, TVs and editors. Free, private, no upload. Limit of 100 MB per file.',
+      'Free online WebM converter. Convert WebM to MP4 for editors, iPhones and upload forms, in your browser with no upload or sign-up. Files up to 100 MB each.',
     heading: 'WebM File Converter',
     description:
-      'Turn WebM videos into MP4 for devices that do not play WebM.',
+      'Free online WebM converter: convert WebM to MP4 for editors, iPhones and upload forms, in your browser with no upload or sign-up.',
     details:
       'WebM is an open video format Google introduced in 2010, built on the Matroska container with VP8, VP9 or AV1 video and Vorbis or Opus audio. Browsers play it well, which is why screen recorders and web tools often produce it, but some phones, TVs and editors do not.',
     longDescription:
@@ -338,12 +338,12 @@ export const MEDIA_SOURCE_HUBS: Record<string, FormatSEO> = {
 
 export const MEDIA_TARGET_HUBS: Record<string, FormatSEO> = {
   mp3: {
-    title: 'Convert to MP3 — Audio and Video to MP3',
+    title: 'Convert to MP3 Online — WAV, FLAC, M4A, MP4 to MP3',
     metaDescription:
-      'Convert WAV, M4A, AAC, OGG, FLAC, MP4 or MOV to MP3 in your browser. Free, private, with no upload. Extracts the audio from video files too.',
+      'Convert to MP3 online for free. Make a 192 kbps MP3 from WAV, FLAC, M4A, AAC, OGG, MP4 or MOV in your browser, with no upload or sign-up. Up to 100 MB.',
     heading: 'Convert to MP3',
     description:
-      'Make an MP3 from other audio formats, or extract the soundtrack from a video.',
+      'Convert to MP3 online: make an MP3 from WAV, FLAC, M4A, AAC, OGG, MP4 or MOV, free, at 192 kbps in your browser with no upload or sign-up.',
     details:
       'MP3 is the most compatible audio format in existence. It is lossy but compact, at about 1 MB per minute at 128 kbps, and every player, phone, car and website accepts it.',
     longDescription:
@@ -370,12 +370,12 @@ export const MEDIA_TARGET_HUBS: Record<string, FormatSEO> = {
   },
 
   wav: {
-    title: 'Convert to WAV — MP3, M4A and MP4 to WAV',
+    title: 'Convert to WAV Online — MP3, M4A, MP4 to WAV',
     metaDescription:
-      'Convert MP3, M4A or the audio of an MP4 video to uncompressed WAV in your browser. Free, private and no upload. Files are large by nature.',
+      'Convert to WAV online for free. Make uncompressed WAV audio from MP3, M4A or the audio of an MP4 video in your browser, with no upload or sign-up.',
     heading: 'Convert to WAV',
     description:
-      'Create an uncompressed WAV from MP3, M4A or the audio of a video.',
+      'Convert to WAV online: make uncompressed WAV audio from MP3, M4A or the audio of an MP4 video, free, in your browser with no upload or sign-up.',
     details:
       'WAV stores audio uncompressed, about 10 MB per minute for CD-quality stereo. It is the standard exchange format in recording and editing software because no processing has been applied.',
     longDescription:
@@ -398,12 +398,12 @@ export const MEDIA_TARGET_HUBS: Record<string, FormatSEO> = {
   },
 
   flac: {
-    title: 'Convert to FLAC — WAV to FLAC',
+    title: 'Convert to FLAC Online — WAV to FLAC, Lossless',
     metaDescription:
-      'Convert WAV audio to FLAC in your browser to save space without losing quality. Free, private and no upload. Lossless, about half the WAV size.',
+      'Convert to FLAC online for free. Compress WAV audio to lossless FLAC at about half the size, in your browser with no upload or sign-up. Audio stays identical.',
     heading: 'Convert to FLAC',
     description:
-      'Compress WAV recordings to FLAC without losing anything.',
+      'Convert to FLAC online: compress WAV audio to lossless FLAC at about half the size, free, in your browser with no upload or sign-up.',
     details:
       'FLAC is a lossless audio format: it shrinks audio, typically to 50 to 60 per cent of the WAV size, and decompresses to a bit-identical copy. It is open and widely supported on computers and many phones.',
     longDescription:
@@ -426,12 +426,12 @@ export const MEDIA_TARGET_HUBS: Record<string, FormatSEO> = {
   },
 
   mp4: {
-    title: 'Convert to MP4 — MOV, MKV, AVI, WebM to MP4',
+    title: 'Convert to MP4 Online — MOV, MKV, AVI, WebM to MP4',
     metaDescription:
-      'Convert MOV, MKV, AVI or WebM video to MP4 in your browser. Free, private with no upload. Re-encodes to H.264, so long clips can take a while.',
+      'Convert to MP4 online for free. Turn MOV, MKV, AVI or WebM videos into MP4 that plays almost anywhere, in your browser with no upload. Up to 100 MB each.',
     heading: 'Convert to MP4',
     description:
-      'Make an MP4 from MOV, MKV, AVI or WebM so the video plays almost anywhere.',
+      'Convert to MP4 online: turn MOV, MKV, AVI or WebM videos into MP4 that plays almost anywhere, free, in your browser with no upload or sign-up.',
     details:
       'MP4 is the most widely supported video format. With H.264 video and AAC audio it plays on practically every phone, TV, browser and editor, and upload sites accept it by default.',
     longDescription:
@@ -458,12 +458,12 @@ export const MEDIA_TARGET_HUBS: Record<string, FormatSEO> = {
   },
 
   webm: {
-    title: 'Convert to WebM — MP4 to WebM',
+    title: 'Convert to WebM Online — MP4 to WebM, Free',
     metaDescription:
-      'Convert MP4 video to WebM in your browser for web publishing. Free and private with no upload. Encoded with VP8 video and Opus audio.',
+      'Convert to WebM online for free. Turn MP4 into WebM with VP8 video and Opus audio in your browser, with no upload or sign-up. Videos up to 100 MB.',
     heading: 'Convert to WebM',
     description:
-      'Convert MP4 video to WebM for websites that prefer an open format.',
+      'Convert to WebM online: turn MP4 into WebM with VP8 video and Opus audio, free, in your browser with no upload or sign-up.',
     details:
       'WebM is an open, web-oriented video format from Google that uses VP8, VP9 or AV1 video with Vorbis or Opus audio. It is well supported in browsers and is often smaller than MP4 for the same quality, but it does not play natively on many TVs and Apple devices.',
     longDescription:

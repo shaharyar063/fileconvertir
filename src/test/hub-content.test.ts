@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { converterRoutes, formatPages } from '@/lib/converters';
 import { getFormatSEO, getSourceFormatSEO } from '@/lib/seo/registry';
+import { formatLabel } from '@/lib/format-label';
 
 const sources = [...new Set(converterRoutes.map((r) => r.sourceFormat))];
 const targets = formatPages.map((p) => p.targetFormat);
@@ -13,6 +14,10 @@ describe('hub pages are hand-written for every published format', () => {
     expect(hub.details.length).toBeGreaterThan(100);
     expect((hub.longDescription ?? '').length).toBeGreaterThan(200);
     expect(hub.title.length).toBeLessThanOrEqual(62);
+    expect(hub.description.toLowerCase()).toContain(`${formatLabel(fmt)} converter`.toLowerCase());
+    expect(hub.title.toLowerCase()).toContain(`${formatLabel(fmt)} converter online`.toLowerCase());
+    expect(hub.metaDescription.toLowerCase()).toContain(`${formatLabel(fmt)} converter`.toLowerCase());
+    expect(hub.description.length).toBeLessThanOrEqual(260);
   });
 
   it.each(targets)('target hub to-%s has full content', (fmt) => {
@@ -22,6 +27,10 @@ describe('hub pages are hand-written for every published format', () => {
     expect(hub.details.length).toBeGreaterThan(100);
     expect((hub.longDescription ?? '').length).toBeGreaterThan(200);
     expect(hub.title.length).toBeLessThanOrEqual(62);
+    expect(hub.description.toLowerCase()).toContain(`convert to ${formatLabel(fmt)}`.toLowerCase());
+    expect(hub.title.toLowerCase()).toContain(`convert to ${formatLabel(fmt)} online`.toLowerCase());
+    expect(hub.metaDescription.toLowerCase()).toContain(`convert to ${formatLabel(fmt)} online`.toLowerCase());
+    expect(hub.description.length).toBeLessThanOrEqual(260);
   });
 
   it('shares no sentences between hubs (no templates)', () => {

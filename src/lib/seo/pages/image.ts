@@ -3,12 +3,12 @@ import type { ConversionPage } from './types';
 /** Image conversion pages. Each entry is written for that conversion only. */
 export const IMAGE_PAGES: Record<string, ConversionPage> = {
   'png-to-jpg': {
-    title: 'PNG to JPG Converter — Free, No Upload',
+    title: 'PNG to JPG Converter Online — Free, No Upload',
     metaDescription:
-      'Convert PNG to JPG in your browser. Smaller files for email and uploads, transparency filled with white, nothing uploaded. Up to 20 files at once.',
+      'Convert PNG to JPG online for free. Shrink screenshots and photos in your browser with no upload or sign-up. Transparent areas turn white. Batch up to 20 files.',
     heading: 'PNG to JPG Converter',
     description:
-      'Turn PNG images into smaller JPG files. Conversion runs in your browser, so your images are never uploaded.',
+      'Convert PNG to JPG online for free and shrink screenshots and photos. Runs in your browser with no upload or sign-up; transparent areas turn white.',
     steps: [
       { name: 'Add your PNG files', text: 'Click Select Files or drop up to 20 PNG images onto the converter. Each file can be up to 100 MB.' },
       { name: 'Convert to JPG', text: 'Press Convert. Each image is redrawn on a white background and saved as a JPG at 92% quality.' },
@@ -58,12 +58,12 @@ export const IMAGE_PAGES: Record<string, ConversionPage> = {
   },
 
   'png-to-webp': {
-    title: 'PNG to WebP Converter — Keep Transparency',
+    title: 'PNG to WebP Converter Online — Keep Transparency',
     metaDescription:
-      'Convert PNG to WebP in your browser for lighter web images that keep transparency. Private, no upload. Needs a browser that can encode WebP.',
+      'Convert PNG to WebP online for free and make website images lighter. Keeps transparency, runs in your browser, with no upload or sign-up. Batch up to 20 files.',
     heading: 'PNG to WebP Converter',
     description:
-      'Convert PNG images to WebP for smaller files that keep their transparent background. Everything runs in your browser.',
+      'Convert PNG to WebP online for free to make website images lighter while keeping transparency. Runs in your browser with no upload or sign-up, in Chrome, Edge and Firefox.',
     steps: [
       { name: 'Add your PNG files', text: 'Click Select Files or drop up to 20 PNG images onto the converter.' },
       { name: 'Convert to WebP', text: 'Press Convert. Your browser encodes each image as WebP at 92% quality, keeping transparency.' },
@@ -126,12 +126,12 @@ export const IMAGE_PAGES: Record<string, ConversionPage> = {
   },
 
   'png-to-tiff': {
-    title: 'PNG to TIFF Converter — For Print and Archive',
+    title: 'PNG to TIFF Converter Online — Free, For Print',
     metaDescription:
-      'Convert PNG to TIFF in your browser for print shops and archives. Output is uncompressed 8-bit RGB. Private, free and nothing is uploaded.',
+      'Convert PNG to TIFF online for free for print and archive. Creates an uncompressed 8-bit RGB TIFF in your browser, with no upload or sign-up. Up to 20 files.',
     heading: 'PNG to TIFF Converter',
     description:
-      'Convert PNG images to TIFF for print and archive workflows that require it. Files are processed in your browser.',
+      'Convert PNG to TIFF online for free for print shops, archives and publishing software. The output is an uncompressed 8-bit RGB TIFF, created in your browser with no upload.',
     steps: [
       { name: 'Add your PNG files', text: 'Click Select Files or drop up to 20 PNG images onto the converter.' },
       { name: 'Convert to TIFF', text: 'Press Convert. Each image is written as an uncompressed 8-bit RGB TIFF.' },
@@ -185,12 +185,12 @@ export const IMAGE_PAGES: Record<string, ConversionPage> = {
   },
 
   'jpg-to-png': {
-    title: 'JPG to PNG Converter — Lossless Copy, No Upload',
+    title: 'JPG to PNG Converter Online — Lossless, Free',
     metaDescription:
-      'Convert JPG to PNG in your browser. Get a lossless copy for editing that stops further quality loss. Free and private, nothing is uploaded.',
+      'Convert JPG to PNG online for free and get a lossless copy to edit without further quality loss. Works in your browser with no upload or sign-up. JPEG too.',
     heading: 'JPG to PNG Converter',
     description:
-      'Save a JPG as a lossless PNG. The conversion happens in your browser and your photos stay on your device.',
+      'Convert JPG to PNG online for free to get a lossless copy you can edit without further quality loss. Works with JPG and JPEG files in your browser, with no upload or sign-up.',
     steps: [
       { name: 'Add your JPG files', text: 'Click Select Files or drop up to 20 JPG or JPEG images onto the converter.' },
       { name: 'Convert to PNG', text: 'Press Convert. Each photo is decoded and saved again as a lossless PNG.' },
@@ -245,12 +245,12 @@ export const IMAGE_PAGES: Record<string, ConversionPage> = {
   },
 
   'webp-to-png': {
-    title: 'WebP to PNG Converter — Transparency Kept',
+    title: 'WebP to PNG Converter Online — Transparency Kept',
     metaDescription:
-      'Convert WebP to PNG in your browser so the image opens in any editor. Transparency is kept. Free, private and nothing is uploaded.',
+      'Convert WebP to PNG online for free so images open in any editor or app. Transparency is kept. Runs in your browser with no upload or sign-up, up to 20 files.',
     heading: 'WebP to PNG Converter',
     description:
-      'Convert WebP images to PNG so they open in any editor or app, with transparency intact. Runs entirely in your browser.',
+      'Convert WebP to PNG online for free so images open in any editor or app, with transparency kept. Runs in your browser with no upload; an animated WebP gives its first frame.',
     steps: [
       { name: 'Add your WebP files', text: 'Click Select Files or drop up to 20 WebP images onto the converter.' },
       { name: 'Convert to PNG', text: 'Press Convert. Your browser decodes each WebP and saves it as a lossless PNG.' },
@@ -310,12 +310,12 @@ export const IMAGE_PAGES: Record<string, ConversionPage> = {
   },
 
   'webp-to-jpg': {
-    title: 'WebP to JPG Converter — Opens Everywhere',
+    title: 'WebP to JPG Converter Online — Free, No Upload',
     metaDescription:
-      'Convert WebP to JPG in your browser so photos open in Office, email and upload forms. Transparent areas become white. Free, no upload.',
+      'Convert WebP to JPG online for free so saved web images open in Word, email and upload forms. Runs in your browser with no upload or sign-up. Batch up to 20.',
     heading: 'WebP to JPG Converter',
     description:
-      'Convert WebP images to JPG, the photo format every app and upload form accepts. Your files stay on your device.',
+      'Convert WebP to JPG online for free so saved web images open in Word, email and upload forms. Done in your browser with no upload or sign-up; transparent areas become white.',
     steps: [
       { name: 'Add your WebP files', text: 'Click Select Files or drop up to 20 WebP images onto the converter.' },
       { name: 'Convert to JPG', text: 'Press Convert. Each image is placed on white and saved as a JPG at 92% quality.' },
@@ -378,12 +378,12 @@ export const IMAGE_PAGES: Record<string, ConversionPage> = {
   },
 
   'avif-to-jpg': {
-    title: 'AVIF to JPG Converter — Free, No Upload',
+    title: 'AVIF to JPG Converter Online — Free, No Upload',
     metaDescription:
-      'Convert AVIF images to JPG in your browser so they open in any app. Private and free, nothing is uploaded. Requires a browser that can display AVIF.',
+      'Convert AVIF to JPG online for free so images open on any device, app or upload form. Runs in your browser, with no upload or sign-up. Batch up to 20 files.',
     heading: 'AVIF to JPG Converter',
     description:
-      'Convert AVIF images to JPG so they open on any device or app. The conversion runs in your browser, with no upload.',
+      'Convert AVIF to JPG online for free so images open on any device, app or upload form. Runs in your browser with no upload or sign-up, and needs a browser that can display AVIF.',
     steps: [
       { name: 'Add your AVIF files', text: 'Click Select Files or drop up to 20 AVIF images onto the converter.' },
       { name: 'Convert to JPG', text: 'Press Convert. Your browser decodes the AVIF and saves it as a JPG at 92% quality on a white background.' },
@@ -448,12 +448,12 @@ export const IMAGE_PAGES: Record<string, ConversionPage> = {
   },
 
   'avif-to-png': {
-    title: 'AVIF to PNG Converter — Keeps Transparency',
+    title: 'AVIF to PNG Converter Online — Keep Transparency',
     metaDescription:
-      'Convert AVIF to PNG in your browser and keep transparent backgrounds. Opens in every editor. Free, private, with no upload required.',
+      'Convert AVIF to PNG online for free and keep transparent backgrounds for editors and design tools. Runs privately in your browser with no upload or sign-up.',
     heading: 'AVIF to PNG Converter',
     description:
-      'Convert AVIF images to PNG without losing transparency, so they open in any editor. Nothing leaves your device.',
+      'Convert AVIF to PNG online for free and keep transparent backgrounds for editors and design tools. Done privately in your browser with no upload or sign-up.',
     steps: [
       { name: 'Add your AVIF files', text: 'Click Select Files or drop up to 20 AVIF images onto the converter.' },
       { name: 'Convert to PNG', text: 'Press Convert. Your browser decodes each AVIF and stores the pixels as a lossless PNG.' },
@@ -506,12 +506,12 @@ export const IMAGE_PAGES: Record<string, ConversionPage> = {
   },
 
   'gif-to-png': {
-    title: 'GIF to PNG Converter — Still Image, No Upload',
+    title: 'GIF to PNG Converter Online — Free, No Upload',
     metaDescription:
-      'Convert a GIF to PNG in your browser. Animated GIFs become a still of the first frame. Free and private, with nothing uploaded to a server.',
+      'Convert GIF to PNG online for free to save a still image from any GIF. Runs in your browser with no upload or sign-up. Animated GIFs give their first frame.',
     heading: 'GIF to PNG Converter',
     description:
-      'Convert GIF images to PNG in your browser, with nothing uploaded. Animated GIFs produce a still image of the first frame.',
+      'Convert GIF to PNG online for free to save a still image from a GIF. Runs in your browser with no upload or sign-up; an animated GIF gives its first frame.',
     steps: [
       { name: 'Add your GIF files', text: 'Click Select Files or drop up to 20 GIF images onto the converter.' },
       { name: 'Convert to PNG', text: 'Press Convert. The first frame of each GIF is saved as a PNG.' },
@@ -562,12 +562,12 @@ export const IMAGE_PAGES: Record<string, ConversionPage> = {
   },
 
   'bmp-to-jpg': {
-    title: 'BMP to JPG Converter — Shrink Bitmap Files',
+    title: 'BMP to JPG Converter Online — Shrink Bitmaps Free',
     metaDescription:
-      'Convert BMP to JPG in your browser and cut file size dramatically. Free and private, nothing is uploaded. Convert up to 20 bitmaps at a time.',
+      'Convert BMP to JPG online for free and shrink large bitmap files to a fraction of their size. Runs in your browser with no upload or sign-up. Batch up to 20.',
     heading: 'BMP to JPG Converter',
     description:
-      'Convert bulky BMP bitmaps to compact JPG files. The conversion runs in your browser, so nothing is uploaded.',
+      'Convert BMP to JPG online for free and shrink large bitmap files to a fraction of their size. Runs in your browser with no upload or sign-up, for up to 20 files at once.',
     steps: [
       { name: 'Add your BMP files', text: 'Click Select Files or drop up to 20 BMP images onto the converter. Each can be up to 100 MB.' },
       { name: 'Convert to JPG', text: 'Press Convert. Each bitmap is compressed as a JPG at 92% quality.' },
@@ -619,12 +619,12 @@ export const IMAGE_PAGES: Record<string, ConversionPage> = {
   },
 
   'svg-to-png': {
-    title: 'SVG to PNG Converter — Rasterise Vectors Free',
+    title: 'SVG to PNG Converter Online — Transparent, Free',
     metaDescription:
-      'Convert SVG to PNG in your browser. The vector is rendered at the size set in the file, with transparency kept. Free, private, no upload.',
+      'Convert SVG to PNG online for free and keep the transparent background. Runs in your browser with no upload or sign-up; size comes from the SVG itself.',
     heading: 'SVG to PNG Converter',
     description:
-      'Render an SVG as a PNG image for places that do not accept vector files. The conversion happens in your browser.',
+      'Convert SVG to PNG online for free with a transparent background kept. Runs in your browser with no upload or sign-up; the PNG uses the width and height set in the SVG.',
     steps: [
       { name: 'Add your SVG files', text: 'Click Select Files or drop up to 20 SVG files onto the converter.' },
       { name: 'Convert to PNG', text: 'Press Convert. Your browser draws each SVG at the width and height set in the file and saves it as a PNG.' },
@@ -676,12 +676,12 @@ export const IMAGE_PAGES: Record<string, ConversionPage> = {
   },
 
   'jpg-to-pdf': {
-    title: 'JPG to PDF Converter — Free, No Upload',
+    title: 'JPG to PDF Converter Online — Free, No Upload',
     metaDescription:
-      'Convert JPG photos to PDF in your browser. Each photo becomes its own one-page PDF sized to the image. Free, private and nothing is uploaded.',
+      'Convert JPG to PDF online for free. Turn photos, scans and receipts into PDF files in your browser, with no upload or sign-up. One PDF per photo, up to 20.',
     heading: 'JPG to PDF Converter',
     description:
-      'Turn JPG photos into PDF files in your browser. Each photo becomes a one-page PDF, and nothing is uploaded.',
+      'Convert JPG to PDF online for free: turn photos, scans and receipts into PDFs for forms and email. No upload or sign-up; each photo becomes its own PDF.',
     steps: [
       { name: 'Add your JPG files', text: 'Click Select Files or drop up to 20 JPG photos onto the converter.' },
       { name: 'Convert to PDF', text: 'Press Convert. Each photo is placed on a PDF page the same size as the image.' },
@@ -722,12 +722,12 @@ export const IMAGE_PAGES: Record<string, ConversionPage> = {
   },
 
   'png-to-pdf': {
-    title: 'PNG to PDF Converter — Free, No Upload',
+    title: 'PNG to PDF Converter Online — Free, No Upload',
     metaDescription:
-      'Convert PNG screenshots and images to PDF in your browser. One PDF per image, transparency placed on white. Free, private, nothing uploaded.',
+      'Convert PNG to PDF online for free. Turn screenshots and images into PDF files in your browser, with no upload or sign-up. One PDF per image, up to 20 files.',
     heading: 'PNG to PDF Converter',
     description:
-      'Turn PNG screenshots and graphics into PDF files. Each image becomes a one-page PDF, created in your browser.',
+      'Convert PNG to PDF online for free: turn screenshots and images into PDFs for forms and email. No upload or sign-up; each image becomes its own PDF.',
     steps: [
       { name: 'Add your PNG files', text: 'Click Select Files or drop up to 20 PNG images onto the converter.' },
       { name: 'Convert to PDF', text: 'Press Convert. Each image is placed on a white PDF page of the same size.' },

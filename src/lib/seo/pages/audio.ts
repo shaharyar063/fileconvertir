@@ -6,12 +6,12 @@ import type { ConversionPage } from './types';
  */
 export const AUDIO_PAGES: Record<string, ConversionPage> = {
   'wav-to-mp3': {
-    title: 'WAV to MP3 Converter — Free, No Upload',
+    title: 'WAV to MP3 Converter Online — Free, 192 kbps',
     metaDescription:
-      'Convert WAV to MP3 in your browser at 192 kbps. Files become about seven times smaller. Free and private, with nothing uploaded to a server.',
+      'Convert WAV to MP3 online for free at 192 kbps. Make large recordings about seven times smaller in your browser, with no upload or sign-up. Up to 100 MB.',
     heading: 'WAV to MP3 Converter',
     description:
-      'Convert WAV recordings to MP3 at 192 kbps for easy sharing. The audio is processed in your browser and never uploaded.',
+      'Convert WAV to MP3 online for free at 192 kbps and make large recordings about seven times smaller. Encoded in your browser, so recordings stay private, up to 100 MB each.',
     steps: [
       { name: 'Add your WAV file', text: 'Click Select Files or drop WAV files onto the converter. Each can be up to 100 MB, which is about nine minutes of CD-quality stereo.' },
       { name: 'Convert to MP3', text: 'Press Convert. The first conversion downloads the audio engine (about 30 MB), then the file is encoded at 192 kbps.' },
@@ -61,12 +61,12 @@ export const AUDIO_PAGES: Record<string, ConversionPage> = {
   },
 
   'wav-to-flac': {
-    title: 'WAV to FLAC Converter — Lossless, No Upload',
+    title: 'WAV to FLAC Converter Online — Lossless, Free',
     metaDescription:
-      'Convert WAV to FLAC in your browser. Lossless compression at roughly half the size, with identical audio. Free, private, nothing uploaded.',
+      'Convert WAV to FLAC online for free. Lossless compression at about half the size, with audio identical to the WAV. Runs in your browser with no upload.',
     heading: 'WAV to FLAC Converter',
     description:
-      'Compress WAV audio to FLAC without losing any quality. Files are processed in your browser and never leave your device.',
+      'Convert WAV to FLAC online for free for lossless compression at about half the size. Runs in your browser with no upload or sign-up, and the audio stays identical to the WAV.',
     steps: [
       { name: 'Add your WAV file', text: 'Click Select Files or drop WAV files onto the converter, up to 100 MB each.' },
       { name: 'Convert to FLAC', text: 'Press Convert. The audio is compressed losslessly; the first run downloads the audio engine (about 30 MB).' },
@@ -121,12 +121,12 @@ export const AUDIO_PAGES: Record<string, ConversionPage> = {
   },
 
   'flac-to-mp3': {
-    title: 'FLAC to MP3 Converter — Free, No Upload',
+    title: 'FLAC to MP3 Converter Online — Free, 192 kbps',
     metaDescription:
-      'Convert FLAC to MP3 in your browser at 192 kbps for phones, cars and players without FLAC support. Free, private and nothing is uploaded.',
+      'Convert FLAC to MP3 online for free at 192 kbps so tracks play on phones, cars and any player. Runs in your browser with no upload or sign-up.',
     heading: 'FLAC to MP3 Converter',
     description:
-      'Convert lossless FLAC tracks to MP3 at 192 kbps so they play on any device. Conversion runs privately in your browser.',
+      'Convert FLAC to MP3 online for free at 192 kbps so tracks play on phones, cars and any player. Runs in your browser with no upload or sign-up; keep your FLAC files as the lossless master.',
     steps: [
       { name: 'Add your FLAC files', text: 'Click Select Files or drop up to 20 FLAC tracks onto the converter, 100 MB each at most.' },
       { name: 'Convert to MP3', text: 'Press Convert. Each track is decoded and encoded as a 192 kbps MP3. The first run downloads the audio engine.' },
@@ -187,12 +187,12 @@ export const AUDIO_PAGES: Record<string, ConversionPage> = {
   },
 
   'mp3-to-wav': {
-    title: 'MP3 to WAV Converter — Free, No Upload',
+    title: 'MP3 to WAV Converter Online — Free, No Upload',
     metaDescription:
-      'Convert MP3 to WAV in your browser for editors and devices that need uncompressed audio. Quality is not improved. Free, private, no upload.',
+      'Convert MP3 to WAV online for free for audio editors, CD burning and tools that need uncompressed audio. Runs in your browser with no upload or sign-up.',
     heading: 'MP3 to WAV Converter',
     description:
-      'Decode MP3 audio to uncompressed 16-bit WAV for editing and for devices that require it. Runs in your browser with no upload.',
+      'Convert MP3 to WAV online for free for audio editors, CD burning and tools that need uncompressed audio. Runs in your browser with no upload or sign-up; the sound is not improved.',
     steps: [
       { name: 'Add your MP3 file', text: 'Click Select Files or drop up to 20 MP3 files onto the converter.' },
       { name: 'Convert to WAV', text: 'Press Convert. The MP3 is decoded to 16-bit PCM. The first conversion downloads the audio engine (about 30 MB).' },
@@ -243,12 +243,12 @@ export const AUDIO_PAGES: Record<string, ConversionPage> = {
   },
 
   'm4a-to-mp3': {
-    title: 'M4A to MP3 Converter — Free, No Upload',
+    title: 'M4A to MP3 Converter Online — Voice Memos, Free',
     metaDescription:
-      'Convert M4A to MP3 in your browser at 192 kbps. Works with iPhone voice memos and iTunes audio. Free, private and nothing is uploaded.',
+      'Convert M4A to MP3 online for free at 192 kbps. Works with iPhone voice memos and iTunes audio, in your browser with no upload or sign-up. Batch up to 20 files.',
     heading: 'M4A to MP3 Converter',
     description:
-      'Convert M4A audio, including iPhone voice memos, to MP3 that plays everywhere. Files stay on your device.',
+      'Convert M4A to MP3 online for free at 192 kbps, including iPhone voice memos and iTunes audio. Runs in your browser with no upload or sign-up, so recordings stay on your device.',
     steps: [
       { name: 'Add your M4A file', text: 'Click Select Files or drop up to 20 M4A files onto the converter. On an iPhone, save the voice memo to Files first.' },
       { name: 'Convert to MP3', text: 'Press Convert. The audio is decoded and encoded as a 192 kbps MP3. The first run downloads the audio engine.' },
@@ -314,12 +314,12 @@ export const AUDIO_PAGES: Record<string, ConversionPage> = {
   },
 
   'm4a-to-wav': {
-    title: 'M4A to WAV Converter — Free, No Upload',
+    title: 'M4A to WAV Converter Online — Free, No Upload',
     metaDescription:
-      'Convert M4A to uncompressed WAV in your browser for audio editors and tools that need PCM. 16-bit output. Free, private, nothing uploaded.',
+      'Convert M4A to WAV online for free and get uncompressed 16-bit audio for editors and transcription tools. Runs in your browser with no upload or sign-up.',
     heading: 'M4A to WAV Converter',
     description:
-      'Decode M4A audio to 16-bit WAV for editing software and devices that need uncompressed sound. Nothing is uploaded.',
+      'Convert M4A to WAV online for free to get uncompressed 16-bit audio for editors and transcription tools. Decoded in your browser, so nothing is uploaded.',
     steps: [
       { name: 'Add your M4A file', text: 'Click Select Files or drop up to 20 M4A files onto the converter.' },
       { name: 'Convert to WAV', text: 'Press Convert. The audio is decoded to 16-bit PCM. The first conversion downloads the audio engine (about 30 MB).' },
@@ -370,12 +370,12 @@ export const AUDIO_PAGES: Record<string, ConversionPage> = {
   },
 
   'aac-to-mp3': {
-    title: 'AAC to MP3 Converter — Free, No Upload',
+    title: 'AAC to MP3 Converter Online — Free, 192 kbps',
     metaDescription:
-      'Convert .aac audio files to MP3 in your browser at 192 kbps for wider compatibility. Free and private, with nothing uploaded to a server.',
+      'Convert AAC to MP3 online for free at 192 kbps so raw .aac files play in any player or editor. Runs in your browser with no upload or sign-up. Batch up to 20.',
     heading: 'AAC to MP3 Converter',
     description:
-      'Convert raw AAC audio files to MP3 for players and software that do not accept .aac. Everything runs in your browser.',
+      'Convert AAC to MP3 online for free at 192 kbps so raw .aac files play in any player or editor. Converted in your browser, with no upload and no account.',
     steps: [
       { name: 'Add your AAC file', text: 'Click Select Files or drop up to 20 .aac files onto the converter.' },
       { name: 'Convert to MP3', text: 'Press Convert. The stream is decoded and encoded as a 192 kbps MP3. The first run downloads the audio engine.' },
@@ -428,12 +428,12 @@ export const AUDIO_PAGES: Record<string, ConversionPage> = {
   },
 
   'ogg-to-mp3': {
-    title: 'OGG to MP3 Converter — Free, No Upload',
+    title: 'OGG to MP3 Converter Online — Free, 192 kbps',
     metaDescription:
-      'Convert OGG Vorbis audio to MP3 in your browser at 192 kbps, so it plays on iPhones, cars and any player. Free, private, nothing uploaded.',
+      'Convert OGG to MP3 online for free at 192 kbps so audio plays on iPhones, cars and any player. Runs in your browser with no upload or sign-up. Batch up to 20.',
     heading: 'OGG to MP3 Converter',
     description:
-      'Convert OGG audio to MP3 so it plays on iPhones, car stereos and other devices that skip OGG. No upload is involved.',
+      'Convert OGG to MP3 online for free at 192 kbps so audio plays on iPhones, cars and any player. Runs in your browser with no upload or sign-up.',
     steps: [
       { name: 'Add your OGG file', text: 'Click Select Files or drop up to 20 .ogg files onto the converter.' },
       { name: 'Convert to MP3', text: 'Press Convert. The Vorbis audio is decoded and encoded as a 192 kbps MP3. The first run downloads the audio engine.' },

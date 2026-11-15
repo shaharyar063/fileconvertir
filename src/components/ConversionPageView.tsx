@@ -68,7 +68,7 @@ export function ConversionPageView({ route, page }: { route: ConverterRoute; pag
         <h1 className="text-3xl font-extrabold text-foreground md:text-4xl">
           {isGuidePair ? page.heading : customTitle}
         </h1>
-        <p className="mt-3 text-base leading-relaxed text-muted-foreground">
+        <p className="mt-2 text-xs leading-snug text-muted-foreground">
           {isGuidePair
             ? page.description
             : 'Add your files, pick the output format and convert. Everything runs in your browser, so nothing is uploaded.'}

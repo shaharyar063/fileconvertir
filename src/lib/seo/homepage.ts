@@ -1,12 +1,12 @@
 import type { HomepageSEO } from './types';
 
 export const HOMEPAGE_SEO: HomepageSEO = {
-  title: 'FileConvertir — Free Online File Converter',
+  title: 'Free Online File Converter — No Upload | FileConvertir',
   metaDescription:
-    'Convert images, documents, audio, video, fonts and archives in your browser. 100% private — files never leave your device. No signup, free, 230+ conversions.',
+    'Free online file converter for images, documents, audio and video. Convert PNG, JPG, PDF, MP3, MP4 and more in your browser, with no upload or sign-up.',
   heading: 'Free Online File Converter',
   description:
-    'Convert images, documents, audio, video, fonts and archives instantly in your browser. Private, free, and works on desktop or mobile.',
+    'Free online file converter: convert images, documents, audio, video, fonts and archives in your browser with no upload or sign-up. Your files never leave your device.',
   faqs: [
     {
       q: 'Is FileConvertir really free?',
