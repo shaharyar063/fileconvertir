@@ -49,7 +49,7 @@ docs/
 ## Pages and the conversion map
 
 `src/lib/conversion-map.ts` lists everything the tool can convert. Only pairs
-with hand-written content in `src/lib/seo/converters/tier-s/` get their own
+with a page in `src/lib/seo/pages/` get their own
 page (and sitemap entry); every other pair still converts from the homepage
 tool. See `docs/seo-content-workflow.md`.
 

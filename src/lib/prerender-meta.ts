@@ -1,6 +1,5 @@
 import { converterRoutes, formatPages } from './converters';
 import {
-  getConverterSEO,
   getFormatSEO,
   getHomepageSEO,
   getSourceFormatSEO,
@@ -14,7 +13,7 @@ import { getAllSitewideNavLinks, getPrerenderInternalLinks } from './site-naviga
 import { getConversionPage } from './seo/pages';
 import type { ConversionPage } from './seo/pages/types';
 import { formatLabel } from './format-label';
-import { SITE_URL, absoluteUrl, canonicalSlug } from './site-url';
+import { SITE_URL, absoluteUrl } from './site-url';
 
 export { SITE_URL };
 
@@ -133,41 +132,7 @@ export function getAllPrerenderPages(): PrerenderPageMeta[] {
         ],
         bodyHtml: conversionBodyHtml(page, pair, source),
       });
-      continue;
     }
-    const seo = getConverterSEO(route.sourceFormat, route.targetFormat);
-    const schemas: object[] = [
-      buildFAQSchema(seo.faqs),
-      buildBreadcrumbSchema([
-        { name: 'Home', url: absoluteUrl() },
-        { name: seo.heading, url: absoluteUrl(canonicalSlug(route.slug)) },
-      ]),
-    ];
-    if (seo.howToSteps?.length) {
-      schemas.push(buildHowToSchema(`How to ${seo.heading}`, seo.howToSteps));
-    }
-    pages.push({
-      path: route.slug,
-      title: seo.title,
-      description: seo.metaDescription,
-      canonical: absoluteUrl(route.slug),
-      heading: seo.heading,
-      jsonLd: schemas,
-      bodyHtml: buildBodyHtml({
-        heading: seo.heading,
-        description: seo.description,
-        paragraphs: [seo.longDescription],
-        steps: seo.howToSteps,
-        infoBlocks: [
-          { title: `About ${route.sourceFormat.toUpperCase()}`, text: seo.sourceInfo },
-          { title: `About ${route.targetFormat.toUpperCase()}`, text: seo.targetInfo },
-        ],
-        article: seo.article,
-        listTitle: `Why convert ${route.sourceFormat.toUpperCase()} to ${route.targetFormat.toUpperCase()}?`,
-        list: seo.useCases,
-        faqs: seo.faqs,
-      }),
-    });
   }
 
   const sources = new Set(converterRoutes.map((r) => r.sourceFormat));

@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { HeroConverter } from '@/components/HeroConverter';
 import { converterRoutes } from '@/lib/converters';
-import { PRIORITY_CONVERTERS, getHomepageSEO } from '@/lib/seo-content';
+import { getHomepageSEO } from '@/lib/seo-content';
 import { Shield, Zap, Globe, ArrowRight, CheckCircle, Image, FileText, Music, Film, Type, Archive, TrendingUp, Flame } from 'lucide-react';
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@/components/ui/accordion';
 import { useDocumentHead } from '@/hooks/use-document-head';
@@ -20,8 +20,6 @@ const popularConversions: { slug: string; label: string; tagline: string }[] = [
   { slug: 'docx-to-pdf',  label: 'DOCX to PDF',  tagline: 'Text of a Word file as a PDF' },
   { slug: 'pdf-to-txt',   label: 'PDF to Text',  tagline: 'Extract text for AI & editing' },
 ];
-// Reference PRIORITY_CONVERTERS so the link list stays in sync with the priority list
-void PRIORITY_CONVERTERS;
 
 const categories = [
   { key: 'Image', icon: Image, label: 'Images', desc: 'PNG, JPG, WebP, AVIF, GIF, BMP, TIFF, SVG, ICO' },

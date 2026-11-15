@@ -1,5 +1,4 @@
 import { conversionMap } from './conversion-map';
-import { HAND_WRITTEN_SLUGS } from './seo/converters/tier-s';
 import { CONVERSION_PAGES } from './seo/pages';
 
 export interface ConverterRoute {
@@ -40,12 +39,11 @@ const allConversionPairs: ConverterRoute[] = conversionMap
     }))
   );
 
-const publishedSlugs = new Set<string>([...HAND_WRITTEN_SLUGS, ...Object.keys(CONVERSION_PAGES)]);
+const publishedSlugs = new Set<string>(Object.keys(CONVERSION_PAGES));
 
 /**
- * Converter pages that exist as URLs: only conversions with hand-written
- * content. Templated pages for the remaining pairs were removed; those pairs
- * still work in the homepage tool.
+ * Converter pages that exist as URLs: conversions with a page in
+ * `src/lib/seo/pages/`. Other pairs still work in the homepage tool.
  */
 export const converterRoutes: ConverterRoute[] = allConversionPairs.filter(r =>
   publishedSlugs.has(r.slug)
