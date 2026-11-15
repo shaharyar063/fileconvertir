@@ -1,6 +1,5 @@
 const LABELS: Record<string, string> = {
   jpg: 'JPG',
-  jpeg: 'JPG',
   webp: 'WebP',
   webm: 'WebM',
   md: 'Markdown',

@@ -1,12 +1,9 @@
 import { describe, expect, it } from 'vitest';
 import { getAllPrerenderPages } from '@/lib/prerender-meta';
-import { isSitemapExcludedPath } from '@/lib/site-url';
 
 describe('seo content uniqueness', () => {
   it('has no duplicate titles among indexable prerender pages', () => {
-    const pages = getAllPrerenderPages().filter(
-      (p) => !p.path || !isSitemapExcludedPath(p.path),
-    );
+    const pages = getAllPrerenderPages();
     const titles = new Map<string, string[]>();
     for (const p of pages) {
       const key = p.path || '/';
@@ -19,9 +16,7 @@ describe('seo content uniqueness', () => {
   });
 
   it('has no duplicate meta descriptions among indexable pages', () => {
-    const pages = getAllPrerenderPages().filter(
-      (p) => !p.path || !isSitemapExcludedPath(p.path),
-    );
+    const pages = getAllPrerenderPages();
     const descs = new Map<string, string[]>();
     for (const p of pages) {
       const key = p.path || '/';

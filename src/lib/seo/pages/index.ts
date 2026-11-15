@@ -12,6 +12,7 @@ import { DOCUMENT_PAGES_B } from './document-convert-b';
 import { AUDIO_PAGES_A } from './audio-convert-a';
 import { AUDIO_PAGES_B } from './audio-convert-b';
 import { VIDEO_PAGES_A } from './video-convert-a';
+import { JPEG_PAGES } from './jpeg-convert';
 import { FONT_ARCHIVE_PAGES } from './font-archive-convert';
 
 /** Every conversion page, keyed by slug (`png-to-jpg`). */
@@ -29,6 +30,7 @@ export const CONVERSION_PAGES: Record<string, ConversionPage> = {
   ...AUDIO_PAGES_A,
   ...AUDIO_PAGES_B,
   ...VIDEO_PAGES_A,
+  ...JPEG_PAGES,
   ...FONT_ARCHIVE_PAGES,
 };
 

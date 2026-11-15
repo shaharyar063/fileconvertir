@@ -37,10 +37,11 @@ describe('prerender-meta', () => {
     expect(html).toContain('data-prerender="true"');
   });
 
-  it('does not prerender jpeg duplicates (they redirect to jpg-to-*)', () => {
+  it('gives .jpeg its own pages with their own canonical URL', () => {
     const paths = getAllPrerenderPages().map((p) => p.path);
-    expect(paths.some((p) => p === 'jpeg' || p.startsWith('jpeg-to-'))).toBe(false);
-    expect(absoluteUrl('jpeg-to-png')).toBe('https://fileconvertir.com/jpg-to-png/');
+    expect(paths).toContain('jpeg');
+    expect(paths).toContain('jpeg-to-png');
+    expect(absoluteUrl('jpeg-to-png')).toBe('https://fileconvertir.com/jpeg-to-png/');
   });
 
   it('only publishes pages that have hand-written content', () => {

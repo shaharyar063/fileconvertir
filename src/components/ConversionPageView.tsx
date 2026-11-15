@@ -31,8 +31,7 @@ export function ConversionPageView({ route, page }: { route: ConverterRoute; pag
   // showing a guide for the wrong conversion.
   const [selection, setSelection] = useState({ source: route.sourceFormat, target: route.targetFormat });
   const onPairChange = useCallback((s: string, t: string) => {
-    const norm = (x: string) => (x === 'jpeg' ? 'jpg' : x);
-    setSelection((prev) => (prev.source === norm(s) && prev.target === norm(t) ? prev : { source: norm(s), target: norm(t) }));
+    setSelection((prev) => (prev.source === s && prev.target === t ? prev : { source: s, target: t }));
   }, []);
   const isGuidePair = selection.source === route.sourceFormat && selection.target === route.targetFormat;
   const customTitle =

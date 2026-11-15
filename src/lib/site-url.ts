@@ -6,18 +6,9 @@ const RAW =
 
 export const SITE_URL = RAW.replace(/\/$/, '');
 
-/** Primary slug for indexing; jpeg routes canonical to jpg equivalents. */
+/** Slug without surrounding slashes. */
 export function canonicalSlug(slug: string): string {
-  const clean = slug.replace(/^\/+|\/+$/g, '');
-  if (clean.startsWith('jpeg-to-')) return clean.replace(/^jpeg-to-/, 'jpg-to-');
-  if (clean === 'jpeg') return 'jpg';
-  return clean;
-}
-
-/** True for jpeg duplicate URLs that should not appear in the sitemap. */
-export function isSitemapExcludedPath(path: string): boolean {
-  const clean = path.replace(/^\/+|\/+$/g, '');
-  return clean === 'jpeg' || clean.startsWith('jpeg-to-');
+  return slug.replace(/^\/+|\/+$/g, '');
 }
 
 /** Canonical absolute URL. Non-root paths use a trailing slash (Cloudflare Pages). */

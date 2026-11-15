@@ -2,71 +2,49 @@ import { Link } from 'react-router-dom';
 import { HeroConverter } from '@/components/HeroConverter';
 import { converterRoutes } from '@/lib/converters';
 import { getHomepageSEO } from '@/lib/seo-content';
-import { Shield, Zap, Globe, ArrowRight, CheckCircle, Image, FileText, Music, Film, Type, Archive, TrendingUp, Flame } from 'lucide-react';
+import { Image, FileText, Music, Film, Type, Archive } from 'lucide-react';
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@/components/ui/accordion';
 import { useDocumentHead } from '@/hooks/use-document-head';
-import { buildFAQSchema, buildWebAppSchema, buildWebSiteSchema } from '@/lib/seo-jsonld';
-import { absoluteUrl } from '@/lib/site-url';
+import { buildFAQSchema, buildHowToSchema, buildWebAppSchema, buildWebSiteSchema } from '@/lib/seo-jsonld';
+import { absoluteUrl, sitePath } from '@/lib/site-url';
 import { useMemo, ReactNode } from 'react';
-import { FormatBrowser } from '@/components/FormatBrowser';
-import { BOOSTED_LINKS } from '@/lib/site-navigation';
-import { sitePath } from '@/lib/site-url';
+import { HowItWorksFigure, CategoryBarsFigure, PrivacyPathFigure } from '@/components/HomeGraphics';
 
-const popularConversions: { slug: string; label: string; tagline: string }[] = [
-  { slug: 'png-to-jpg',   label: 'PNG to JPG',   tagline: 'Shrink screenshots & photos' },
-  { slug: 'webp-to-jpg',  label: 'WebP to JPG',  tagline: 'Insert web images into Office' },
-  { slug: 'mp4-to-mp3',   label: 'MP4 to MP3',   tagline: 'Extract audio from any video' },
-  { slug: 'mkv-to-mp4',   label: 'MKV to MP4',   tagline: 'Play MKV on iPhones and TVs' },
-  { slug: 'docx-to-pdf',  label: 'DOCX to PDF',  tagline: 'Text of a Word file as a PDF' },
-  { slug: 'pdf-to-txt',   label: 'PDF to Text',  tagline: 'Extract text for AI & editing' },
-];
+const homeSeo = getHomepageSEO();
+const { howItWorks, comparison, limits } = homeSeo.content;
 
 const categories = [
-  { key: 'Image', icon: Image, label: 'Images', desc: 'PNG, JPG, WebP, AVIF, GIF, BMP, TIFF, SVG, ICO' },
-  { key: 'Document', icon: FileText, label: 'Documents', desc: 'PDF, DOCX, ODT, TXT, HTML, Markdown, CSV, RTF' },
-  { key: 'Audio', icon: Music, label: 'Audio', desc: 'MP3, WAV, AAC, OGG, FLAC, M4A — extract from video' },
-  { key: 'Video', icon: Film, label: 'Video', desc: 'MP4, MOV, AVI, MKV, WebM — extract audio' },
-  { key: 'Font', icon: Type, label: 'Fonts', desc: 'TTF, OTF, WOFF' },
-  { key: 'Archive', icon: Archive, label: 'Archives', desc: 'ZIP, TAR, GZ' },
+  { key: 'Image', icon: Image, label: 'Images', picks: ['png-to-jpg', 'webp-to-jpg', 'jpg-to-pdf', 'svg-to-png'] },
+  { key: 'Document', icon: FileText, label: 'Documents', picks: ['docx-to-pdf', 'pdf-to-txt', 'docx-to-html', 'md-to-html'] },
+  { key: 'Audio', icon: Music, label: 'Audio', picks: ['wav-to-mp3', 'm4a-to-mp3', 'flac-to-mp3', 'mp3-to-m4a'] },
+  { key: 'Video', icon: Film, label: 'Video', picks: ['mp4-to-mp3', 'mov-to-mp4', 'mkv-to-mp4', 'webm-to-mp4'] },
+  { key: 'Font', icon: Type, label: 'Fonts', picks: ['ttf-to-woff', 'otf-to-woff', 'woff-to-ttf'] },
+  { key: 'Archive', icon: Archive, label: 'Archives', picks: ['zip-to-tar', 'tar-to-zip', 'gz-to-zip'] },
 ];
 
-const useCases = [
-  'Convert images for web publishing with optimized file sizes',
-  'Extract text from PDFs and documents for easy editing',
-  'Convert audio and video files for playback on any device',
-  'Prepare web fonts for faster website loading',
-  'Repackage archives for cross-platform compatibility',
-  'All conversions run locally — your files never leave your device',
-];
-
-const faqs = getHomepageSEO().faqs;
-
-/** Full-bleed section band separated by a hairline border. */
-function Band({
-  children,
-  id,
-  ariaLabel,
-  className = '',
-}: {
-  children: ReactNode;
-  id?: string;
-  ariaLabel?: string;
-  className?: string;
-}) {
+/** Full-width section separated by a hairline border. */
+function Band({ children, id, label }: { children: ReactNode; id?: string; label?: string }) {
   return (
-    <section
-      id={id}
-      aria-label={ariaLabel}
-      className={`border-b border-border bg-background text-foreground ${className}`}
-    >
-      <div className="mx-auto max-w-3xl px-4 py-14 md:py-20">{children}</div>
+    <section id={id} aria-label={label} className="border-b border-border bg-background text-foreground">
+      <div className="mx-auto max-w-3xl px-4 py-14 md:py-16">{children}</div>
     </section>
   );
 }
 
+const H2 = ({ children }: { children: ReactNode }) => (
+  <h2 className="text-2xl font-extrabold tracking-tight text-foreground md:text-3xl">{children}</h2>
+);
+
 export default function Index() {
-  const jsonLd = useMemo(() => [buildWebSiteSchema(), buildWebAppSchema(), buildFAQSchema(faqs)], []);
-  const homeSeo = getHomepageSEO();
+  const jsonLd = useMemo(
+    () => [
+      buildWebSiteSchema(),
+      buildWebAppSchema(),
+      buildHowToSchema('How to convert a file online', howItWorks),
+      buildFAQSchema(homeSeo.faqs),
+    ],
+    [],
+  );
   useDocumentHead({
     title: homeSeo.title,
     description: homeSeo.metaDescription,
@@ -76,12 +54,9 @@ export default function Index() {
 
   return (
     <>
-      {/* HERO — light band */}
       <Band>
         <header>
-          <h1 className="text-4xl font-extrabold tracking-tight text-foreground md:text-5xl">
-            Free Online File Converter
-          </h1>
+          <h1 className="text-4xl font-extrabold tracking-tight text-foreground md:text-5xl">{homeSeo.heading}</h1>
           <p className="mt-2 max-w-2xl text-xs leading-snug text-muted-foreground">{homeSeo.description}</p>
         </header>
         <div className="mt-8">
@@ -89,185 +64,112 @@ export default function Index() {
         </div>
       </Band>
 
-      {/* MOST POPULAR — dark band */}
-      <Band ariaLabel="Most popular conversions">
-        <div className="flex items-center gap-2">
-          <TrendingUp className="h-4 w-4 text-foreground" />
-          <h2 className="text-2xl md:text-3xl font-extrabold tracking-tight text-foreground">
-            Most Popular Conversions
-          </h2>
-        </div>
-        <p className="mt-3 text-sm text-foreground/80">
-          The conversions our visitors use most — all run 100% in your browser.
-        </p>
-        <div className="mt-6 grid gap-3 sm:grid-cols-2 md:grid-cols-3">
-          {popularConversions.map(p => (
-            <Link
-              key={p.slug}
-              to={sitePath(p.slug)}
-              className="group rounded-xl border border-border bg-background p-4 transition-transform hover:-translate-y-0.5"
-            >
-              <div className="flex items-center justify-between">
-                <span className="text-sm font-bold text-foreground">{p.label}</span>
-                <ArrowRight className="h-3.5 w-3.5 text-foreground transition-transform group-hover:translate-x-0.5" />
-              </div>
-              <p className="mt-1 text-xs text-foreground/80">{p.tagline}</p>
-            </Link>
-          ))}
-        </div>
-      </Band>
-
-      {/* TRENDING — light band */}
-      <Band ariaLabel="Trending file conversions">
-        <div className="flex items-center gap-2">
-          <Flame className="h-4 w-4 text-foreground" />
-          <h2 className="text-2xl md:text-3xl font-extrabold tracking-tight text-foreground">
-            More Conversions
-          </h2>
-        </div>
-        <p className="mt-3 text-sm text-foreground/80">
-          Every conversion runs locally in your browser — no upload, no account needed.
-        </p>
-        <div className="mt-6 flex flex-wrap gap-2">
-          {BOOSTED_LINKS.map(link => (
-            <Link
-              key={link.href}
-              to={link.href}
-              className="rounded-lg border border-border bg-background px-3 py-1.5 text-xs font-semibold text-foreground transition-colors hover:border-primary hover:text-primary"
-            >
-              {link.label}
-            </Link>
-          ))}
-        </div>
-      </Band>
-
-      {/* FEATURES — light band */}
-      <Band ariaLabel="Key features">
-        <h2 className="text-2xl md:text-3xl font-extrabold tracking-tight text-foreground">
-          Built for speed and privacy
-        </h2>
-        <div className="mt-6 grid gap-4 md:grid-cols-3">
-          {[
-            { icon: Shield, title: '100% Private', desc: 'Files never leave your device. All processing happens in your browser.' },
-            { icon: Zap, title: 'Lightning Fast', desc: 'No upload wait. Conversions start instantly using local processing.' },
-            { icon: Globe, title: 'No Signup', desc: 'Free to use, no account required. Just drop a file and convert.' },
-          ].map(f => (
-            <div
-              key={f.title}
-              className="rounded-xl border border-border bg-background p-5 card-hover"
-            >
-              <div className="flex items-center gap-3">
-                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-border">
-                  <f.icon className="h-4 w-4 text-foreground" />
-                </div>
-                <h3 className="text-sm font-bold text-foreground">{f.title}</h3>
-              </div>
-              <p className="mt-3 text-xs text-foreground/80 leading-relaxed">{f.desc}</p>
-            </div>
-          ))}
-        </div>
-      </Band>
-
-      {/* WHY — dark band */}
-      <Band>
-        <h2 className="text-2xl md:text-3xl font-extrabold tracking-tight text-foreground">
-          Why Use FileConvertir?
-        </h2>
-        <ul className="mt-6 space-y-3">
-          {useCases.map((uc, i) => (
-            <li key={i} className="flex items-start gap-3 text-sm text-foreground/95">
-              <CheckCircle className="mt-0.5 h-4 w-4 shrink-0 text-foreground" />
-              <span>{uc}</span>
+      <Band label="How it works">
+        <H2>How to convert a file online</H2>
+        <ol className="mt-8 grid gap-4 md:grid-cols-3">
+          {howItWorks.map((step, i) => (
+            <li key={step.name} className="rounded-xl border border-border p-5">
+              <span className="flex h-7 w-7 items-center justify-center rounded-full bg-foreground text-xs font-bold text-background">
+                {i + 1}
+              </span>
+              <h3 className="mt-3 text-sm font-bold text-foreground">{step.name}</h3>
+              <p className="mt-2 text-xs leading-relaxed text-foreground/80">{step.text}</p>
             </li>
           ))}
-        </ul>
+        </ol>
+        <HowItWorksFigure />
       </Band>
 
-      {/* CATEGORIES — light band */}
-      <Band id="categories" ariaLabel="Conversion categories">
-        <h2 className="text-2xl md:text-3xl font-extrabold tracking-tight text-foreground">
-          All Conversion Categories
-        </h2>
+      <Band id="categories" label="Supported formats">
+        <H2>What you can convert</H2>
         <p className="mt-3 text-sm text-foreground/80">
-          Choose a category below or select formats above to get started.
+          Images, documents, audio, video, fonts and archives. Open a format to see every output it supports.
         </p>
-
-        <div className="mt-6 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {categories.map(cat => {
-            const routes = converterRoutes.filter(r => r.category === cat.key);
-            const topRoutes = routes.slice(0, 4);
+        <CategoryBarsFigure />
+        <div className="mt-6 grid gap-4 md:grid-cols-2">
+          {categories.map((cat) => {
+            const routes = converterRoutes.filter((r) => r.category === cat.key);
+            const formats = [...new Set(routes.map((r) => r.sourceFormat))].sort();
+            const picks = cat.picks
+              .map((slug) => routes.find((r) => r.slug === slug))
+              .filter((r): r is NonNullable<typeof r> => Boolean(r));
             return (
-              <div
-                key={cat.key}
-                className="rounded-xl border border-border bg-background p-5 card-hover"
-              >
+              <div key={cat.key} className="rounded-xl border border-border p-5">
                 <div className="flex items-center gap-3">
                   <div className="flex h-9 w-9 items-center justify-center rounded-lg border border-border">
-                    <cat.icon className="h-4 w-4 text-foreground" />
+                    <cat.icon className="h-4 w-4" />
                   </div>
-                  <div>
-                    <h3 className="text-sm font-bold text-foreground">{cat.label}</h3>
-                    <p className="text-xs text-foreground/80">{routes.length} converters</p>
-                  </div>
+                  <h3 className="text-sm font-bold text-foreground">{cat.label}</h3>
                 </div>
-                <p className="mt-3 text-xs text-foreground/80 leading-relaxed">{cat.desc}</p>
-                <div className="mt-3 flex flex-wrap gap-1">
-                  {[...new Set(routes.map((r) => r.sourceFormat))]
-                    .sort()
-                    .map((src) => (
-                      <Link
-                        key={src}
-                        to={sitePath(src)}
-                        className="rounded-md border border-border px-2 py-0.5 text-[10px] font-medium uppercase text-foreground hover:border-primary"
-                      >
-                        {src}
+                <ul className="mt-4 space-y-1.5 text-sm">
+                  {picks.map((r) => (
+                    <li key={r.slug}>
+                      <Link to={sitePath(r.slug)} className="font-medium text-foreground underline-offset-4 hover:underline">
+                        {r.label.replace('→', 'to')}
                       </Link>
-                    ))}
-                </div>
-                <div className="mt-4 space-y-1">
-                  {topRoutes.map((r) => (
+                    </li>
+                  ))}
+                </ul>
+                <p className="mt-4 flex flex-wrap items-center gap-1.5 text-[11px] text-muted-foreground">
+                  All:
+                  {formats.map((f) => (
                     <Link
-                      key={r.slug}
-                      to={sitePath(r.slug)}
-                      className="flex w-full items-center justify-between rounded-lg px-3 py-2 text-left text-xs font-medium text-foreground transition-transform hover:translate-x-0.5 group"
+                      key={f}
+                      to={sitePath(f)}
+                      className="rounded-md border border-border px-1.5 py-0.5 font-medium uppercase text-foreground hover:bg-secondary"
                     >
-                      <span>{r.label}</span>
-                      <ArrowRight className="h-3 w-3 text-foreground transition-transform group-hover:translate-x-0.5" />
+                      {f}
                     </Link>
                   ))}
-                </div>
+                </p>
               </div>
             );
           })}
         </div>
       </Band>
 
-      <Band id="browse-formats" ariaLabel="Browse all file formats">
-        <h2 className="text-2xl md:text-3xl font-extrabold tracking-tight text-foreground">
-          Browse All Formats
-        </h2>
-        <p className="mt-3 text-sm text-foreground/80">
-          Tap any format to see every available conversion for it.
+      <Band label="Private conversion in your browser">
+        <H2>Why convert in your browser</H2>
+        <p className="mt-3 text-sm leading-relaxed text-foreground/80">
+          A typical converter site has to receive your file before it can touch it. Here your browser does the job with
+          JavaScript and WebAssembly, so a private document or a family video never has to leave your device.
         </p>
-        <div className="mt-8">
-          <FormatBrowser />
+        <PrivacyPathFigure />
+        <div className="mt-6 overflow-hidden rounded-xl border border-border">
+          <table className="w-full text-left text-xs">
+            <thead className="border-b border-border bg-secondary">
+              <tr>
+                <th scope="col" className="p-3"><span className="sr-only">Feature</span></th>
+                <th scope="col" className="p-3 font-bold">{comparison.columns[0]}</th>
+                <th scope="col" className="p-3 font-bold">{comparison.columns[1]}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {comparison.rows.map((r) => (
+                <tr key={r.label} className="border-b border-border last:border-0">
+                  <th scope="row" className="p-3 font-medium">{r.label}</th>
+                  <td className="p-3">{r.a}</td>
+                  <td className="p-3 text-foreground/70">{r.b}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
+        <h3 className="mt-8 text-sm font-bold text-foreground">Limits to know about</h3>
+        <ul className="mt-3 list-disc space-y-1.5 pl-5 text-xs leading-relaxed text-foreground/80">
+          {limits.map((l) => (
+            <li key={l}>{l}</li>
+          ))}
+        </ul>
       </Band>
 
-      {/* FAQ — dark band */}
-      <Band ariaLabel="Frequently asked questions">
-        <h2 className="text-2xl md:text-3xl font-extrabold tracking-tight text-foreground">
-          Frequently Asked Questions
-        </h2>
+      <Band label="Frequently asked questions">
+        <H2>Frequently asked questions</H2>
         <Accordion type="single" collapsible className="mt-6">
-          {faqs.map((faq, i) => (
-            <AccordionItem key={i} value={`faq-${i}`} className="border-border">
-              <AccordionTrigger className="text-sm text-foreground hover:no-underline text-left">
-                {faq.q}
-              </AccordionTrigger>
-              <AccordionContent className="text-sm text-foreground/85 leading-relaxed">
-                {faq.a}
-              </AccordionContent>
+          {homeSeo.faqs.map((faq, i) => (
+            <AccordionItem key={faq.q} value={`faq-${i}`} className="border-border">
+              <AccordionTrigger className="text-left text-sm text-foreground hover:no-underline">{faq.q}</AccordionTrigger>
+              <AccordionContent className="text-sm leading-relaxed text-foreground/85">{faq.a}</AccordionContent>
             </AccordionItem>
           ))}
         </Accordion>

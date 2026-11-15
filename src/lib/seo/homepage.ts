@@ -7,6 +7,29 @@ export const HOMEPAGE_SEO: HomepageSEO = {
   heading: 'Free Online File Converter',
   description:
     'Free online file converter: convert images, documents, audio, video, fonts and archives in your browser with no upload or sign-up. Your files never leave your device.',
+  content: {
+    howItWorks: [
+      { name: 'Choose your formats', text: 'Pick the format you have and the one you want. If you are not sure, add the file first and the tool lists what it can become.' },
+      { name: 'Add your files', text: 'Click Select Files or drop up to 20 files on the page. Each file can be up to 100 MB.' },
+      { name: 'Convert and download', text: 'Press Convert and save each result, or all of them in one ZIP. The first audio or video job downloads a media engine of about 30 MB.' },
+    ],
+    comparison: {
+      columns: ['FileConvertir', 'Upload-based converters'],
+      rows: [
+        { label: 'Where your file goes', a: 'Stays on your device', b: 'Sent to a company\'s server' },
+        { label: 'Account or sign-up', a: 'Not needed', b: 'Often required for larger files' },
+        { label: 'Watermarks', a: 'None', b: 'Common on free tiers' },
+        { label: 'Speed', a: 'No upload or download wait', b: 'Depends on your connection' },
+        { label: 'Large video', a: 'Slower, limited by your device', b: 'Faster on their servers' },
+      ],
+    },
+    limits: [
+      'Each file can be up to 100 MB, and a batch holds up to 20 files.',
+      'Video is re-encoded on one processor thread in your browser, so long or high-resolution clips take a while.',
+      'Lossy formats such as JPG and MP3 lose a little more quality each time they are converted. Convert from your original whenever you can.',
+      'Scanned PDFs have no text to extract, and there is no text recognition.',
+    ],
+  },
   faqs: [
     {
       q: 'Is FileConvertir really free?',
@@ -18,7 +41,7 @@ export const HOMEPAGE_SEO: HomepageSEO = {
     },
     {
       q: 'What formats can I convert?',
-      a: '230+ conversions across images (PNG, JPG, WebP, AVIF), documents (PDF, DOCX), audio/video (FFmpeg), fonts, and archives.',
+      a: 'Over 230 conversions between images, documents, audio, video, fonts and archives. Each format has a page listing everything it can be converted to.',
     },
     {
       q: 'What is the maximum file size?',
@@ -38,7 +61,7 @@ export const HOMEPAGE_SEO: HomepageSEO = {
     },
     {
       q: 'Which conversions are most popular?',
-      a: 'PNG to JPG, MOV to MP4, M4A to MP3, WebP to PNG, and PNG to JPG are frequent — each has a dedicated page.',
+      a: 'PNG to JPG, WebP to JPG, MP4 to MP3, MOV to MP4, DOCX to PDF and WAV to MP3 are among the most used, and each has its own page.',
     },
   ],
 };
