@@ -125,3 +125,19 @@ Already tool-first (H1, description, tool). No structural change.
 Each batch is verified in a browser: one H1, four H2s, no skipped heading
 levels, tool above the first H2, no horizontal overflow on a phone, and a
 real file converted on every page.
+
+## Guide coverage batch
+
+Every real conversion the tool supports now has its own guide: 140 pages in
+total (images, documents, audio, video, fonts and archive-to-archive).
+Source files live in `src/lib/seo/pages/` (`*-convert-*.ts`,
+`font-archive-convert.ts`). Hub content for the added formats is in
+`src/lib/seo/hubs/image-more.ts` and `hubs/more.ts`.
+
+Pairs that only package a file into ZIP, TAR or GZ (for example JPG to ZIP)
+stay tool-only: they are noindex and link back to the related pages, because
+a guide for each would be the same text with the extension swapped.
+
+Font routes TTF to OTF and OTF to TTF were removed: changing outline type is
+a lossy rebuild the tool does not do, so only lossless WOFF wrapping and
+unwrapping is offered.
