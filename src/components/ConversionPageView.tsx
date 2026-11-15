@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import type { ConverterRoute } from '@/lib/converters';
@@ -26,6 +26,20 @@ export function ConversionPageView({ route, page }: { route: ConverterRoute; pag
   const pair = `${source} to ${target}`;
   const related = getRelatedConverters(route.sourceFormat, route.targetFormat, 9);
 
+  // The tool lets people pick any supported pair. Pairs without their own page
+  // do not navigate, so the page switches to a plain tool view instead of
+  // showing a guide for the wrong conversion.
+  const [selection, setSelection] = useState({ source: route.sourceFormat, target: route.targetFormat });
+  const onPairChange = useCallback((s: string, t: string) => {
+    const norm = (x: string) => (x === 'jpeg' ? 'jpg' : x);
+    setSelection((prev) => (prev.source === norm(s) && prev.target === norm(t) ? prev : { source: norm(s), target: norm(t) }));
+  }, []);
+  const isGuidePair = selection.source === route.sourceFormat && selection.target === route.targetFormat;
+  const customTitle =
+    selection.source && selection.target
+      ? `${formatLabel(selection.source)} to ${formatLabel(selection.target)} Converter`
+      : 'Free Online File Converter';
+
   const jsonLd = useMemo(
     () => [
       buildHowToSchema(`How to convert ${pair}`, page.steps),
@@ -40,23 +54,47 @@ export function ConversionPageView({ route, page }: { route: ConverterRoute; pag
   );
 
   useDocumentHead({
-    title: page.title,
-    description: page.metaDescription,
+    title: isGuidePair ? page.title : `${customTitle} — FileConvertir`,
+    description: isGuidePair ? page.metaDescription : 'Convert files in your browser. Nothing is uploaded.',
     canonical: absoluteUrl(route.slug),
-    jsonLd,
+    jsonLd: isGuidePair ? jsonLd : undefined,
+    noindex: !isGuidePair,
   });
 
   return (
     <article className="mx-auto max-w-3xl px-4 py-8">
       {/* Above the tool: the H1 and a short description only */}
       <header>
-        <h1 className="text-3xl font-extrabold text-foreground md:text-4xl">{page.heading}</h1>
-        <p className="mt-3 text-base leading-relaxed text-muted-foreground">{page.description}</p>
+        <h1 className="text-3xl font-extrabold text-foreground md:text-4xl">
+          {isGuidePair ? page.heading : customTitle}
+        </h1>
+        <p className="mt-3 text-base leading-relaxed text-muted-foreground">
+          {isGuidePair
+            ? page.description
+            : 'Add your files, pick the output format and convert. Everything runs in your browser, so nothing is uploaded.'}
+        </p>
       </header>
 
       <div className="mt-6">
-        <HeroConverter initialSource={route.sourceFormat} initialTarget={route.targetFormat} />
+        <HeroConverter
+          initialSource={route.sourceFormat}
+          initialTarget={route.targetFormat}
+          onPairChange={onPairChange}
+        />
       </div>
+
+      {!isGuidePair && (
+        <p className="mt-8 text-sm text-muted-foreground">
+          Looking for the guide?{' '}
+          <Link to={sitePath(route.slug)} reloadDocument className="font-medium text-foreground underline underline-offset-4">
+            Read about {pair} conversion
+          </Link>
+          .
+        </p>
+      )}
+
+      {isGuidePair && (
+        <>
 
       {/* 1. How to */}
       <section className="mt-14" aria-labelledby="how-to">
@@ -141,6 +179,8 @@ export function ConversionPageView({ route, page }: { route: ConverterRoute; pag
           </Link>
         </p>
       </nav>
+        </>
+      )}
     </article>
   );
 }

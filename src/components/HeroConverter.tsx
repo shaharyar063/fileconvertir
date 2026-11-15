@@ -24,6 +24,8 @@ interface HeroConverterProps {
   lockSource?: boolean;
   /** Do not clear the target format when picking a source (target hub pages). */
   lockTarget?: boolean;
+  /** Called whenever the selected source/target pair changes (either may be empty). */
+  onPairChange?: (source: string, target: string) => void;
 }
 
 export function HeroConverter({
@@ -31,6 +33,7 @@ export function HeroConverter({
   initialTarget,
   lockSource,
   lockTarget,
+  onPairChange,
 }: HeroConverterProps) {
   const navigate = useNavigate();
   const [sourceFormat, setSourceFormat] = useState(initialSource ?? '');
@@ -72,6 +75,10 @@ export function HeroConverter({
   const outputCategories = activeSource
     ? filterCategories(getValidTargets(activeSource))
     : formatCategories;
+
+  useEffect(() => {
+    onPairChange?.(activeSource, activeTarget);
+  }, [activeSource, activeTarget, onPairChange]);
 
   const handleSourceChange = useCallback((fmt: string) => {
     setSourceFormat(fmt);
