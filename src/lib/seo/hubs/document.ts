@@ -4,9 +4,9 @@ import type { FormatSEO } from '../types';
 
 export const DOCUMENT_SOURCE_HUBS: Record<string, FormatSEO> = {
   pdf: {
-    title: 'PDF Converter — Extract Text From PDF',
+    title: 'PDF Converter Online — Extract Text From PDF Free',
     metaDescription:
-      'Extract the text from a PDF as a plain TXT file in your browser. Free and private, nothing is uploaded. Scanned PDFs without a text layer are not supported.',
+      'Free online PDF converter. Extract the text from a PDF as a TXT file in your browser, with no upload or sign-up. Scanned PDFs need OCR, which is not included.',
     heading: 'PDF File Converter',
     description:
       'Free online PDF converter: extract the text from a PDF as a TXT file in your browser, with no upload or sign-up. Scanned PDFs need OCR, which is not included.',
@@ -40,9 +40,9 @@ export const DOCUMENT_SOURCE_HUBS: Record<string, FormatSEO> = {
   },
 
   docx: {
-    title: 'DOCX Converter — Convert Word to PDF or TXT',
+    title: 'DOCX Converter Online — Convert Word to PDF or TXT',
     metaDescription:
-      'Convert Word DOCX files to PDF or plain text in your browser. Text only: images, tables and styling are not carried over. Free and no upload.',
+      'Free online DOCX converter. Convert Word documents to PDF or TXT in your browser with no upload or sign-up. Text only: formatting and images are not kept.',
     heading: 'DOCX File Converter',
     description:
       'Free online DOCX converter: convert Word documents to PDF or TXT in your browser with no upload or sign-up. Text only; formatting and images are not kept.',
@@ -72,9 +72,9 @@ export const DOCUMENT_SOURCE_HUBS: Record<string, FormatSEO> = {
   },
 
   txt: {
-    title: 'TXT Converter — Convert Text Files to PDF',
+    title: 'TXT Converter Online — Convert Text Files to PDF',
     metaDescription:
-      'Convert plain TXT files to PDF in your browser. Free and private with no upload. Uses a standard Latin font, so some scripts may not display.',
+      'Free online TXT converter. Convert plain text files to printable PDF in your browser with no upload or sign-up, set in a monospace font on A4 pages.',
     heading: 'TXT File Converter',
     description:
       'Free online TXT converter: convert plain text files to PDF in your browser with no upload or sign-up, set in a monospace font on A4 pages.',
@@ -104,9 +104,9 @@ export const DOCUMENT_SOURCE_HUBS: Record<string, FormatSEO> = {
   },
 
   html: {
-    title: 'HTML Converter — Convert HTML to PDF',
+    title: 'HTML Converter Online — Convert HTML to PDF Free',
     metaDescription:
-      'Convert an HTML file to a text-only PDF in your browser. Free, private and no upload. Styling, images and scripts are not rendered.',
+      'Free online HTML converter. Convert an HTML file to a PDF of its readable text in your browser, with no upload or sign-up. Styles and images are not rendered.',
     heading: 'HTML File Converter',
     description:
       'Free online HTML converter: convert an HTML file to a PDF of its readable text, in your browser with no upload or sign-up. Styles and images are not rendered.',
@@ -136,9 +136,9 @@ export const DOCUMENT_SOURCE_HUBS: Record<string, FormatSEO> = {
   },
 
   md: {
-    title: 'Markdown Converter — Convert MD to PDF',
+    title: 'Markdown Converter Online — Convert MD to PDF',
     metaDescription:
-      'Convert Markdown files to PDF in your browser. The markup is stripped and the text is laid out plainly. Free, private and no upload required.',
+      'Free online Markdown converter. Convert .md files to a plain-text PDF in your browser with no upload or sign-up. Syntax is removed; headings are not styled.',
     heading: 'Markdown File Converter',
     description:
       'Free online Markdown converter: convert .md files to a plain-text PDF in your browser with no upload or sign-up. Syntax is removed; headings and code are not styled.',
@@ -170,9 +170,9 @@ export const DOCUMENT_SOURCE_HUBS: Record<string, FormatSEO> = {
 
 export const DOCUMENT_TARGET_HUBS: Record<string, FormatSEO> = {
   pdf: {
-    title: 'Convert to PDF — JPG, PNG, DOCX, TXT, HTML, MD',
+    title: 'Convert to PDF Online — JPG, PNG, Word, TXT, HTML',
     metaDescription:
-      'Make a PDF from JPG, PNG, DOCX, TXT, HTML or Markdown in your browser. Free, private and no upload. Documents are converted as text only.',
+      'Convert to PDF online for free. Make a PDF from JPG, PNG, DOCX, TXT, HTML or Markdown in your browser, with no upload. Documents are converted as text only.',
     heading: 'Convert to PDF',
     description:
       'Convert to PDF online: make a PDF from JPG, PNG, DOCX, TXT, HTML or Markdown, free, in your browser with no upload or sign-up. Documents are converted as text only.',
@@ -206,9 +206,9 @@ export const DOCUMENT_TARGET_HUBS: Record<string, FormatSEO> = {
   },
 
   txt: {
-    title: 'Convert to TXT — Extract Text From PDF or DOCX',
+    title: 'Convert to TXT Online — Extract Text From PDF, Word',
     metaDescription:
-      'Extract plain text from PDF or Word DOCX files in your browser. Free and private, with no upload. Scanned PDFs without a text layer are not supported.',
+      'Convert to TXT online for free. Extract plain text from PDF or Word DOCX files in your browser, with no upload or sign-up. Scanned PDFs need OCR.',
     heading: 'Convert to TXT',
     description:
       'Convert to TXT online: extract plain text from PDF or Word DOCX files, free, in your browser with no upload or sign-up. Scanned PDFs need OCR.',

@@ -4,9 +4,9 @@ import type { FormatSEO } from '../types';
 
 export const IMAGE_SOURCE_HUBS: Record<string, FormatSEO> = {
   jpg: {
-    title: 'JPG Converter — Turn JPG Into PNG or PDF',
+    title: 'JPG Converter Online — Convert JPG to PNG or PDF',
     metaDescription:
-      'Convert JPG photos to PNG or PDF in your browser. Files stay on your device, nothing is uploaded, and you can convert up to 20 photos at a time.',
+      'Free online JPG converter. Convert JPG to PNG or PDF in your browser with no upload or sign-up. Handles JPG and JPEG photos, up to 20 files at once.',
     heading: 'JPG File Converter',
     description:
       'Free online JPG converter: convert JPG to PNG or PDF in your browser with no upload or sign-up. Handles JPG and JPEG photos, up to 20 files at a time.',
@@ -41,9 +41,9 @@ export const IMAGE_SOURCE_HUBS: Record<string, FormatSEO> = {
   },
 
   png: {
-    title: 'PNG Converter — Convert PNG to JPG, WebP, PDF',
+    title: 'PNG Converter Online — Convert PNG to JPG, WebP, PDF',
     metaDescription:
-      'Convert PNG images to JPG, WebP, TIFF or PDF in your browser. Free, private, no upload, and transparency is handled for you when the target needs it.',
+      'Free online PNG converter. Convert PNG to JPG, WebP, TIFF or PDF in your browser. Shrink screenshots and graphics with no upload or sign-up.',
     heading: 'PNG File Converter',
     description:
       'Free online PNG converter: convert PNG to JPG, WebP, TIFF or PDF in your browser. Shrink screenshots and graphics with no upload or sign-up.',
@@ -78,9 +78,9 @@ export const IMAGE_SOURCE_HUBS: Record<string, FormatSEO> = {
   },
 
   webp: {
-    title: 'WebP Converter — Convert WebP to PNG or JPG',
+    title: 'WebP Converter Online — Convert WebP to PNG or JPG',
     metaDescription:
-      'Convert WebP images to PNG or JPG so they open anywhere. Runs in your browser with no upload, and keeps transparency when you choose PNG.',
+      'Free online WebP converter. Convert WebP to PNG or JPG so images open in any app, in your browser with no upload or sign-up. Up to 20 files at once.',
     heading: 'WebP File Converter',
     description:
       'Free online WebP converter: convert WebP to PNG or JPG so images open in any app. Runs in your browser with no upload or sign-up.',
@@ -111,9 +111,9 @@ export const IMAGE_SOURCE_HUBS: Record<string, FormatSEO> = {
   },
 
   avif: {
-    title: 'AVIF Converter — Convert AVIF to JPG or PNG',
+    title: 'AVIF Converter Online — Convert AVIF to JPG or PNG',
     metaDescription:
-      'Open AVIF images anywhere by converting them to JPG or PNG. The conversion happens in your browser, so your pictures are never uploaded.',
+      'Free online AVIF converter. Convert AVIF to JPG or PNG so images open on any device, in your browser with no upload. Reads AVIF only; it cannot create it.',
     heading: 'AVIF File Converter',
     description:
       'Free online AVIF converter: convert AVIF to JPG or PNG so images open on any device. Runs in your browser with no upload or sign-up; it reads AVIF but cannot create it.',
@@ -143,9 +143,9 @@ export const IMAGE_SOURCE_HUBS: Record<string, FormatSEO> = {
   },
 
   gif: {
-    title: 'GIF Converter — Turn GIF Into PNG',
+    title: 'GIF Converter Online — Convert GIF to PNG Free',
     metaDescription:
-      'Convert a GIF to a PNG image in your browser. Free, private and instant, with no upload. Note that animated GIFs become a single still frame.',
+      'Free online GIF converter. Convert GIF to PNG to save a still image, in your browser with no upload or sign-up. Animated GIFs give their first frame.',
     heading: 'GIF File Converter',
     description:
       'Free online GIF converter: convert GIF to PNG to save a still image, in your browser with no upload or sign-up. An animated GIF gives its first frame.',
@@ -175,9 +175,9 @@ export const IMAGE_SOURCE_HUBS: Record<string, FormatSEO> = {
   },
 
   bmp: {
-    title: 'BMP Converter — Convert BMP to JPG',
+    title: 'BMP Converter Online — Convert BMP to JPG Free',
     metaDescription:
-      'Shrink huge BMP images by converting them to JPG right in your browser. Free, private, with no upload. Typical size savings are very large.',
+      'Free online BMP converter. Convert BMP to JPG and shrink large bitmap files in your browser, with no upload or sign-up. Up to 20 files at once.',
     heading: 'BMP File Converter',
     description:
       'Free online BMP converter: convert BMP to JPG and shrink large bitmaps in your browser, with no upload or sign-up.',
@@ -203,9 +203,9 @@ export const IMAGE_SOURCE_HUBS: Record<string, FormatSEO> = {
   },
 
   svg: {
-    title: 'SVG Converter — Convert SVG to PNG',
+    title: 'SVG Converter Online — Convert SVG to PNG Free',
     metaDescription:
-      'Turn SVG graphics into PNG images in your browser. Free and private, with no upload. The PNG is rendered at the size the SVG declares.',
+      'Free online SVG converter. Convert SVG to PNG for sites and apps that reject vector files, in your browser with no upload or sign-up. Up to 20 files at once.',
     heading: 'SVG File Converter',
     description:
       'Free online SVG converter: convert SVG to PNG for sites and apps that reject vector files. Runs in your browser with no upload or sign-up.',
@@ -237,9 +237,9 @@ export const IMAGE_SOURCE_HUBS: Record<string, FormatSEO> = {
 
 export const IMAGE_TARGET_HUBS: Record<string, FormatSEO> = {
   jpg: {
-    title: 'Convert to JPG — PNG, WebP, AVIF or BMP to JPG',
+    title: 'Convert to JPG Online — PNG, WebP, AVIF, BMP to JPG',
     metaDescription:
-      'Convert PNG, WebP, AVIF or BMP images to JPG in your browser. Smaller files that open everywhere, free, private and with no upload.',
+      'Convert to JPG online for free. Turn PNG, WebP, AVIF or BMP images into JPG in your browser, with no upload or sign-up. Up to 20 files, 100 MB each.',
     heading: 'Convert to JPG',
     description:
       'Convert to JPG online: turn PNG, WebP, AVIF or BMP images into JPG in your browser, free, with no upload or sign-up.',
@@ -269,9 +269,9 @@ export const IMAGE_TARGET_HUBS: Record<string, FormatSEO> = {
   },
 
   png: {
-    title: 'Convert to PNG — JPG, WebP, AVIF, GIF or SVG to PNG',
+    title: 'Convert to PNG Online — JPG, WebP, AVIF, GIF, SVG',
     metaDescription:
-      'Convert JPG, WebP, AVIF, GIF or SVG files to lossless PNG in your browser. Keeps transparency, runs privately and never uploads your files.',
+      'Convert to PNG online for free. Make a PNG from JPG, WebP, AVIF, GIF or SVG in your browser, with no upload and transparency kept where the source has it.',
     heading: 'Convert to PNG',
     description:
       'Convert to PNG online: make a PNG from JPG, WebP, AVIF, GIF or SVG in your browser, free, with no upload and transparency kept where the source has it.',
@@ -302,9 +302,9 @@ export const IMAGE_TARGET_HUBS: Record<string, FormatSEO> = {
   },
 
   webp: {
-    title: 'Convert to WebP — Turn PNG Into WebP',
+    title: 'Convert to WebP Online — PNG to WebP, Free',
     metaDescription:
-      'Convert PNG images to WebP for faster web pages. Runs in your browser with no upload and keeps transparency. Needs a browser that can encode WebP.',
+      'Convert to WebP online for free. Turn PNG images into WebP for faster websites, in your browser with no upload. Needs a browser that can encode WebP.',
     heading: 'Convert to WebP',
     description:
       'Convert to WebP online: turn PNG images into WebP for faster websites, free, in your browser with no upload. Needs a browser that can encode WebP.',
@@ -334,9 +334,9 @@ export const IMAGE_TARGET_HUBS: Record<string, FormatSEO> = {
   },
 
   tiff: {
-    title: 'Convert to TIFF — Turn PNG Into TIFF',
+    title: 'Convert to TIFF Online — PNG to TIFF for Print',
     metaDescription:
-      'Convert PNG images to TIFF in your browser for print and archive workflows. Free, private and with no upload. Output is uncompressed 8-bit RGB.',
+      'Convert to TIFF online for free. Make a TIFF from a PNG for print and archive use, in your browser with no upload or sign-up. Output is uncompressed RGB.',
     heading: 'Convert to TIFF',
     description:
       'Convert to TIFF online: make a TIFF from a PNG for print and archive use, free, in your browser with no upload or sign-up.',

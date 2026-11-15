@@ -34,6 +34,25 @@ This file records what each page targets and how the choices were made.
    three lines or fewer on a phone at the small text size.
 6. No sentence repeats from another page (enforced by a test).
 
+## Titles and meta descriptions
+
+Rules applied to all 70 pages (enforced by tests in `src/test/`):
+
+- **Title, 60 characters at most:** `[X] to [Y] Converter Online — [one hook]`,
+  for example "M4A to MP3 Converter Online — Voice Memos, Free". The keyword
+  comes first, "Online" is the modifier searchers use, and the hook is the
+  specific benefit or audience. PDF to TXT uses "PDF to Text" because that is
+  the more common phrase. No brand suffix, except on the homepage, because
+  Google shows the site name separately.
+- **Format pages:** "[FORMAT] Converter Online — Convert [FORMAT] to ..." and
+  "Convert to [FORMAT] Online — [sources] to [FORMAT]".
+- **Meta description, 120 to 160 characters:** repeats the keyword phrase, says
+  "free" and "no upload or sign-up", names the main benefit and the main limit,
+  and ends with a batch or size limit where that is useful. It is worded
+  differently from the on-page description, so the two do not duplicate.
+- Every title and meta description is unique across the site. The same text is
+  used for the Open Graph and Twitter tags.
+
 ## Conversion pages
 
 | Page | Primary keyword | Secondary keywords in the description |

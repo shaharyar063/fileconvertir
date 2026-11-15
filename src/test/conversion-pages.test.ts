@@ -22,6 +22,15 @@ describe('conversion pages', () => {
     expect(page.description.toLowerCase()).toContain('online');
     expect(page.description.toLowerCase()).toContain('free');
     expect(page.description.length).toBeLessThanOrEqual(260);
+    // Title and meta description are the search result: keyword first, 'online', and not a copy of the on-page text.
+    const names = [`${src} to ${tgt}`, ...(tgt === 'TXT' ? [`${src} to Text`] : [])].map((n) => n.toLowerCase());
+    const has = (text: string) => names.some((n) => text.toLowerCase().includes(n));
+    expect(has(page.title), page.title).toBe(true);
+    expect(page.title.toLowerCase()).toContain('online');
+    expect(has(page.metaDescription), page.metaDescription).toBe(true);
+    expect(page.metaDescription.toLowerCase()).toContain('online');
+    expect(page.metaDescription.toLowerCase()).toContain('free');
+    expect(page.metaDescription).not.toBe(page.description);
     expect(page.steps).toHaveLength(3);
     expect(page.understanding.paragraphs.length).toBeGreaterThanOrEqual(1);
     expect(page.understanding.graphics.length).toBeGreaterThanOrEqual(1);
