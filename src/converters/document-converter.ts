@@ -4,7 +4,11 @@ import { getTargetsForSource } from '@/lib/conversion-map';
 import { textToDocx } from '@/lib/build-docx';
 import { extractPdfText } from '@/lib/pdf-text';
 import { ArchiveFormat, buildSingleFileArchive } from '@/lib/build-archive';
-import { escapeHtml, safeHttpUrl, sanitizeExportedHtml } from '@/lib/escape-html';
+import { escapeHtml, sanitizeExportedHtml } from '@/lib/escape-html';
+import { markdownToHtml } from '@/lib/markdown';
+import { htmlToMarkdown } from '@/lib/html-to-markdown';
+import { csvToHtmlTable } from '@/lib/csv';
+import { rtfToText } from '@/lib/rtf';
 
 
 async function readTextFile(file: File): Promise<string> {
@@ -16,6 +20,17 @@ async function docxToText(file: File): Promise<string> {
   const arrayBuffer = await file.arrayBuffer();
   const result = await mammoth.extractRawText({ arrayBuffer });
   return result.value;
+}
+
+async function docxToHtmlBody(file: File): Promise<string> {
+  const mammoth = await import('mammoth');
+  const result = await mammoth.convertToHtml({ arrayBuffer: await file.arrayBuffer() });
+  return result.value;
+}
+
+function htmlDocument(title: string, body: string): string {
+  const style = 'body{font-family:system-ui,sans-serif;max-width:48rem;margin:2rem auto;padding:0 1rem;line-height:1.5}table{border-collapse:collapse}td,th{border:1px solid #ccc;padding:4px 8px;text-align:left}pre{background:#f4f4f4;padding:.75rem;overflow:auto}';
+  return sanitizeExportedHtml(`<!DOCTYPE html><html><head><meta charset="utf-8"><title>${escapeHtml(title)}</title><style>${style}</style></head><body>${body}</body></html>`);
 }
 
 async function htmlToText(file: File): Promise<string> {
@@ -36,42 +51,8 @@ async function pdfToText(file: File): Promise<string> {
   return extractPdfText(file);
 }
 
-async function rtfToText(file: File): Promise<string> {
-  const raw = await file.text();
-  return raw.replace(/\{\\[^{}]*\}/g, '').replace(/\\[a-z]+\d*\s?/gi, '').replace(/[{}]/g, '').trim();
-}
-
-function mdToHtml(md: string): string {
-  const e = escapeHtml;
-  const html = md
-    .replace(/```(\w*)\n([\s\S]*?)```/g, (_, lang, code) =>
-      `<pre><code class="${e(lang)}">${e(code)}</code></pre>`)
-    .replace(/`([^`]+)`/g, (_, code) => `<code>${e(code)}</code>`)
-    .replace(/^######\s+(.+)$/gm, (_, t) => `<h6>${e(t)}</h6>`)
-    .replace(/^#####\s+(.+)$/gm, (_, t) => `<h5>${e(t)}</h5>`)
-    .replace(/^####\s+(.+)$/gm, (_, t) => `<h4>${e(t)}</h4>`)
-    .replace(/^###\s+(.+)$/gm, (_, t) => `<h3>${e(t)}</h3>`)
-    .replace(/^##\s+(.+)$/gm, (_, t) => `<h2>${e(t)}</h2>`)
-    .replace(/^#\s+(.+)$/gm, (_, t) => `<h1>${e(t)}</h1>`)
-    .replace(/\*\*\*(.+?)\*\*\*/g, (_, t) => `<strong><em>${e(t)}</em></strong>`)
-    .replace(/\*\*(.+?)\*\*/g, (_, t) => `<strong>${e(t)}</strong>`)
-    .replace(/\*(.+?)\*/g, (_, t) => `<em>${e(t)}</em>`)
-    .replace(
-      /!\[([^\]]*)\]\(([^)]+)\)/g,
-      (_, alt, url) => `<img src="${safeHttpUrl(url)}" alt="${e(alt)}" />`,
-    )
-    .replace(
-      /\[([^\]]+)\]\(([^)]+)\)/g,
-      (_, label, url) => `<a href="${safeHttpUrl(url)}">${e(label)}</a>`,
-    )
-    .replace(/^>\s+(.+)$/gm, (_, t) => `<blockquote>${e(t)}</blockquote>`)
-    .replace(/^---+$/gm, '<hr />')
-    .replace(/^[-*]\s+(.+)$/gm, (_, t) => `<li>${e(t)}</li>`)
-    .replace(/\n\n/g, '</p><p>')
-    .replace(/\n/g, '<br />');
-
-  const doc = `<!DOCTYPE html><html><head><meta charset="utf-8"><title>Document</title></head><body><p>${html}</p></body></html>`;
-  return sanitizeExportedHtml(doc);
+async function rtfFileToText(file: File): Promise<string> {
+  return rtfToText(await file.text());
 }
 
 function mdToText(md: string): string {
@@ -135,7 +116,7 @@ async function extractText(file: File, ext: string): Promise<string> {
     case 'html': return htmlToText(file);
     case 'docx': return docxToText(file);
     case 'odt': return odtToText(file);
-    case 'rtf': return rtfToText(file);
+    case 'rtf': return rtfFileToText(file);
     case 'pdf': return pdfToText(file);
     case 'md': return readTextFile(file);
     default: return readTextFile(file);
@@ -160,17 +141,31 @@ export const documentConverter: ConverterPlugin = {
     onProgress?.(10);
     const baseName = file.name.replace(/\.[^/.]+$/, '');
 
-    // MD → HTML (special case, no text extraction needed)
+    // Targets that keep the document's structure instead of flattening to text
     if (ext === 'md' && targetFormat === 'html') {
-      const mdContent = await file.text();
-      onProgress?.(50);
-      const htmlContent = mdToHtml(mdContent);
+      const html = htmlDocument(baseName, markdownToHtml(await file.text()));
       onProgress?.(100);
-      return {
-        blob: new Blob([htmlContent], { type: 'text/html' }),
-        filename: `${baseName}.html`,
-        mimeType: 'text/html',
-      };
+      return { blob: new Blob([html], { type: 'text/html' }), filename: `${baseName}.html`, mimeType: 'text/html' };
+    }
+    if (ext === 'docx' && targetFormat === 'html') {
+      const html = htmlDocument(baseName, await docxToHtmlBody(file));
+      onProgress?.(100);
+      return { blob: new Blob([html], { type: 'text/html' }), filename: `${baseName}.html`, mimeType: 'text/html' };
+    }
+    if (ext === 'docx' && targetFormat === 'md') {
+      const markdown = htmlToMarkdown(await docxToHtmlBody(file));
+      onProgress?.(100);
+      return { blob: new Blob([markdown], { type: 'text/markdown' }), filename: `${baseName}.md`, mimeType: 'text/markdown' };
+    }
+    if (ext === 'html' && targetFormat === 'md') {
+      const markdown = htmlToMarkdown(await file.text());
+      onProgress?.(100);
+      return { blob: new Blob([markdown], { type: 'text/markdown' }), filename: `${baseName}.md`, mimeType: 'text/markdown' };
+    }
+    if (ext === 'csv' && targetFormat === 'html') {
+      const html = htmlDocument(baseName, csvToHtmlTable(await file.text()));
+      onProgress?.(100);
+      return { blob: new Blob([html], { type: 'text/html' }), filename: `${baseName}.html`, mimeType: 'text/html' };
     }
 
     const text = ext === 'md' ? mdToText(await file.text()) : await extractText(file, ext);

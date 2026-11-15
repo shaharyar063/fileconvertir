@@ -45,4 +45,14 @@ describe('font-converter', () => {
     const backBuf = await readBlob(back.blob);
     expect(tables(backBuf)).toEqual(tables(await src.arrayBuffer()));
   });
+
+  it('refuses to relabel outlines: WOFF with CFF outlines cannot become TTF', async () => {
+    const woff = await fontConverter.convert(makeOtf(), 'woff');
+    const file = fakeFile('x.woff', await readBlob(woff.blob));
+    await expect(fontConverter.convert(file, 'ttf')).rejects.toThrow(/choose OTF/i);
+  });
+
+  it('rejects files that are not fonts', async () => {
+    await expect(fontConverter.convert(fakeFile('x.ttf', new Uint8Array(64).buffer), 'woff')).rejects.toThrow(/valid font/i);
+  });
 });

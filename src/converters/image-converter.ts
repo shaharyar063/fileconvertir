@@ -327,7 +327,7 @@ export const imageConverter: ConverterPlugin = {
 
     // Formats without an alpha channel get a white background (transparent pixels
     // would otherwise turn black).
-    if (['jpg', 'jpeg', 'bmp', 'gif', 'tiff', 'pdf'].includes(targetFormat)) {
+    if (['jpg', 'jpeg', 'bmp', 'gif', 'tiff', 'pdf', 'eps'].includes(targetFormat)) {
       ctx.fillStyle = '#ffffff';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
     }

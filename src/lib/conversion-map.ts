@@ -81,10 +81,10 @@ export const conversionMap: ConversionEntry[] = [
     converterId: 'video-converter', category: 'video' },
 
   // ── Fonts ────────────────────────────────────────────────
-  // Browser: opentype.js (TTF/OTF parsing) + custom WOFF builder
-  { source: 'ttf',  targets: ['otf', 'woff', 'zip', 'tar', 'gz'],
+  // Browser: lossless WOFF wrap/unwrap (no outline conversion)
+  { source: 'ttf',  targets: ['woff', 'zip', 'tar', 'gz'],
     converterId: 'font-converter', category: 'font' },
-  { source: 'otf',  targets: ['ttf', 'woff', 'zip', 'tar', 'gz'],
+  { source: 'otf',  targets: ['woff', 'zip', 'tar', 'gz'],
     converterId: 'font-converter', category: 'font' },
   { source: 'woff', targets: ['ttf', 'otf', 'zip', 'tar', 'gz'],
     converterId: 'font-converter', category: 'font' },
