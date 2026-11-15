@@ -12,9 +12,13 @@ export async function extractPdfText(file: File): Promise<string> {
   for (let i = 1; i <= doc.numPages; i++) {
     const page = await doc.getPage(i);
     const content = await page.getTextContent();
-    const pageText = content.items
-      .map((item) => ('str' in item ? item.str : ''))
-      .join(' ');
+    // Keep the PDF's own line breaks instead of running a page into one line.
+    let pageText = '';
+    for (const item of content.items) {
+      if (!('str' in item)) continue;
+      pageText += item.str + (item.hasEOL ? '\n' : ' ');
+    }
+    pageText = pageText.replace(/[ \t]+/g, ' ').replace(/ ?\n ?/g, '\n');
     if (pageText.trim()) {
       parts.push(pageText.trim());
     }
