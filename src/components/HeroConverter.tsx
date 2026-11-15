@@ -9,11 +9,12 @@ import {
   isValidConversion,
 } from '@/lib/format-categories';
 import { sitePath } from '@/lib/site-url';
+import { getSourceFormatPage, isPublishedPair } from '@/lib/converters';
 import { useBulkConverter } from '@/hooks/use-bulk-converter';
 import { createFileInfo, formatFileSize, MAX_BATCH_FILES, BulkFileItem } from '@/lib/converter-types';
 import {
-  Download, RotateCcw, ArrowRight, Plus, FolderOpen, Link2,
-  FileIcon, X, ChevronDown, PackageOpen, CheckCircle2, AlertCircle, Loader2,
+  Download, RotateCcw, ArrowRight, Plus,
+  FileIcon, X, PackageOpen, CheckCircle2, AlertCircle, Loader2,
 } from 'lucide-react';
 
 interface HeroConverterProps {
@@ -34,8 +35,7 @@ export function HeroConverter({
   const navigate = useNavigate();
   const [sourceFormat, setSourceFormat] = useState(initialSource ?? '');
   const [targetFmt, setTargetFmt] = useState(initialTarget ?? '');
-  const [showDropdown, setShowDropdown] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
+  const [isDragging, setIsDragging] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const {
@@ -83,9 +83,10 @@ export function HeroConverter({
         setBulkTarget('');
       }
     }
+    // Only navigate to pages that exist; every other pair still converts here.
     if (tgt && validTargets.includes(tgt)) {
-      navigate(sitePath(`${fmt}-to-${tgt}`));
-    } else {
+      if (isPublishedPair(fmt, tgt)) navigate(sitePath(`${fmt}-to-${tgt}`));
+    } else if (getSourceFormatPage(fmt)) {
       navigate(sitePath(fmt));
     }
   }, [targetFmt, initialTarget, lockTarget, navigate, setBulkTarget]);
@@ -105,7 +106,7 @@ export function HeroConverter({
       setSourceFormat(initialSource);
     }
 
-    navigate(sitePath(`${src}-to-${fmt}`));
+    if (isPublishedPair(src, fmt)) navigate(sitePath(`${src}-to-${fmt}`));
   }, [sourceFormat, initialSource, lockSource, navigate, setBulkTarget]);
 
   const handleFilesSelected = useCallback((selectedFiles: FileList | File[]) => {
@@ -129,7 +130,6 @@ export function HeroConverter({
   }, [addFiles, sourceFormat, targetFmt, setBulkTarget]);
 
   const handleSelectFromComputer = useCallback(() => {
-    setShowDropdown(false);
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
       fileInputRef.current.click();
@@ -144,6 +144,7 @@ export function HeroConverter({
 
   const handleDrop = useCallback((e: React.DragEvent) => {
     e.preventDefault();
+    setIsDragging(false);
     const droppedFiles = e.dataTransfer.files;
     if (droppedFiles.length > 0) handleFilesSelected(droppedFiles);
   }, [handleFilesSelected]);
@@ -171,7 +172,6 @@ export function HeroConverter({
             value={activeSource}
             categories={inputCategories}
             onChange={handleSourceChange}
-            placeholder=""
           />
           <div className="flex h-14 items-center justify-center">
             <ArrowRight className="h-5 w-5 text-muted-foreground" />
@@ -181,7 +181,6 @@ export function HeroConverter({
             value={activeTarget}
             categories={outputCategories}
             onChange={handleTargetChange}
-            placeholder=""
             direction="rtl"
           />
         </div>
@@ -189,8 +188,13 @@ export function HeroConverter({
 
       {/* Files & Conversion */}
       <div
-        className="rounded-2xl border border-border bg-card p-5 md:p-6"
-        onDragOver={(e) => { e.preventDefault(); }}
+        className={`rounded-2xl border bg-card p-5 transition-colors md:p-6 ${
+          isDragging ? 'border-primary bg-secondary' : 'border-border'
+        }`}
+        onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
+        onDragLeave={(e) => {
+          if (!e.currentTarget.contains(e.relatedTarget as Node | null)) setIsDragging(false);
+        }}
         onDrop={handleDrop}
       >
         {/* File list */}
@@ -218,6 +222,7 @@ export function HeroConverter({
                   onRemove={() => removeFile(item.id)}
                   onDownload={() => downloadFile(item)}
                   disabled={isConverting}
+                  targetFormat={targetFormat}
                 />
               ))}
             </div>
@@ -226,44 +231,14 @@ export function HeroConverter({
 
         {/* Empty state: upload prompt */}
         {!hasFiles && (
-          <div className="relative flex" ref={dropdownRef}>
-            <button
-              onClick={handleSelectFromComputer}
-              className="flex h-12 flex-1 items-center justify-center gap-2 rounded-l-xl bg-primary text-sm font-bold text-primary-foreground transition-all hover:brightness-110 active:scale-[0.98]"
-            >
-              <Plus className="h-4 w-4" />
-              Select Files
-            </button>
-            <button
-              onClick={() => setShowDropdown(!showDropdown)}
-              className="flex h-12 items-center justify-center rounded-r-xl border-l border-primary-foreground/20 bg-primary px-3 text-primary-foreground transition-all hover:brightness-110 active:scale-[0.98]"
-            >
-              <ChevronDown className={`h-4 w-4 transition-transform ${showDropdown ? 'rotate-180' : ''}`} />
-            </button>
-
-            {showDropdown && (
-              <>
-                <div className="fixed inset-0 z-40" onClick={() => setShowDropdown(false)} />
-                <div className="absolute left-0 right-0 top-full z-50 mt-2 overflow-hidden rounded-xl border border-border bg-popover shadow-lg">
-                  <button
-                    onClick={handleSelectFromComputer}
-                    className="flex w-full items-center gap-3 px-4 py-3 text-sm text-foreground transition-colors hover:bg-secondary"
-                  >
-                    <FolderOpen className="h-5 w-5 text-muted-foreground" />
-                    From my Computer
-                  </button>
-                  <button
-                    onClick={() => setShowDropdown(false)}
-                    className="flex w-full items-center gap-3 px-4 py-3 text-sm text-muted-foreground transition-colors hover:bg-secondary cursor-not-allowed opacity-50"
-                    disabled
-                  >
-                    <Link2 className="h-5 w-5" />
-                    By URL (coming soon)
-                  </button>
-                </div>
-              </>
-            )}
-          </div>
+          <button
+            type="button"
+            onClick={handleSelectFromComputer}
+            className="flex h-14 w-full items-center justify-center gap-2 rounded-xl bg-primary text-sm font-bold text-primary-foreground transition-all hover:brightness-110 active:scale-[0.98]"
+          >
+            <Plus className="h-4 w-4" />
+            Select Files
+          </button>
         )}
 
         {!hasFiles && (
@@ -315,7 +290,7 @@ export function HeroConverter({
                 onClick={downloadAllAsZip}
                 className="flex h-12 flex-1 items-center justify-center gap-2 rounded-xl bg-primary text-sm font-bold text-primary-foreground transition-all hover:brightness-110 active:scale-[0.98]"
               >
-                <PackageOpen className="h-4 w-4" />
+                {doneCount > 1 ? <PackageOpen className="h-4 w-4" /> : <Download className="h-4 w-4" />}
                 {doneCount > 1
                   ? 'Download All (.zip)'
                   : `Download ${files.find(f => f.status === 'done')?.result?.filename ?? ''}`}
@@ -337,13 +312,22 @@ export function HeroConverter({
 }
 
 function FileRow({
-  item, onRemove, onDownload, disabled,
+  item, onRemove, onDownload, disabled, targetFormat,
 }: {
   item: BulkFileItem;
   onRemove: () => void;
   onDownload: () => void;
   disabled: boolean;
+  targetFormat: string;
 }) {
+  // Audio/video use FFmpeg.wasm, a ~30 MB download on first use. Progress sits
+  // below 15% while it loads, so say what is happening instead of looking stuck.
+  const isLoadingEngine =
+    item.status === 'converting' &&
+    (item.info.category === 'audio' || item.info.category === 'video') &&
+    !['zip', 'tar', 'gz'].includes(targetFormat) &&
+    item.progress < 15;
+
   const statusIcon = {
     queued: <FileIcon className="h-4 w-4 text-muted-foreground" />,
     converting: <Loader2 className="h-4 w-4 animate-spin text-primary" />,
@@ -360,7 +344,10 @@ function FileRow({
         <p className="truncate text-xs font-semibold text-foreground">{item.info.name}</p>
         <p className="text-[10px] text-muted-foreground">
           {formatFileSize(item.info.size)}
-          {item.status === 'converting' && ` · ${item.progress}%`}
+          {item.status === 'converting' &&
+            (isLoadingEngine
+              ? ' · Loading converter… (first time only, ~30 MB)'
+              : ` · ${item.progress}%`)}
           {item.status === 'done' && item.result && ` → ${item.result.filename}`}
           {item.status === 'error' && item.error && ` · ${item.error}`}
         </p>

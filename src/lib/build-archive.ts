@@ -46,7 +46,7 @@ export function dedupeFileNames<T extends { name: string }>(files: T[]): T[] {
   });
 }
 
-export function buildTar(files: { name: string; data: Uint8Array }[]): Uint8Array {
+export function buildTar(files: { name: string; data: Uint8Array }[]): Uint8Array<ArrayBuffer> {
   const encoder = new TextEncoder();
   const blocks: Uint8Array[] = [];
 
@@ -96,11 +96,11 @@ export function buildTar(files: { name: string; data: Uint8Array }[]): Uint8Arra
 }
 
 /** Gzip a Uint8Array using the browser CompressionStream API. */
-export async function gzip(data: Uint8Array): Promise<Uint8Array> {
+export async function gzip(data: Uint8Array): Promise<Uint8Array<ArrayBuffer>> {
   if (typeof CompressionStream === 'undefined') {
     throw new Error('Your browser does not support GZ compression. Please use a modern browser (Chrome 80+, Firefox 113+, Safari 16.4+).');
   }
-  const stream = new Blob([data])
+  const stream = new Blob([data as BlobPart])
     .stream()
     .pipeThrough(new CompressionStream('gzip'));
   const reader = stream.getReader();
@@ -144,7 +144,7 @@ export async function buildSingleFileArchive(
       compression: 'DEFLATE',
     });
     return {
-      blob: new Blob([bytes], { type: MIME.zip }),
+      blob: new Blob([bytes as BlobPart], { type: MIME.zip }),
       filename: `${baseName}.zip`,
       mimeType: MIME.zip,
     };

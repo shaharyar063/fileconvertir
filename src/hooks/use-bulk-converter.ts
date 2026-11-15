@@ -1,6 +1,6 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
 import {
-  FileInfo, ConversionResult, ConversionStatus,
+  ConversionStatus,
   createFileInfo, MAX_FILE_SIZE, MAX_BATCH_FILES, MAX_BATCH_SIZE,
   BulkFileItem, formatFileSize,
 } from '@/lib/converter-types';

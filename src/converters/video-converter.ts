@@ -1,9 +1,9 @@
+import { VIDEO_SOURCES } from '@/lib/source-formats';
 import { ConverterPlugin, ConversionResult, ConversionOption } from '@/lib/converter-types';
 import { getTargetsForSource } from '@/lib/conversion-map';
 import { formatConversionError } from '@/lib/conversion-errors';
 import { ArchiveFormat, buildSingleFileArchive } from '@/lib/build-archive';
 
-const VIDEO_SOURCES = ['mp4', 'mov', 'avi', 'mkv', 'webm'];
 const AUDIO_TARGETS = ['mp3', 'wav'];
 const VIDEO_TARGETS = ['mp4', 'webm'];
 
@@ -48,7 +48,7 @@ export const videoConverter: ConverterPlugin = {
       const outputName = `output.${targetFormat}`;
 
       if (AUDIO_TARGETS.includes(targetFormat)) {
-        args = ['-i', inputName, '-vn', '-acodec', getAudioCodec(targetFormat), outputName];
+        args = ['-i', inputName, '-vn', '-acodec', getAudioCodec(targetFormat), ...(targetFormat === 'mp3' ? ['-b:a', '192k'] : []), outputName];
       } else {
         args = ['-i', inputName, '-threads', '1', ...getVideoArgs(targetFormat), outputName];
       }
@@ -89,7 +89,8 @@ function getVideoArgs(format: string): string[] {
   // Use fast presets and lower quality to avoid WASM memory/speed issues
   switch (format) {
     case 'webm':
-      return ['-c:v', 'libvpx-vp9', '-crf', '35', '-b:v', '0', '-deadline', 'realtime', '-cpu-used', '8', '-row-mt', '0', '-c:a', 'libopus'];
+      // VP8, not VP9: the libvpx-vp9 encoder crashes the single-threaded WebAssembly build.
+      return ['-c:v', 'libvpx', '-crf', '10', '-b:v', '2M', '-deadline', 'realtime', '-cpu-used', '5', '-c:a', 'libopus'];
     case 'mp4':
       return ['-c:v', 'libx264', '-preset', 'ultrafast', '-crf', '28', '-c:a', 'aac'];
     case 'mkv':

@@ -1,14 +1,13 @@
 import { describe, expect, it } from 'vitest';
-import { conversionMap } from '@/lib/conversion-map';
+import { converterRoutes, formatPages } from '@/lib/converters';
 import { getFormatSEO, getSourceFormatSEO } from '@/lib/seo-content';
 
 const META_MIN = 120;
 const META_MAX = 160;
 
 describe('hub meta descriptions', () => {
-  const sources = [...new Set(conversionMap.map((e) => e.source))];
-  const targets = new Set<string>();
-  conversionMap.forEach((e) => e.targets.forEach((t) => targets.add(t)));
+  const sources = [...new Set(converterRoutes.map((r) => r.sourceFormat))];
+  const targets = new Set(formatPages.map((p) => p.targetFormat));
 
   it.each(sources)('source hub %s meta is 120–160 chars', (source) => {
     const { metaDescription } = getSourceFormatSEO(source);

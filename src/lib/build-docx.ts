@@ -15,7 +15,7 @@ function escapeXml(text: string): string {
 }
 
 /** Build a minimal DOCX (OOXML ZIP) as raw bytes. */
-export async function buildDocxBytes(plainText: string): Promise<Uint8Array> {
+export async function buildDocxBytes(plainText: string): Promise<Uint8Array<ArrayBuffer>> {
   const paragraphs = plainText.split(/\r?\n\r?\n/).map((p) => {
     // Single line breaks inside a paragraph become real Word line breaks.
     const runs = p
@@ -64,10 +64,10 @@ export async function buildDocxBytes(plainText: string): Promise<Uint8Array> {
 </w:document>`,
   );
 
-  return zip.generateAsync({
+  return (await zip.generateAsync({
     type: 'uint8array',
     compression: 'DEFLATE',
-  });
+  })) as Uint8Array<ArrayBuffer>;
 }
 
 /** Build a minimal DOCX (OOXML ZIP) from plain text. */

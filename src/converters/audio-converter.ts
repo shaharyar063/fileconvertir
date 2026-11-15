@@ -1,9 +1,9 @@
+import { AUDIO_SOURCES } from '@/lib/source-formats';
 import { ConverterPlugin, ConversionResult, ConversionOption } from '@/lib/converter-types';
 import { getTargetsForSource } from '@/lib/conversion-map';
 import { formatConversionError } from '@/lib/conversion-errors';
 import { ArchiveFormat, buildSingleFileArchive } from '@/lib/build-archive';
 
-const AUDIO_SOURCES = ['mp3', 'wav', 'aac', 'ogg', 'flac', 'm4a'];
 
 export const audioConverter: ConverterPlugin = {
   id: 'audio-converter',
@@ -40,7 +40,8 @@ export const audioConverter: ConverterPlugin = {
       const inputName = `input.${file.name.split('.').pop() || 'mp3'}`;
       const outputName = `output.${targetFormat}`;
       const codec = getAudioCodec(targetFormat);
-      const args = ['-i', inputName, '-acodec', codec, outputName];
+      // MP3 is encoded at a fixed 192 kbps (what the pages describe); other codecs use FFmpeg defaults.
+      const args = ['-i', inputName, '-acodec', codec, ...(targetFormat === 'mp3' ? ['-b:a', '192k'] : []), outputName];
 
       const blob = await convertWithFFmpeg(file, targetFormat, onProgress, args);
       onProgress?.(100);

@@ -3,7 +3,7 @@ import type { HomepageSEO } from './types';
 export const HOMEPAGE_SEO: HomepageSEO = {
   title: 'FileConvertir — Free Online File Converter',
   metaDescription:
-    'Convert images, documents, audio, video, fonts and archives in your browser. 100% private — files never leave your device. No signup, free, 200+ conversions.',
+    'Convert images, documents, audio, video, fonts and archives in your browser. 100% private — files never leave your device. No signup, free, 230+ conversions.',
   heading: 'Free Online File Converter',
   description:
     'Convert images, documents, audio, video, fonts and archives instantly in your browser. Private, free, and works on desktop or mobile.',
@@ -18,7 +18,7 @@ export const HOMEPAGE_SEO: HomepageSEO = {
     },
     {
       q: 'What formats can I convert?',
-      a: '200+ routes across images (PNG, JPG, WebP, AVIF), documents (PDF, DOCX), audio/video (FFmpeg), fonts, and archives.',
+      a: '230+ conversions across images (PNG, JPG, WebP, AVIF), documents (PDF, DOCX), audio/video (FFmpeg), fonts, and archives.',
     },
     {
       q: 'What is the maximum file size?',
@@ -30,7 +30,7 @@ export const HOMEPAGE_SEO: HomepageSEO = {
     },
     {
       q: 'Does it work offline?',
-      a: 'After the first load, many image and document conversions work offline. Audio/video need the initial FFmpeg download.',
+      a: 'Not fully. Your files are never uploaded, but the page and some converters are downloaded the first time you use them, and audio and video conversion needs a one-time engine download of about 30 MB, so you need a connection.',
     },
     {
       q: 'How is this different from cloud converters?',

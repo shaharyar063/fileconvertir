@@ -1,7 +1,7 @@
+import { IMAGE_SOURCES } from '@/lib/source-formats';
 import { ConverterPlugin, ConversionResult, ConversionOption } from '@/lib/converter-types';
 import { getTargetsForSource } from '@/lib/conversion-map';
 
-const IMAGE_FORMATS = ['jpg', 'jpeg', 'png', 'webp', 'gif', 'bmp', 'avif', 'ico', 'eps', 'svg', 'psd', 'tga'];
 import { ArchiveFormat, buildSingleFileArchive } from '@/lib/build-archive';
 
 function getMimeType(format: string): string {
@@ -304,7 +304,7 @@ function buildTiff(imageData: ImageData, w: number, h: number): Blob {
 export const imageConverter: ConverterPlugin = {
   id: 'image-converter',
   name: 'Image Converter',
-  sourceFormats: IMAGE_FORMATS,
+  sourceFormats: IMAGE_SOURCES,
 
   getTargetFormats(sourceFormat: string): ConversionOption[] {
     return getTargetsForSource(sourceFormat).map(f => ({
@@ -327,7 +327,7 @@ export const imageConverter: ConverterPlugin = {
 
     // Formats without an alpha channel get a white background (transparent pixels
     // would otherwise turn black).
-    if (['jpg', 'jpeg', 'bmp', 'gif', 'tiff'].includes(targetFormat)) {
+    if (['jpg', 'jpeg', 'bmp', 'gif', 'tiff', 'pdf'].includes(targetFormat)) {
       ctx.fillStyle = '#ffffff';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
     }

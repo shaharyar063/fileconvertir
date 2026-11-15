@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { HeroConverter } from '@/components/HeroConverter';
 import { converterRoutes } from '@/lib/converters';
-import { PRIORITY_CONVERTERS, getHomepageSEO } from '@/lib/seo-content';
+import { getHomepageSEO } from '@/lib/seo-content';
 import { Shield, Zap, Globe, ArrowRight, CheckCircle, Image, FileText, Music, Film, Type, Archive, TrendingUp, Flame } from 'lucide-react';
 import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@/components/ui/accordion';
 import { useDocumentHead } from '@/hooks/use-document-head';
@@ -16,12 +16,10 @@ const popularConversions: { slug: string; label: string; tagline: string }[] = [
   { slug: 'png-to-jpg',   label: 'PNG to JPG',   tagline: 'Shrink screenshots & photos' },
   { slug: 'webp-to-jpg',  label: 'WebP to JPG',  tagline: 'Insert web images into Office' },
   { slug: 'mp4-to-mp3',   label: 'MP4 to MP3',   tagline: 'Extract audio from any video' },
-  { slug: 'mkv-to-mp4',   label: 'MKV to MP4',   tagline: 'Fix Plex & iPhone playback' },
-  { slug: 'docx-to-pdf',  label: 'DOCX to PDF',  tagline: 'Lock formatting for sharing' },
+  { slug: 'mkv-to-mp4',   label: 'MKV to MP4',   tagline: 'Play MKV on iPhones and TVs' },
+  { slug: 'docx-to-pdf',  label: 'DOCX to PDF',  tagline: 'Text of a Word file as a PDF' },
   { slug: 'pdf-to-txt',   label: 'PDF to Text',  tagline: 'Extract text for AI & editing' },
 ];
-// Reference PRIORITY_CONVERTERS so the link list stays in sync with the priority list
-void PRIORITY_CONVERTERS;
 
 const categories = [
   { key: 'Image', icon: Image, label: 'Images', desc: 'PNG, JPG, WebP, AVIF, GIF, BMP, TIFF, SVG, ICO' },
@@ -45,14 +43,11 @@ const faqs = getHomepageSEO().faqs;
 
 /** Full-bleed section band separated by a hairline border. */
 function Band({
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  invert = false,
   children,
   id,
   ariaLabel,
   className = '',
 }: {
-  invert?: boolean;
   children: ReactNode;
   id?: string;
   ariaLabel?: string;
@@ -97,7 +92,7 @@ export default function Index() {
       </Band>
 
       {/* MOST POPULAR — dark band */}
-      <Band invert ariaLabel="Most popular conversions">
+      <Band ariaLabel="Most popular conversions">
         <div className="flex items-center gap-2">
           <TrendingUp className="h-4 w-4 text-foreground" />
           <h2 className="text-2xl md:text-3xl font-extrabold tracking-tight text-foreground">
@@ -176,7 +171,7 @@ export default function Index() {
       </Band>
 
       {/* WHY — dark band */}
-      <Band invert>
+      <Band>
         <h2 className="text-2xl md:text-3xl font-extrabold tracking-tight text-foreground">
           Why Use FileConvertir?
         </h2>
@@ -262,7 +257,7 @@ export default function Index() {
       </Band>
 
       {/* FAQ — dark band */}
-      <Band invert ariaLabel="Frequently asked questions">
+      <Band ariaLabel="Frequently asked questions">
         <h2 className="text-2xl md:text-3xl font-extrabold tracking-tight text-foreground">
           Frequently Asked Questions
         </h2>

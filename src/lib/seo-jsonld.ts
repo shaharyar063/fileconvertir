@@ -21,7 +21,7 @@ export function buildWebAppSchema() {
     description: 'Free online file converter. Convert images, documents, audio, video, fonts & archives instantly in your browser. 100% private — files never leave your device.',
     featureList: [
       '100% browser-based — no file uploads',
-      'Supports 200+ conversion types',
+      'Supports 230+ conversion types',
       'Batch conversion up to 20 files',
       'No signup or account required',
       'Images, documents, audio, video, fonts, archives',
@@ -82,18 +82,3 @@ export function buildHowToSchema(name: string, steps: { name: string; text: stri
   };
 }
 
-export function buildSoftwareAppSchema(name: string, description: string) {
-  return {
-    '@context': 'https://schema.org',
-    '@type': 'SoftwareApplication',
-    name,
-    description,
-    applicationCategory: 'UtilitiesApplication',
-    operatingSystem: 'Any',
-    offers: {
-      '@type': 'Offer',
-      price: '0',
-      priceCurrency: 'USD',
-    },
-  };
-}

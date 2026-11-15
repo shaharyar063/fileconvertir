@@ -12,3 +12,12 @@ describe('conversion-errors', () => {
     expect(err.message).toBe('Invalid file');
   });
 });
+
+describe('formatConversionError network failures', () => {
+  it('turns raw module-fetch errors into a friendly message', () => {
+    const err = formatConversionError(
+      new TypeError('Failed to fetch dynamically imported module: https://unpkg.com/x.js'),
+    );
+    expect(err.message).toMatch(/Could not download the media converter/);
+  });
+});

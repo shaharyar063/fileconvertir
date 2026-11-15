@@ -1,9 +1,9 @@
+import { FONT_SOURCES } from '@/lib/source-formats';
 import { ConverterPlugin, ConversionResult, ConversionOption } from '@/lib/converter-types';
 import { getTargetsForSource } from '@/lib/conversion-map';
 import { ArchiveFormat, buildSingleFileArchive } from '@/lib/build-archive';
 import opentype from 'opentype.js';
 
-const FONT_SOURCES = ['ttf', 'otf', 'woff'];
 
 function getMimeType(format: string): string {
   const map: Record<string, string> = {

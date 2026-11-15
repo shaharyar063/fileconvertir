@@ -1,3 +1,4 @@
+import { DOCUMENT_SOURCES } from '@/lib/source-formats';
 import { ConverterPlugin, ConversionResult, ConversionOption } from '@/lib/converter-types';
 import { getTargetsForSource } from '@/lib/conversion-map';
 import { textToDocx } from '@/lib/build-docx';
@@ -5,7 +6,6 @@ import { extractPdfText } from '@/lib/pdf-text';
 import { ArchiveFormat, buildSingleFileArchive } from '@/lib/build-archive';
 import { escapeHtml, safeHttpUrl, sanitizeExportedHtml } from '@/lib/escape-html';
 
-const DOC_SOURCES = ['pdf', 'docx', 'odt', 'txt', 'rtf', 'html', 'md', 'csv'];
 
 async function readTextFile(file: File): Promise<string> {
   return file.text();
@@ -23,7 +23,13 @@ async function htmlToText(file: File): Promise<string> {
   const parser = new DOMParser();
   const doc = parser.parseFromString(html, 'text/html');
   doc.querySelectorAll('script, style, noscript, template').forEach((el) => el.remove());
-  return doc.body.textContent || '';
+  // textContent glues block elements together ("<p>a</p><p>b</p>" -> "ab"), so
+  // put line breaks where the browser would show them.
+  doc.querySelectorAll('br').forEach((el) => el.replaceWith('\n'));
+  doc
+    .querySelectorAll('p, div, h1, h2, h3, h4, h5, h6, li, tr, section, article, blockquote, pre, ul, ol, table')
+    .forEach((el) => el.append('\n'));
+  return (doc.body.textContent || '').replace(/\n{3,}/g, '\n\n').trim();
 }
 
 async function pdfToText(file: File): Promise<string> {
@@ -70,7 +76,7 @@ function mdToHtml(md: string): string {
 
 function mdToText(md: string): string {
   return md
-    .replace(/```[\s\S]*?```/g, '')
+    .replace(/```[^\n]*\n([\s\S]*?)```/g, '$1')
     .replace(/`([^`]+)`/g, '$1')
     .replace(/#{1,6}\s+/g, '')
     .replace(/\*\*(.+?)\*\*/g, '$1')
@@ -78,21 +84,26 @@ function mdToText(md: string): string {
     .replace(/!\[([^\]]*)\]\([^)]+\)/g, '$1')
     .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
     .replace(/^>\s+/gm, '')
-    .replace(/^[-*]\s+/gm, '• ')
+    .replace(/^[-*]\s+/gm, '- ')
     .replace(/^---+$/gm, '')
     .trim();
 }
 
-async function textToPdf(text: string): Promise<Blob> {
+async function textToPdf(text: string, monospace = false): Promise<Blob> {
   const { jsPDF } = await import('jspdf');
   const doc = new jsPDF();
+  // Plain text and CSV keep their alignment in a monospace font; everything
+  // else uses the standard proportional font.
+  doc.setFont(monospace ? 'courier' : 'helvetica');
+  doc.setFontSize(monospace ? 10 : 11);
+  const lineHeight = monospace ? 4.5 : 5.5;
   const lines = doc.splitTextToSize(text, 180);
   let y = 15;
   const pageHeight = doc.internal.pageSize.getHeight();
   for (const line of lines) {
     if (y > pageHeight - 15) { doc.addPage(); y = 15; }
     doc.text(line, 15, y);
-    y += 7;
+    y += lineHeight;
   }
   return doc.output('blob');
 }
@@ -134,7 +145,7 @@ async function extractText(file: File, ext: string): Promise<string> {
 export const documentConverter: ConverterPlugin = {
   id: 'document-converter',
   name: 'Document Converter',
-  sourceFormats: DOC_SOURCES,
+  sourceFormats: DOCUMENT_SOURCES,
 
   getTargetFormats(sourceFormat: string): ConversionOption[] {
     return getTargetsForSource(sourceFormat).map(t => ({
@@ -185,7 +196,7 @@ export const documentConverter: ConverterPlugin = {
     }
 
     if (targetFormat === 'pdf') {
-      const blob = await textToPdf(text);
+      const blob = await textToPdf(text, ext === 'txt' || ext === 'csv');
       onProgress?.(100);
       return { blob, filename: `${baseName}.pdf`, mimeType: 'application/pdf' };
     }

@@ -80,6 +80,3 @@ export async function fileMatchesClaimedExtension(
   return sigs.some((sig) => matchesSignature(head, sig));
 }
 
-export function mismatchExtensionMessage(extension: string): string {
-  return `This file does not look like a valid .${extension} file. Check the filename and try again.`;
-}
