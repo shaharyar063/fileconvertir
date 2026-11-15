@@ -9,9 +9,9 @@ export const HOMEPAGE_SEO: HomepageSEO = {
     'Free online file converter: convert images, documents, audio, video, fonts and archives in your browser with no upload or sign-up. Your files never leave your device.',
   content: {
     howItWorks: [
-      { name: 'Choose your formats', text: 'Pick the format you have and the one you want, or just add a file and the tool will offer what it can be converted to.' },
-      { name: 'Add your files', text: 'Click Select Files or drop up to 20 files at once. Each file can be up to 100 MB.' },
-      { name: 'Convert and download', text: 'Press Convert, then save each result or all of them as one ZIP. The first audio or video conversion downloads a media engine of about 30 MB.' },
+      { name: 'Choose your formats', text: 'Pick the format you have and the one you want. If you are not sure, add the file first and the tool lists what it can become.' },
+      { name: 'Add your files', text: 'Click Select Files or drop up to 20 files on the page. Each file can be up to 100 MB.' },
+      { name: 'Convert and download', text: 'Press Convert and save each result, or all of them in one ZIP. The first audio or video job downloads a media engine of about 30 MB.' },
     ],
     comparison: {
       columns: ['FileConvertir', 'Upload-based converters'],
@@ -41,7 +41,7 @@ export const HOMEPAGE_SEO: HomepageSEO = {
     },
     {
       q: 'What formats can I convert?',
-      a: 'More than 230 conversions across images, documents, audio, video, fonts and archives. Each format has its own page listing what it converts to.',
+      a: 'Over 230 conversions between images, documents, audio, video, fonts and archives. Each format has a page listing everything it can be converted to.',
     },
     {
       q: 'What is the maximum file size?',

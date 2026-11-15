@@ -8,6 +8,7 @@ import { useDocumentHead } from '@/hooks/use-document-head';
 import { buildFAQSchema, buildHowToSchema, buildWebAppSchema, buildWebSiteSchema } from '@/lib/seo-jsonld';
 import { absoluteUrl, sitePath } from '@/lib/site-url';
 import { useMemo, ReactNode } from 'react';
+import { HowItWorksFigure, CategoryBarsFigure, PrivacyPathFigure } from '@/components/HomeGraphics';
 
 const homeSeo = getHomepageSEO();
 const { howItWorks, comparison, limits } = homeSeo.content;
@@ -76,14 +77,16 @@ export default function Index() {
             </li>
           ))}
         </ol>
+        <HowItWorksFigure />
       </Band>
 
       <Band id="categories" label="Supported formats">
         <H2>What you can convert</H2>
         <p className="mt-3 text-sm text-foreground/80">
-          More than 230 conversions across six kinds of file. Open a format to see everything it converts to.
+          Images, documents, audio, video, fonts and archives. Open a format to see every output it supports.
         </p>
-        <div className="mt-8 grid gap-4 md:grid-cols-2">
+        <CategoryBarsFigure />
+        <div className="mt-6 grid gap-4 md:grid-cols-2">
           {categories.map((cat) => {
             const routes = converterRoutes.filter((r) => r.category === cat.key);
             const formats = [...new Set(routes.map((r) => r.sourceFormat))].sort();
@@ -128,9 +131,10 @@ export default function Index() {
       <Band label="Private conversion in your browser">
         <H2>Why convert in your browser</H2>
         <p className="mt-3 text-sm leading-relaxed text-foreground/80">
-          Most online converters upload your file to a server, convert it there and send it back. FileConvertir does the
-          work on your own device with JavaScript and WebAssembly, so the file never leaves it.
+          A typical converter site has to receive your file before it can touch it. Here your browser does the job with
+          JavaScript and WebAssembly, so a private document or a family video never has to leave your device.
         </p>
+        <PrivacyPathFigure />
         <div className="mt-6 overflow-hidden rounded-xl border border-border">
           <table className="w-full text-left text-xs">
             <thead className="border-b border-border bg-secondary">
