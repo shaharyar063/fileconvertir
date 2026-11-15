@@ -3,6 +3,29 @@ import type { FormatSEO } from '../types';
 /** Format pages for rich-text, spreadsheet-text, font and archive formats, plus extra audio and document targets. */
 
 export const MORE_SOURCE_HUBS: Record<string, FormatSEO> = {
+  jpeg: {
+    title: 'JPEG Converter Online — Convert JPEG to PNG, WebP, PDF',
+    metaDescription:
+      'Free online JPEG converter. Convert .jpeg photos to PNG, WebP, GIF, BMP, TIFF, ICO, SVG or PDF in your browser, with no upload or sign-up needed.',
+    heading: 'JPEG File Converter',
+    description:
+      'Free online JPEG converter: convert .jpeg photos to PNG, WebP, GIF, BMP, TIFF, ICO, SVG or PDF in your browser with no upload or sign-up.',
+    details:
+      'JPEG stands for the Joint Photographic Experts Group, the committee that published the format in 1992. It compresses photographs by discarding detail the eye is unlikely to miss, and it is the default output of cameras and phones.',
+    longDescription:
+      'A file ending in .jpeg is the same format as one ending in .jpg; the longer extension survives from systems that allowed four letters. Every conversion here treats them identically. Lossless targets such as PNG, BMP and TIFF stop further quality loss but cannot restore what JPEG already removed, WebP shrinks the file for the web, and PDF wraps the photo in a page. ICO scales the picture into an icon.',
+    useCases: [
+      'Save a .jpeg as PNG before editing it several times',
+      'Shrink photos for a website by converting them to WebP',
+      'Attach a photographed document as a PDF',
+    ],
+    faqs: [
+      { q: 'Is .jpeg different from .jpg?', a: 'No. They are two spellings of the same format.' },
+      { q: 'Which target keeps the most quality?', a: 'PNG, TIFF and BMP store the decoded pixels without further loss.' },
+      { q: 'Can JPEG be converted to an animated GIF?', a: 'No. GIFs made here are single still images.' },
+    ],
+  },
+
   rtf: {
     title: 'RTF Converter Online — Convert RTF to TXT, PDF, DOCX',
     metaDescription:

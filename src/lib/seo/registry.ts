@@ -11,8 +11,7 @@ export function getFormatSEO(targetFormat: string): FormatSEO {
 
 /** Content for a source-format page (`/png/`). */
 export function getSourceFormatSEO(sourceFormat: string): FormatSEO {
-  const key = sourceFormat === 'jpeg' ? 'jpg' : sourceFormat;
-  const hub = SOURCE_HUBS[key];
+  const hub = SOURCE_HUBS[sourceFormat];
   if (!hub) throw new Error(`No hub content for source format "${sourceFormat}"`);
   return hub;
 }

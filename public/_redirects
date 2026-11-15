@@ -1,16 +1,3 @@
-# ── jpeg → jpg canonical redirects (301) ──────────────────────────────────
-# jpeg is an alias for jpg. Both trailing-slash and non-trailing-slash forms
-# are redirected so neither the flat file nor the directory file is served
-# directly with a mismatched canonical.
-# _redirects rules take priority over static files in Cloudflare Pages.
-
-/jpeg           /jpg/           301
-/jpeg/          /jpg/           301
-/jpeg-to-png    /jpg-to-png/    301
-/jpeg-to-png/   /jpg-to-png/    301
-/jpeg-to-pdf    /jpg-to-pdf/    301
-/jpeg-to-pdf/   /jpg-to-pdf/    301
-
 # ── SPA catch-all REMOVED ──────────────────────────────────────────────────
 # Previously: /*  /index.html  200
 #

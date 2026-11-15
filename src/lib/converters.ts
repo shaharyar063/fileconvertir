@@ -28,7 +28,6 @@ export interface SourceFormatPage {
  * The tool works for all of these, but only some get their own page.
  */
 const allConversionPairs: ConverterRoute[] = conversionMap
-  .filter(entry => entry.source !== 'jpeg') // alias of jpg
   .flatMap(entry =>
     entry.targets.map(target => ({
       slug: `${entry.source}-to-${target}`,
